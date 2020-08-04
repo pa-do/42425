@@ -55,7 +55,12 @@
                     </div>
                     <div class="add-option">
                       <p>비밀번호를 잊으셨나요?</p>
-                      <a class="btn--text">비밀번호 찾기</a>
+                      <!-- <a class="btn--text">비밀번호 찾기</a> -->
+                      <router-link
+                        v-bind:to="{name:constants.URL_TYPE.USER.MODIFYPW}"
+                        class="btn--text"
+                        data-dismiss="modal"
+                      >비밀번호 찾기</router-link>
                     </div>
                   </div>
                 </div>
@@ -112,8 +117,8 @@ export default {
 
           this.$session.set("user", this.user);
           console.log(this.$session.get("user"));
+          this.$router.push("/");
           this.$router.go();
-          this.$router.push("/#/");
 
           eventBus.$emit("login");
           this.$cookie.set("auth-token", this.user.uid, 1);
