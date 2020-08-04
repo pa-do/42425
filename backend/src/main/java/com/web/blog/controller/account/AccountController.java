@@ -90,10 +90,16 @@ public class AccountController {
     @ApiOperation(value = "닉네임 중복 체크")
     public Object nicknameChk(@PathVariable String nickname) {
         final BasicResponse result = new BasicResponse();
+        
+        ResponseEntity response = null;
+        
         if (userDao.countByNickname(nickname) > 0) {
             result.status = true;
             result.data = "fail";
             result.object = "nickname";
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+        	response = new ResponseEntity<>(null, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -108,11 +114,11 @@ public class AccountController {
 
         if (userDao.countByEmail(email) > 0) {
             result.status = true;
-            result.data = "success";
+            result.data = "fail";
             result.object = "email";
             response = new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<>(null, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -182,8 +188,9 @@ public class AccountController {
 
         User user = User.builder()
         			    .uid(request.getUid())
-                		.password(enc.sha256(request.getPassword()))
+                		.password(request.getPassword())
                 		.build();
+        
         ResponseEntity response = null;
         if (userDao.updatePassword(user.getUid(), enc.sha256(user.getPassword())) > 0) {
         	User modifiedUser = userDao.findUserByUid(user.getUid());
