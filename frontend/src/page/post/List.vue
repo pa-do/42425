@@ -1,9 +1,9 @@
 <template>
-  <div class="post">
+  <div class="post mb-5">
     <div class="wrapB">
       <h2>전체글</h2>
       <section class="post-list">
-        <div v-for="board in boards" :key="`board_${board.bid}`">
+        <div v-for="board in iboards" :key="`${board.bid}`">
           <div class="post-card" @click="goboard(`${board.bid}`)">
             <a>
               <div
@@ -17,9 +17,7 @@
               <div class="contents">
                 <h3>{{ board.title }}</h3>
                 <p class="content">{{ board.content }}</p>
-                <span class="date"
-                  >{{ board.writeDate.split("T").join(" ") }}ㆍ</span
-                >
+                <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
                 <span class="comment">댓글 0개</span>
               </div>
             </a>
@@ -40,25 +38,26 @@
         </ul>
       </div>
     </div>
-    <!-- <infinite-loading @infinite="infiniteHandler"></infinite-loading> -->
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 
 <script>
 import "../../assets/css/post.scss";
 import axios from "axios";
-// import InfiniteLoading from "vue-infinite-loading";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "Post",
   data: () => {
     return {
       boards: [],
+      iboards: [],
       limit: 0,
     };
   },
   components: {
-    // InfiniteLoading,
+    InfiniteLoading,
   },
   watch: {},
   methods: {
@@ -74,27 +73,42 @@ export default {
       });
     },
     infiniteHandler($state) {
-      axios
-        .get("http://localhost:8080/board" + (this.limit + 10))
-        .then((response) => {
-          setTimeout(() => {
-            if (response.data.length) {
-              this.boards = concat(response.data);
-              $state.loaded();
-              this.limit += 10;
-              if (this.boards.length / 10 == 0) {
-                $state.complete();
-              }
-            } else {
-              $state.complete();
-            }
-          }, 1000);
-        })
-        .catch((err) => console.error(err));
+      // axios
+      //   .get("http://localhost:8080/board" + (this.limit + 10))
+      //   .then((response) => {
+      //     setTimeout(() => {
+      //       if (response.data.length) {
+      //         this.boards = concat(response.data);
+      //         $state.loaded();
+      //         this.limit += 10;
+      //         if (this.boards.length / 10 == 0) {
+      //           $state.complete();
+      //         }
+      //       } else {
+      //         $state.complete();
+      //       }
+      //     }, 1000);
+      //   })
+      //   .catch((err) => console.error(err));
+      setTimeout(() => {
+        this.getboard();
+        if (this.boards.length > this.limit) {
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      }, 1000);
+    },
+    getboard() {
+      this.iboards = this.iboards.concat(
+        this.boards.slice(this.limit, this.limit + 6)
+      );
+      this.limit = this.limit + 6;
     },
   },
   created() {
     this.fetchBoards();
+    this.getboard();
     // axios.get("http://localhost:8080/board" + this.limit).then((response) => {
     //   this.boards = response.data;
     // });

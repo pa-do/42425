@@ -23,17 +23,18 @@ public interface BoardDao extends JpaRepository<Board, Integer> {
 
 	public void deleteByBid(int bid);
 
-	
-//	@Query(value = "update board set where title=?1, content=?2 where bid=?3", nativeQuery = true)
-//	public Board modify(@Param("title") String title,@Param("content") String content, @Param("bid") int bid);
+	// @Query(value = "update board set where title=?1, content=?2 where bid=?3",
+	// nativeQuery = true)
+	// public Board modify(@Param("title") String title,@Param("content") String
+	// content, @Param("bid") int bid);
 
 	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid and board.bid=?1", nativeQuery = true)
 	public Board selectBoardByBid(@Param("bid") int bid);
 
-	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid order by bid desc limit 6", nativeQuery = true)
+	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid order by bid desc", nativeQuery = true)
 	public List<Board> selectAllBoard();
-	
-//	public Collection<Board> findByTitle(String title);
-	
+
+	// public Collection<Board> findByTitle(String title);
+
 	List<Board> findByTitleContaining(String keyword);
 }
