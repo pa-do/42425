@@ -67,10 +67,8 @@ export default {
         .get(`http://localhost:8080/account/emailChk/${this.email}`)
         .then((response) => {
           this.result = response.data;
-          console.log(this.result);
           if (this.result.data == "fail" && this.result.object == "email") {
             document.getElementById("Memail").setAttribute("readonly", true);
-            console.log(document.getElementById("Memail"));
             this.emailChk = true;
           } else {
             document.getElementById("Memail").focus();
@@ -98,11 +96,32 @@ export default {
     },
     authEmail() {
       if (this.authnum === this.input_authnum) {
-        console.log(this.authChk);
-        alert("인증이 완료되었습니다.");
+        console.log(this.email);
+        // axios
+        //   .post(`http://localhost:8080/account/getuid/`, {
+        //     email: this.email,
+        //   })
+        //   .then((response) => {
+        //     alert(response);
+        //   })
+        //   .catch((err) => {
+        //     alert(err);
+        //   });
+        axios({
+          method: "POST",
+          url: `http://localhost:8080/account/getuid`,
+          params: {
+            email: this.email,
+          },
+        })
+          .then((response) => {
+            this.uid = response.data.data;
+          })
+          .catch((err) => {
+            alert(err);
+          });
         document.getElementById("input_authnum").setAttribute("readonly", true);
         this.authChk = true;
-        console.log(this.authChk);
       } else {
         alert("인증번호가 일치하지 않습니다. 다시 입력해주세요.");
       }
@@ -122,17 +141,10 @@ export default {
         axios
           .put("http://localhost:8080/account/modify/password", {
             uid: this.uid,
-            password: this.newPW1,
+            password: this.password,
           })
           .then((response) => {
-            // let user = response.data.object;
-            // this.result = response.data;
-            // this.$session.set("user", user);
             this.$router.go();
-            this.nowPW = "";
-            this.newPW1 = "";
-            this.newPW2 = "";
-            this.nowPWChk = false;
 
             alert("비밀번호가 변경되었습니다.");
           })
@@ -144,6 +156,7 @@ export default {
   },
   data: () => {
     return {
+      uid: "",
       email: "",
       emailChk: false,
 
