@@ -55,7 +55,6 @@
                     </div>
                     <div class="add-option">
                       <p>비밀번호를 잊으셨나요?</p>
-                      <!-- <a class="btn--text">비밀번호 찾기</a> -->
                       <router-link
                         v-bind:to="{name:constants.URL_TYPE.USER.MODIFYPW}"
                         class="btn--text"
