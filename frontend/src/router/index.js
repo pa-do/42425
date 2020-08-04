@@ -7,6 +7,7 @@ import constants from "../lib/constants"
 // import Login from "../page/user/Login.vue"
 import Join from "../page/user/Join.vue"
 import Modify from "../page/user/Modify.vue"
+import Modifypw from "../page/user/Modifypw.vue"
 
 // 포스트
 import List from "../page/post/List.vue"
@@ -36,6 +37,11 @@ export default new Router({
       path: "/user/modify",
       name: constants.URL_TYPE.USER.MODIFY,
       component: Modify,
+    },
+    {
+      path: "/user/modifypw",
+      name: constants.URL_TYPE.USER.MODIFYPW,
+      component: Modifypw,
     },
     // 포스트
     {
