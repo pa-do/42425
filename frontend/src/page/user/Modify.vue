@@ -146,6 +146,7 @@
 <script>
 import "../../assets/css/user.scss";
 import axios from "axios";
+import router from '../../router';
 
 export default {
   components: {},
@@ -316,12 +317,16 @@ export default {
         cancelButtonText: "안할래요😊",
       }).then((result) => {
         if (result.value) {
-          this.deleteUser();
-          Swal.fire(
-            "탈퇴 완료!",
-            "데이터가 영구적으로 삭제되었습니다.",
-            "success"
-          );
+          this.deleteUser();  
+          Swal.fire({
+            title: "탈퇴 완료!",
+            text : "데이터가 영구적으로 삭제되었습니다.",
+            icon :"success",
+            showConfirmButton : true,
+            confirmButtonText : "확인",
+          }).then(() => {
+            router.go();
+          });
         }
       });
     },
