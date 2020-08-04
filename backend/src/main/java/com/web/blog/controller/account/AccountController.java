@@ -143,6 +143,24 @@ public class AccountController {
         return response;
     }
 
+    @PostMapping("/getuid")
+    @ApiOperation(value = "회원 uid 정보")
+    public Object getUserIdByEmail(@RequestParam String email) {
+    	final BasicResponse result = new BasicResponse();
+    	
+    	ResponseEntity response = null;
+    	
+    	User user = userDao.findUserByEmail(email);
+    	if (user != null) {
+    		result.status = true;
+    		result.data = String.valueOf(user.getUid());
+    		response = new ResponseEntity<>(result, HttpStatus.OK);
+    	} else {
+    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    	}
+    	return response;
+    }
+
     @PutMapping("/modify/nickname")
     @ApiOperation(value = "회원정보수정 - 닉네임 변경")
     public Object modifyNickname(@RequestBody User user) {
