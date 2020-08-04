@@ -47,8 +47,6 @@ public class BoardController {
 	@GetMapping(value="/{bid}", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Board> getboard(@PathVariable("bid") int bid){
 		Board board = boardService.findByBid(bid);
-//		System.out.println(bid);
-//		System.out.println(board.toString());
 		return new ResponseEntity<Board>(board,HttpStatus.OK);
 	}
 

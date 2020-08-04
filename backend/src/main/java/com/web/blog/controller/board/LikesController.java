@@ -39,10 +39,21 @@ public class LikesController {
 	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<Likes>> getAlllikes(){
+	public ResponseEntity<List<Likes>> getAllLikes(){
 		List<Likes> likes = likesService.findAll();
 		return new ResponseEntity<List<Likes>>(likes, HttpStatus.OK);
 	}
+	
+	@GetMapping(value="/detailBid/{bid}", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<Likes>> getLikesByBid(@PathVariable("bid") int bid){
+		List<Likes> likes= likesService.findByBid(bid);
+		return new ResponseEntity<List<Likes>>(likes,HttpStatus.OK);
+	}
 
+	@GetMapping(value="/detailUid/{uid}", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<Likes>> getLikesByUid(@PathVariable("uid") int uid){
+		List<Likes> likes= likesService.findByUid(uid);
+		return new ResponseEntity<List<Likes>>(likes,HttpStatus.OK);
+	}
 
 }

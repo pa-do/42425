@@ -1,7 +1,6 @@
 
 package com.web.blog.dao.board;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +34,5 @@ public interface BoardDao extends JpaRepository<Board, Integer> {
 	
 //	public Collection<Board> findByTitle(String title);
 	
-	List<Board> findByTitleContaining(String keyword);
+	public List<Board> findByTitleContaining(String keyword);
 }

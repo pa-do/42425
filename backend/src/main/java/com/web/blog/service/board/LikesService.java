@@ -31,5 +31,18 @@ public class LikesService {
 		return likes;
 	}
 	
+	public List<Likes> findByBid(int bid) {
+		List<Likes> likes = new ArrayList<>();
+		likesDao.selectLikesByBid(bid).forEach(e -> likes.add(e));
+		return likes;
+	}
+	
+	public List<Likes> findByUid(int uid) {
+		List<Likes> likes = new ArrayList<>();
+		likesDao.selectLikesByUid(uid).forEach(e -> likes.add(e));
+		return likes;
+	}
+	
+	
 
 }
