@@ -97,16 +97,6 @@ export default {
     authEmail() {
       if (this.authnum === this.input_authnum) {
         console.log(this.email);
-        // axios
-        //   .post(`http://localhost:8080/account/getuid/`, {
-        //     email: this.email,
-        //   })
-        //   .then((response) => {
-        //     alert(response);
-        //   })
-        //   .catch((err) => {
-        //     alert(err);
-        //   });
         axios({
           method: "POST",
           url: `http://localhost:8080/account/getuid`,
