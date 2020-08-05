@@ -9,7 +9,7 @@
 export default {
   methods: {
     logout() {
-      alert("BYE111 " + this.$session.get("user").nickname);
+      alert("BYE " + this.$session.get("user").nickname);
       this.$session.destroy();
       this.$router.push("/");
       this.$cookie.delete("auth-token");
