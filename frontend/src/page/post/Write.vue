@@ -21,16 +21,21 @@
     </div>
     <br />
     <button @click="writeBoard" class="right btn btn-primary">확인</button>
+    <SunEditor></SunEditor>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SunEditor from '../../page/post/Editor.vue'
 
 const BASE_URL = "http://127.0.0.1:8080";
 
 export default {
   name: "Write",
+   components : {
+    SunEditor
+  },
   data() {
     return {
       writeData: {
@@ -52,10 +57,9 @@ export default {
           },
         })
         .then(() => {
-          this.$router.push("/#/");
+          this.$router.push("/#/"); 
         })
         .catch((err) => {
-          console.log("!!!!!!");
           console.log(err.response);
         });
     },
