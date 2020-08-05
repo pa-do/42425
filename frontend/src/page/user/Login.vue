@@ -93,12 +93,15 @@ export default {
     login() {
       if (this.email == "") {
         alert("메일 주소를 입력하세요.");
+        document.getElementById("email").focus();
         return;
       } else if (!this.validEmail(this.email)) {
         alert("메일 형식을 확인하세요.");
+        document.getElementById("email").focus();
         return;
       } else if (this.password == "") {
         alert("비밀번호를 입력하세요.");
+        document.getElementById("password").focus();
         return;
       }
       axios({

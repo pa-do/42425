@@ -96,7 +96,6 @@ export default {
     },
     authEmail() {
       if (this.authnum === this.input_authnum) {
-        console.log(this.email);
         axios({
           method: "POST",
           url: `http://localhost:8080/account/getuid`,
