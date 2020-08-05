@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +26,7 @@ import com.web.blog.service.board.BoardService;
 import io.swagger.models.Model;
 
 @RestController
-@RequestMapping("board")
+@RequestMapping("/board")
 @CrossOrigin(origins = { "http://localhost:3000" })
 public class BoardController {
 
@@ -47,18 +46,20 @@ public class BoardController {
 	@GetMapping(value="/{bid}", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Board> getboard(@PathVariable("bid") int bid){
 		Board board = boardService.findByBid(bid);
+//		System.out.println(bid);
+//		System.out.println(board.toString());
 		return new ResponseEntity<Board>(board,HttpStatus.OK);
 	}
 
 	// 게시글 번호로 삭제
-	@DeleteMapping(value = "delete/{bid}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@DeleteMapping(value = "/delete/{bid}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Void> deleteBoard(@PathVariable("bid") int bid) {
 		boardService.deleteByBid(bid);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 	// 게시글 번호로 게시글 수정
-	@PutMapping(value = "modify/{bid}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PutMapping(value = "/modify/{bid}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Board> updateBoard(@PathVariable("bid") int bid, Board board) {
 		boardService.modify(bid, board);
 		return new ResponseEntity<Board>(board, HttpStatus.OK);
@@ -72,12 +73,20 @@ public class BoardController {
 	}
 	
 	//검색
-	@GetMapping("/search")
-	public ResponseEntity<List<Board>> search(@RequestParam(value="keyword") String keyword, Model model) {
-	    List<Board> board = boardService.searchBoard(keyword);
-
+	@GetMapping("/searchTitle/{keyword}") 
+	public Object searchTitle(@PathVariable String keyword) {
+	    List<Board> board = boardService.searchBoardTitle(keyword);
+//	    if(board == null) {
+//	    	 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//	    }
 	    return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
 
 	}
 
+	@GetMapping("/searchContent/{keyword}") 
+	public Object searchContent(@PathVariable String keyword) {
+		List<Board> board = boardService.searchBoardContent(keyword);
+		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
+		
+	}
 }

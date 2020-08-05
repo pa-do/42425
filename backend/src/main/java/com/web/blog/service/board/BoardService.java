@@ -39,24 +39,33 @@ public class BoardService {
 	}
 	
 	public void modify(int bid, Board board) {
-		Optional<Board> e = boardDao.findByBid(bid);
-
-		if (e.isPresent()) {
-			e.get().setTitle(board.getTitle());
-			e.get().setContent(board.getContent());
-			boardDao.save(board);
-		}
+		boardDao.updateBoard(board.getBid(), board.getContent());
 	}
 
 
-	public List<Board> searchBoard(String keyword) {
-		List<Board> board = boardDao.findByTitleContaining(keyword);
-
-	    if (board.isEmpty()) return board;
-
-	    boardDao.findByTitleContaining(keyword).forEach(e -> board.add(e));
-
+	public List<Board> searchBoardTitle(String keyword) {
+		List<Board> board = boardDao.searchTitle(keyword);
+		
+//		System.out.println(boards.isEmpty() + "z");
+//		for (Board board : boards) {
+//			System.out.println( board.toString());
+//		}
+		
+	    if (board.isEmpty()) {
+	    	return null;
+	    }
+	   
 	    return board;
+	}
+	
+	public List<Board> searchBoardContent(String keyword) {
+		List<Board> board = boardDao.searchContent(keyword);
+		
+		if (board.isEmpty()) {
+			return null;
+		}
+		
+		return board;
 	}
 
 

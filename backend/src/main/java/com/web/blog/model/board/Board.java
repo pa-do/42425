@@ -40,11 +40,10 @@ public class Board {
    private String nickname;
    
    @Column(insertable = false, updatable = true)
-   private int likesCount;
-   
+   private int likes_count;
  
 
-    @Column(insertable = false, updatable = false)
-    private LocalDateTime writeDate;;
+   @Column(insertable = false, updatable = false)
+   private LocalDateTime writeDate;
 
 }

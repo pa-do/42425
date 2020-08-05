@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.web.blog.model.board.Board;
 import com.web.blog.model.board.Likes;
 
 @Transactional
