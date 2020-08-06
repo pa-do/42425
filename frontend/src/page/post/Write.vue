@@ -6,9 +6,8 @@
       <input type="text" class="form-control" v-model="writeData.title" id="exampleFormControlInput1" />
     </div>
     <div class="form-group">
-      <label for="exampleFormControlTextarea1" class="mb-3">글 내용</label>
+      <label for="sample" class="mb-3">글 내용</label>
       <textarea class="form-control" id="sample" v-model="writeData.content"></textarea>
-      <!-- <SunEditor id="exampleFormControlTextarea1" v-model="writeData.content"></SunEditor> -->
     </div>
     <br />
     <button @click="writeBoard" class="right btn btn-primary">확인</button>
@@ -25,13 +24,10 @@ const BASE_URL = "http://127.0.0.1:8080";
 
 export default {
   name: "Write",
-  // components: {
-  //   SunEditor,
-  // },
   data() {
     return {
       writeData: {
-        content: "",
+        content: null,
         title: null,
         uid: null,
       },
@@ -40,6 +36,7 @@ export default {
   methods: {
     writeBoard() {
       this.writeData.uid = this.$cookie.get("auth-token");
+      console.log(this.writeBoard.content);
       axios
         .post(BASE_URL + "/board/write", null, {
           params: {
