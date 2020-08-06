@@ -385,10 +385,10 @@ export default {
       axios
         .delete(`http://localhost:8080/account/dropout/${this.uid}`)
         .then((response) => {
-          console.log(response);
           this.$session.destroy();
           this.$cookie.delete("auth-token");
           this.$router.push("/");
+          this.$router.go();
         })
         .catch((err) => {
           console.log("Err!!!: ", err.response);
