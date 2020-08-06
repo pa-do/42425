@@ -12,6 +12,7 @@ export default {
       LOGIN: "login",
       JOIN: "join",
       MODIFY: "Modify",
+      MODIFYPW: "Modifypw",
     },
     POST: {
       MAIN: "main",
