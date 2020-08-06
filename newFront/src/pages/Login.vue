@@ -22,7 +22,7 @@
             <fg-input
               id="password"
               v-model="password"
-              class="no-border form-control-md"
+              class="no-border form-control-md mt-2"
               placeholder="영문, 숫자 혼용 8자 이상"
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
               type="password"

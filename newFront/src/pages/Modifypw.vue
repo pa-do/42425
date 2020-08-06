@@ -11,14 +11,15 @@
 
             <div>
               <div>
-                <input
+                <fg-input
                   v-model="email"
                   id="Memail"
                   placeholder="이메일을 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
                   type="text"
-                />
-                <div class="d-flex">
+                  class="no-border form-control-md"
+                  addon-left-icon="now-ui-icons ui-1_email-85"
+                ></fg-input>
+                <div class="d-flex mt-2">
                   <button
                     @click="checkEmail"
                     class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
@@ -30,13 +31,14 @@
                 </div>
               </div>
               <div class="input-wrap">
-                <input
+                <fg-input
                   v-model="input_authnum"
                   id="input_authnum"
                   placeholder="인증번호를 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
                   type="text"
-                />
+                  class="no-border form-control-md mt-2"
+                  addon-left-icon="now-ui-icons ui-1_send"
+                ></fg-input>
                 <button
                   @click="authEmail"
                   class="mt-2 btn btn-primary btn-round btn-md btn-block"
@@ -44,23 +46,25 @@
               </div>
 
               <div class="input-wrap password-wrap">
-                <input
+                <fg-input
                   v-model="password"
                   id="Mpassword"
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
-                />
+                  class="no-border form-control-md mt-2"
+                  addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+                ></fg-input>
               </div>
 
               <div class="input-wrap password-wrap">
-                <input
+                <fg-input
                   v-model="passwordConfirm"
                   id="password-confirm"
                   type="password"
                   placeholder="비밀번호를 한번 더 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
-                />
+                  class="no-border form-control-md mt-2"
+                  addon-left-icon="now-ui-icons objects_key-25"
+                ></fg-input>
               </div>
               <button class="btn mb-5 btn-danger btn-round btn-md btn-block" @click="modifypw">
                 <span>수정 완료</span>

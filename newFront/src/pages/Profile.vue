@@ -17,14 +17,15 @@
               </div>
             </div>
             <div v-else>
-              <input
+              <fg-input
                 v-model="nickname"
                 id="nickname"
                 placeholder="닉네임을 입력해주세요"
                 type="text"
-                class="form-control no-border input-l py-3 my-3"
+                class="no-border form-control-md my-3"
+                addon-left-icon="now-ui-icons users_circle-08"
                 autofocus
-              />
+              ></fg-input>
               <div class="d-flex">
                 <button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
@@ -61,30 +62,34 @@
           >비밀번호 변경</n-button>
           <modal :show.sync="modals.classic" headerClasses="justify-content-center">
             <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
-            <input
+            <fg-input
               v-model="nowPW"
               id="nowPW"
               placeholder="현재 비밀번호를 입력하세요."
               type="password"
-              class="form-control no-border input-l py-3 my-3"
-            />
-            <div class="btn btn-primary btn-round btn-lg btn-block" @click="checkNowPW">확인</div>
-            <input
+              class="no-border form-control-md my-3"
+              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+            ></fg-input>
+
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
+            <fg-input
               v-model="newPW1"
               id="newPW1"
               placeholder="새로운 비밀번호를 입력하세요."
               type="password"
-              class="form-control no-border input-l py-3 my-3"
+              class="no-border form-control-md my-3"
               @keyup.enter="modifyPW"
-            />
-            <input
+              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+            ></fg-input>
+            <fg-input
               v-model="newPW2"
               id="newPW2"
               placeholder="새로운 비밀번호를 입력하세요."
               type="password"
-              class="form-control no-border input-l py-3 my-3"
               @keyup.enter="modifyPW"
-            />
+              class="no-border form-control-md my-3"
+              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+            ></fg-input>
             <template slot="footer">
               <n-button type="primary" @click="modifyPW">수정</n-button>
               <n-button type="danger" @click.native="modals.classic = false">취소</n-button>
@@ -116,9 +121,9 @@
             <i class="fab fa-instagram"></i>
           </a>
         </div>
-        <h3 class="title">
+        <h3 class="title" @click="updateBio_on">
           About me
-          <i class="far fa-edit" @click="updateBio_on"></i>
+          <i class="far fa-edit"></i>
         </h3>
         <div v-if="!update_bio">
           <h5 class="description">{{ bio }}</h5>
@@ -202,7 +207,7 @@
   </div>
 </template>
 <script>
-import { Tabs, TabPane, Modal, Button } from "@/components";
+import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
 import axios from "axios";
 
 export default {
@@ -213,6 +218,7 @@ export default {
     TabPane,
     Modal,
     [Button.name]: Button,
+    [FormGroupInput.name]: FormGroupInput,
   },
   mounted() {
     this.getdata();

@@ -11,13 +11,14 @@
             <div>
               <div>
                 <div>
-                  <input
+                  <fg-input
                     v-model="nickname"
                     id="nickname"
                     placeholder="닉네임을 입력해주세요"
-                    class="form-control no-border input-l py-3 my-3"
+                    class="form-control-md no-border"
+                    addon-left-icon="now-ui-icons business_badge"
                     type="text"
-                  />
+                  ></fg-input>
                   <button
                     @click="checkNickname"
                     class="mt-2 btn btn-primary btn-round btn-md btn-block"
@@ -31,32 +32,34 @@
                 </div>
 
                 <div>
-                  <input
+                  <fg-input
                     v-model="email"
                     id="Jemail"
                     placeholder="이메일을 입력해주세요"
-                    class="form-control no-border input-l py-3 my-3"
+                    class="form-control-md no-border m-0"
+                    addon-left-icon="now-ui-icons ui-1_email-85"
                     type="text"
-                  />
-                  <div class="d-flex">
+                  ></fg-input>
+                  <div class="d-flex mt-2">
                     <button
                       @click="checkEmail"
-                      class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
+                      class="btn btn-primary btn-round btn-md btn-block mr-1 mt-0"
                     >중복 체크</button>
                     <button
                       @click="sendEmail"
-                      class="m-0 btn btn-primary btn-round btn-md btn-block ml-1"
+                      class="btn btn-primary btn-round btn-md btn-block ml-1 mt-0"
                     >인증 메일 전송</button>
                   </div>
                 </div>
                 <div class="input-wrap">
-                  <input
+                  <fg-input
                     v-model="input_authnum"
                     id="input_authnum"
                     placeholder="인증번호를 입력해주세요"
-                    class="form-control no-border input-l py-3 my-3"
+                    class="form-control-md no-border"
+                    addon-left-icon="now-ui-icons ui-1_send"
                     type="text"
-                  />
+                  ></fg-input>
                   <button
                     @click="authEmail"
                     class="mt-2 btn btn-primary btn-round btn-md btn-block"
@@ -64,23 +67,25 @@
                 </div>
 
                 <div>
-                  <input
+                  <fg-input
                     v-model="password"
                     id="password"
                     :type="passwordType"
                     placeholder="비밀번호를 입력해주세요"
-                    class="form-control no-border input-l py-3 my-3"
-                  />
+                    class="form-control-md no-border"
+                    addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+                  ></fg-input>
                 </div>
 
                 <div>
-                  <input
+                  <fg-input
                     v-model="passwordConfirm"
                     id="password-confirm"
                     :type="passwordConfirmType"
                     placeholder="비밀번호를 한번 더 입력해주세요"
-                    class="form-control no-border input-l py-3 my-3"
-                  />
+                    class="form-control-md no-border mt-2"
+                    addon-left-icon="now-ui-icons objects_key-25"
+                  ></fg-input>
                 </div>
               </div>
               <button class="btn mb-5 btn-danger btn-round btn-md btn-block" @click="join">
@@ -121,7 +126,6 @@ export default {
             alert("사용 가능한 닉네임입니다.");
             this.nicknameChk = true;
             document.getElementById("nickname").setAttribute("readonly", true);
-            console.log(document.getElementById("nickname"));
           }
         })
         .catch((err) => {
@@ -265,4 +269,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.input-group {
+  margin-bottom: 0 !important;
+}
+</style>
