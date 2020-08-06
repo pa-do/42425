@@ -1,9 +1,6 @@
 <template>
   <div class="page-header clear-filter" filter-color="orange">
-    <div
-      class="page-header-image"
-      style="background-image: url('img/login.jpg')"
-    ></div>
+    <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="mb-5">
       <div class="container">
         <div class="col-md-5 ml-auto mr-auto">
@@ -24,15 +21,13 @@
                   <button
                     @click="checkNickname"
                     class="mt-2 btn btn-primary btn-round btn-md btn-block"
-                  >
-                    중복 체크
-                  </button>
+                  >중복 체크</button>
                   <!-- <span v-if="nicknameChk" style="color: rgb(0, 191, 0)">
                     <i class="fas fa-check-circle"></i>
                   </span>
                   <span v-else>
                     <i class="fas fa-check-circle"></i>
-                  </span> -->
+                  </span>-->
                 </div>
 
                 <div>
@@ -47,15 +42,11 @@
                     <button
                       @click="checkEmail"
                       class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
-                    >
-                      중복 체크
-                    </button>
+                    >중복 체크</button>
                     <button
                       @click="sendEmail"
                       class="m-0 btn btn-primary btn-round btn-md btn-block ml-1"
-                    >
-                      인증 메일 전송
-                    </button>
+                    >인증 메일 전송</button>
                   </div>
                 </div>
                 <div class="input-wrap">
@@ -69,9 +60,7 @@
                   <button
                     @click="authEmail"
                     class="mt-2 btn btn-primary btn-round btn-md btn-block"
-                  >
-                    인증
-                  </button>
+                  >인증</button>
                 </div>
 
                 <div>
@@ -94,10 +83,7 @@
                   />
                 </div>
               </div>
-              <button
-                class="btn mb-5 btn-danger btn-round btn-md btn-block"
-                @click="join"
-              >
+              <button class="btn mb-5 btn-danger btn-round btn-md btn-block" @click="join">
                 <span>작성완료</span>
               </button>
             </div>
@@ -145,6 +131,7 @@ export default {
     checkEmail() {
       if (!this.validEmail(this.email)) {
         alert("메일 형식을 확인하세요.");
+        document.getElementById("Jemail").focus();
         return;
       }
       axios
@@ -158,7 +145,6 @@ export default {
           } else {
             this.emailChk = true;
             document.getElementById("Jemail").setAttribute("readonly", true);
-            console.log(document.getElementById("Jemail"));
             alert("사용 가능한 이메일입니다.");
           }
         })
@@ -176,13 +162,18 @@ export default {
         return;
       } else if (this.email == "") {
         alert("메일 주소를 입력하세요.");
-        document.getElementById("email").focus();
+        document.getElementById("Jemail").focus();
         return;
       } else if (!this.validEmail(this.email)) {
         alert("메일 형식을 확인하세요.");
+        document.getElementById("Jemail").focus();
         return;
       } else if (!this.emailChk) {
         alert("이메일 중복 체크하세요.");
+        return;
+      } else if (this.authChk == false) {
+        alert("이메일 인증을 진행해주세요.");
+        document.getElementById("input_authnum").focus();
         return;
       } else if (this.password == "") {
         alert("비밀번호를 입력하세요.");
@@ -194,6 +185,11 @@ export default {
         return;
       } else if (this.password != this.passwordConfirm) {
         alert("비밀번호가 일치하지 않습니다.");
+        document.getElementById("password-confirm").focus();
+        return;
+      } else if (!this.validPW(this.password)) {
+        alert("비밀번호는 영문과 숫자를 합쳐 8자 이상이어야 합니다.");
+        document.getElementById("password").focus();
         return;
       } else {
         console.log(this.nickname, this.email, this.password);
@@ -218,7 +214,11 @@ export default {
           });
       }
     },
-    validEmail: function(email) {
+    validPW: function (pw) {
+      var re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+      return re.test(pw);
+    },
+    validEmail: function (email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
