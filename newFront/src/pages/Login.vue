@@ -9,27 +9,29 @@
               <img v-lazy="'img/now-logo.png'" alt />
             </div>
 
-            <input
-              v-model="email"
+            <fg-input
               id="email"
+              v-model="email"
+              class="no-border form-control-md"
               placeholder="이메일을 입력해주세요"
+              addon-left-icon="now-ui-icons users_circle-08"
               type="text"
-              class="form-control no-border input-l py-3 my-3"
               @keyup.enter="login"
-            />
+            ></fg-input>
 
-            <input
-              v-model="password"
-              type="password"
+            <fg-input
               id="password"
+              v-model="password"
+              class="no-border form-control-md mt-2"
               placeholder="영문, 숫자 혼용 8자 이상"
-              class="form-control no-border input-lg py-3 my-3"
+              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+              type="password"
               @keyup.enter="login"
-            />
+            ></fg-input>
 
             <template slot="raw-content">
               <div class="card-footer text-center">
-                <div class="btn btn-primary btn-round btn-lg btn-block" @click="login">Login</div>
+                <div class="btn btn-primary btn-round btn-md btn-block" @click="login">Login</div>
               </div>
               <div class="pull-left">
                 <h6>

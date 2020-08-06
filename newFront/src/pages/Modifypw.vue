@@ -1,9 +1,6 @@
 <template>
   <div class="page-header clear-filter" filter-color="orange">
-    <div
-      class="page-header-image"
-      style="background-image: url('img/login.jpg')"
-    ></div>
+    <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="mb-5">
       <div class="container">
         <div class="col-md-5 ml-auto mr-auto">
@@ -14,67 +11,62 @@
 
             <div>
               <div>
-                <input
+                <fg-input
                   v-model="email"
                   id="Memail"
                   placeholder="이메일을 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
                   type="text"
-                />
-                <div class="d-flex">
+                  class="no-border form-control-md"
+                  addon-left-icon="now-ui-icons ui-1_email-85"
+                ></fg-input>
+                <div class="d-flex mt-2">
                   <button
                     @click="checkEmail"
                     class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
-                  >
-                    이메일 체크
-                  </button>
+                  >이메일 체크</button>
                   <button
                     @click="sendEmail"
                     class="m-0 btn btn-primary btn-round btn-md btn-block ml-1"
-                  >
-                    인증 메일 전송
-                  </button>
+                  >인증 메일 전송</button>
                 </div>
               </div>
               <div class="input-wrap">
-                <input
+                <fg-input
                   v-model="input_authnum"
                   id="input_authnum"
                   placeholder="인증번호를 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
                   type="text"
-                />
+                  class="no-border form-control-md mt-2"
+                  addon-left-icon="now-ui-icons ui-1_send"
+                ></fg-input>
                 <button
                   @click="authEmail"
                   class="mt-2 btn btn-primary btn-round btn-md btn-block"
-                >
-                  인증
-                </button>
+                >인증</button>
               </div>
 
               <div class="input-wrap password-wrap">
-                <input
+                <fg-input
                   v-model="password"
                   id="Mpassword"
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
-                />
+                  class="no-border form-control-md mt-2"
+                  addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+                ></fg-input>
               </div>
 
               <div class="input-wrap password-wrap">
-                <input
+                <fg-input
                   v-model="passwordConfirm"
                   id="password-confirm"
                   type="password"
                   placeholder="비밀번호를 한번 더 입력해주세요"
-                  class="form-control no-border input-l py-3 my-3"
-                />
+                  class="no-border form-control-md mt-2"
+                  addon-left-icon="now-ui-icons objects_key-25"
+                ></fg-input>
               </div>
-              <button
-                class="btn mb-5 btn-danger btn-round btn-md btn-block"
-                @click="modifypw"
-              >
+              <button class="btn mb-5 btn-danger btn-round btn-md btn-block" @click="modifypw">
                 <span>수정 완료</span>
               </button>
             </div>
@@ -122,7 +114,7 @@ export default {
           console.log("Err!!! :", err.response);
         });
     },
-    validEmail: function(email) {
+    validEmail: function (email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
@@ -172,10 +164,18 @@ export default {
     modifypw() {
       if (this.emailChk === false) {
         alert("이메일 주소를 확인해 주세요.");
+        document.getElementById("Memail").focus();
         return;
       } else if (this.authChk === false) {
         alert("이메일 인증을 진행해 주세요.");
+        document.getElementById("input_authnum").focus();
         return;
+      } else if (this.password === "") {
+        alert("새로운 비밀번호를 입력해 주세요.");
+        document.getElementById("Mpassword").focus();
+      } else if (this.passwordConfirm === "") {
+        alert("새로운 비밀번호를 입력해 주세요.");
+        document.getElementById("password-confirm").focus();
       } else if (this.password !== this.passwordConfirm) {
         alert("비밀번호가 일치하지 않습니다. \n비밀번호를 다시 입력하세요.");
         document.getElementById("passwordConfirm").focus();
@@ -187,8 +187,8 @@ export default {
             password: this.password,
           })
           .then((response) => {
+            this.$router.push("/login");
             this.$router.go();
-
             alert("비밀번호가 변경되었습니다.");
           })
           .catch((err) => {
