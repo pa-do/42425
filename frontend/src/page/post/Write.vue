@@ -6,8 +6,9 @@
       <input type="text" class="form-control" v-model="writeData.title" id="exampleFormControlInput1" />
     </div>
     <div class="form-group">
-      <label for="sample" class="mb-3">글 내용</label>
-      <textarea class="form-control" id="sample" v-model="writeData.content"></textarea>
+      <label for="content" class="mb-3">글 내용</label>
+      <!-- <textarea class="form-control" id="content" v-model="writeData.content">입력테스트</textarea> -->
+      <Editor id="content" ref="content" />
     </div>
     <br />
     <button @click="writeBoard" class="right btn btn-primary">확인</button>
@@ -16,64 +17,58 @@
 
 <script>
 import axios from "axios";
-import "suneditor/dist/css/suneditor.min.css";
-import suneditor from "suneditor";
-import plugins from "suneditor/src/plugins";
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor } from "@toast-ui/vue-editor";
 
-const BASE_URL = "http://127.0.0.1:8080";
+const BASE_URL = "http://localhost:8080";
 
 export default {
   name: "Write",
+  components: {
+    Editor,
+  },
   data() {
     return {
       writeData: {
-        content: null,
-        title: null,
-        uid: null,
+        content: "",
+        title: "",
+        uid: this.$session.get("user").uid,
       },
     };
   },
   methods: {
     writeBoard() {
-      this.writeData.uid = this.$cookie.get("auth-token");
-      console.log(this.writeBoard.content);
-      axios
-        .post(BASE_URL + "/board/write", null, {
-          params: {
-            content: this.writeData.content,
-            title: this.writeData.title,
-            uid: this.writeData.uid,
-          },
-        })
-        .then(() => {
-          this.$router.push("/#/");
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+      this.writeData.content = this.$refs.content.invoke("getHtml");
+      if (!this.writeData.title) {
+        alert("제목이 입력되지 않았습니다!");
+      } else if (!this.writeData.content) {
+        alert("내용이 입력되지 않았습니다!");
+      } else {
+        // this.writeData.uid = this.$cookie.get("auth-token");
+        // console.log(this.writeData.content);
+        axios
+          .post(BASE_URL + "/board/write", null, {
+            params: {
+              content: this.writeData.content,
+              title: this.writeData.title,
+              uid: this.writeData.uid,
+            },
+          })
+          .then(() => {
+            this.$router.push("/#/");
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
     },
   },
   mounted() {
-    suneditor.create("sample", {
-      width: "80%",
-      height: "500px",
-      plugins: plugins,
-      buttonList: [
-        ["undo", "redo"],
-        ["font", "fontSize", "formatBlock"],
-        ["paragraphStyle", "blockquote"],
-        ["bold", "underline", "italic", "strike", "subscript", "superscript"],
-        ["fontColor", "hiliteColor", "textStyle"],
-        ["removeFormat"],
-        "/", // Line break
-        ["outdent", "indent"],
-        ["align", "horizontalRule", "list", "lineHeight"],
-        ["table", "link", "image", "video", "audio" /** ,'math' */], // You must add the 'katex' library at options to use the 'math' plugin. // You must add the "imageGalleryUrl".
-        /** ['imageGallery'] */ ["fullScreen", "showBlocks", "codeView"],
-        ["preview", "print"],
-        ["save", "template"],
-      ],
-    });
+    if (!this.$session.get("user")) {
+      alert("올바른 접근이 아닙니다.");
+      this.$router.push("/");
+    }
   },
 };
 </script>

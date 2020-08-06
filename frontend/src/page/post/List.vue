@@ -8,18 +8,15 @@
             <a>
               <div
                 :style="{
-                  backgroundImage:
-                    'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
+                  backgroundImage: 'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
                 }"
                 class="post-img"
               />
 
               <div class="contents">
                 <h3>{{ board.title }}</h3>
-                <p class="content">{{ board.content }}</p>
-                <span class="date"
-                  >{{ board.writeDate.split("T").join(" ") }}ㆍ</span
-                >
+                <p class="content" v-html="board.content"></p>
+                <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
                 <span class="comment">댓글 0개</span>
               </div>
             </a>
