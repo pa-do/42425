@@ -10,7 +10,10 @@
           <div class="col-md-5 mx-auto">
             <div v-if="!update_nickname">
               <div>
-                <h3 class="title" @click="updateNickname_on">{{ nickname }}</h3>
+                <h3 class="title">
+                  {{ nickname }}
+                  <i class="far fa-edit" @click="updateNickname_on"></i>
+                </h3>
               </div>
             </div>
             <div v-else>
@@ -112,7 +115,10 @@
             <i class="fab fa-instagram"></i>
           </a>
         </div>
-        <h3 class="title" @click="updateBio_on">About me</h3>
+        <h3 class="title">
+          About me
+          <i class="far fa-edit" @click="updateBio_on"></i>
+        </h3>
         <div v-if="!update_bio">
           <h5 class="description">{{ bio }}</h5>
         </div>
