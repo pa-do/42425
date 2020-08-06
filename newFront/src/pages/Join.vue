@@ -201,6 +201,7 @@ export default {
           })
           .then((response) => {
             this.result = response.data;
+            console.log(this.result);
             if (this.result.data != "fail") {
               alert("가입 성공! 회원가입을 축하합니다.");
               this.user = response.data.object;

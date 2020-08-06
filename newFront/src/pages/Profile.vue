@@ -9,10 +9,10 @@
         <div class="container">
           <div class="col-md-5 mx-auto">
             <div v-if="!update_nickname">
-              <div>
+              <div @click="updateNickname_on">
                 <h3 class="title">
                   {{ nickname }}
-                  <i class="far fa-edit" @click="updateNickname_on"></i>
+                  <i class="far fa-edit"></i>
                 </h3>
               </div>
             </div>
@@ -23,6 +23,7 @@
                 placeholder="닉네임을 입력해주세요"
                 type="text"
                 class="form-control no-border input-l py-3 my-3"
+                autofocus
               />
               <div class="d-flex">
                 <button
