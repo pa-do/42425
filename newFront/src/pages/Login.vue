@@ -1,8 +1,9 @@
 <template>
-  <div class="page-header clear-filter" filter-color="orange">
+  <div class="page-header clear-filter" filter-color="orange-">
     <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="content">
       <div class="container">
+        <div class="d-block d-sm-none py-5"></div>
         <div class="col-md-5 ml-auto mr-auto">
           <card type="login" plain>
             <div slot="header" class="logo-container">
@@ -50,7 +51,9 @@
         </div>
       </div>
     </div>
-    <main-footer></main-footer>
+    <div class="d-none d-sm-block">
+      <main-footer></main-footer>
+    </div>
   </div>
 </template>
 <script>
@@ -98,9 +101,7 @@ export default {
           this.$session.set("user", this.user);
           this.$router.push("/#/");
           this.$router.go();
-
           this.$cookie.set("auth-token", this.user.uid, 1);
-
           alert(this.user.nickname + "님 환영합니다!");
         })
         .catch((err) => {
