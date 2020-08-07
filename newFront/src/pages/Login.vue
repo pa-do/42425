@@ -101,6 +101,7 @@ export default {
           this.$session.set("user", this.user);
           this.$router.push("/#/");
           this.$router.go();
+
           this.$cookie.set("auth-token", this.user.uid, 1);
           alert(this.user.nickname + "님 환영합니다!");
         })
