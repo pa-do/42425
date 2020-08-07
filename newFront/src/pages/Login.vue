@@ -97,7 +97,6 @@ export default {
         .then((response) => {
           this.result = response.data;
           this.user = response.data.object;
-
           this.$session.set("user", this.user);
           this.$router.push("/#/");
           this.$router.go();
