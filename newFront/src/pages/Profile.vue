@@ -9,17 +9,18 @@
         <div class="container">
           <div class="col-md-5 mx-auto">
             <div v-if="!update_nickname">
-              <div @click="updateNickname_on">
+              <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i class="far fa-edit"></i>
+                  <i class="far fa-edit" @click="updateNickname_on"></i>
                 </h3>
               </div>
             </div>
             <div v-else>
+              <p>새로운 닉네임을 입력하고 중복 체크해주세요.</p>
               <fg-input
-                v-model="nickname"
-                id="nickname"
+                v-model="newNick"
+                id="newNick"
                 placeholder="닉네임을 입력해주세요"
                 type="text"
                 class="no-border form-control-md my-3"
@@ -28,13 +29,20 @@
               ></fg-input>
               <div class="d-flex">
                 <button
+                  id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
                 >중복 체크</button>
                 <button
+                  id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
+                  disabled
                 >수정</button>
+                <button
+                  class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
+                  @click="updateNickname_off"
+                >취소</button>
               </div>
             </div>
           </div>
@@ -54,12 +62,13 @@
             <p>Follower</p>
           </div>
         </div>
-        <div class="d-flex">
+        <div class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary"
             type="primary"
             @click.native="modals.classic = true"
           >비밀번호 변경</n-button>
+          <!--  -->
           <modal :show.sync="modals.classic" headerClasses="justify-content-center">
             <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
             <fg-input
@@ -72,29 +81,36 @@
             ></fg-input>
 
             <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
-            <fg-input
-              v-model="newPW1"
-              id="newPW1"
-              placeholder="새로운 비밀번호를 입력하세요."
-              type="password"
-              class="no-border form-control-md my-3"
-              @keyup.enter="modifyPW"
-              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
-            ></fg-input>
-            <fg-input
-              v-model="newPW2"
-              id="newPW2"
-              placeholder="새로운 비밀번호를 입력하세요."
-              type="password"
-              @keyup.enter="modifyPW"
-              class="no-border form-control-md my-3"
-              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
-            ></fg-input>
+            <div v-if="nowPWChk">
+              <fg-input
+                v-model="newPW1"
+                id="newPW1"
+                placeholder="새로운 비밀번호를 입력하세요."
+                type="password"
+                class="no-border form-control-md my-3"
+                @keyup.enter="modifyPW"
+                addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+              ></fg-input>
+              <fg-input
+                v-model="newPW2"
+                id="newPW2"
+                placeholder="새로운 비밀번호를 입력하세요."
+                type="password"
+                @keyup.enter="modifyPW"
+                class="no-border form-control-md my-3"
+                addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+              ></fg-input>
+            </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW">수정</n-button>
-              <n-button type="danger" @click.native="modals.classic = false">취소</n-button>
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
+              <n-button
+                type="danger"
+                @click.native="modals.classic = false"
+                @click="updatePW_off"
+              >취소</n-button>
             </template>
           </modal>
+          <!--  -->
           <button class="btn btn-danger" @click="deleteAlert">탈퇴 하기</button>
         </div>
       </div>
@@ -121,22 +137,27 @@
             <i class="fab fa-instagram"></i>
           </a>
         </div>
-        <h3 class="title" @click="updateBio_on">
+        <h3 class="title">
           About me
-          <i class="far fa-edit"></i>
+          <i class="far fa-edit" @click="updateBio_on"></i>
         </h3>
         <div v-if="!update_bio">
-          <h5 class="description">{{ bio }}</h5>
+          <h5 v-if="bio" class="description">{{ bio }}</h5>
+          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
         </div>
         <div v-else>
           <textarea
             class="form-control"
-            v-model="bio"
-            id="bio"
+            v-model="newBio"
+            id="newBio"
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
           <button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</button>
+          <button
+            class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
+            @click="updateBio_off"
+          >취소</button>
         </div>
 
         <div class="row">
@@ -240,7 +261,8 @@ export default {
           // } else {
           //   this.profile_img = data.object.profile_img;
           // }
-          if (data.object.bio !== undefined) {
+          if (data.object.bio) {
+            //+ null, undefined, "" 모두 처리할 수 있게 변경
             this.bio = data.object.bio;
           }
           console.log(this.profile_img);
@@ -249,16 +271,18 @@ export default {
           console.log("Err!!! :", err.response);
         });
     },
+    //닉네임변경관련메서드
     updateNickname_on() {
+      this.newNick = this.nickname;
       this.update_nickname = true;
     },
     checkNickname() {
-      if (this.nickname == "") {
+      if (this.newNick == "") {
         alert("닉네임을 입력하세요.");
         return;
       } else {
         axios
-          .get(`http://localhost:8080/account/nicknameChk/${this.nickname}`)
+          .get(`http://localhost:8080/account/nicknameChk/${this.newNick}`)
           .then((response) => {
             this.result = response.data;
             if (
@@ -266,14 +290,16 @@ export default {
               this.result.object == "nickname"
             ) {
               alert("이미 가입된 닉네임입니다. 새로운 닉네임을 입력하세요.");
-              document.getElementById("nickname").focus();
+              document.getElementById("newNick").focus();
             } else {
-              this.nicknameChk = true;
-              document
-                .getElementById("nickname")
-                .setAttribute("readonly", true);
               alert("사용 가능한 닉네임입니다.");
-              console.log(this.nickname);
+              this.nicknameChk = true;
+              document.getElementById("newNick").setAttribute("readonly", true);
+              document
+                .getElementById("nickDuplChkBtn")
+                .setAttribute("disabled", true);
+              document.getElementById("nickModBtn").removeAttribute("disabled");
+              // console.log(this.nickname);
             }
           })
           .catch((err) => {
@@ -288,27 +314,32 @@ export default {
         axios
           .put("http://localhost:8080/account/modify/nickname", {
             uid: this.uid,
-            nickname: this.nickname,
+            nickname: this.newNick,
           })
           .then((response) => {
             this.result = response.data;
-            console.log(this.result);
+            this.$session.set("user", response.data.object);
             alert("회원정보수정 성공!");
-            this.update_nickname = false;
-            this.nicknameChk = false;
+            this.$router.go();
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);
           });
       }
     },
-
+    updateNickname_off() {
+      //+
+      this.update_nickname = false;
+      this.nicknameChk = false;
+    },
+    //비밀번호변경관련메서드
     checkNowPW() {
       if (this.nowPW == "") {
-        alert("비밀번호를 입력하세요.");
+        alert("현재 비밀번호를 입력하세요.");
+        document.getElementById("nowPW").focus(); //+
         return;
       }
-      console.log(this.email, this.nowPW);
+      // console.log(this.email, this.nowPW);
       axios({
         method: "POST",
         url: `http://localhost:8080/account/login`,
@@ -319,16 +350,21 @@ export default {
       })
         .then((response) => {
           this.nowPWChk = true;
+          alert(
+            "현재 비밀번호가 확인되었습니다. 새로운 비밀번호를 입력해주세요."
+          ); //+
           document.getElementById("nowPW").setAttribute("readonly", true);
+          document.getElementById("pwModBtn").removeAttribute("disabled"); //+
         })
         .catch((err) => {
           console.log("ERROR :", err);
           alert(
             "비밀번호를 확인해주세요. \n비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다."
           );
+          this.nowPW = ""; //+??
+          document.getElementById("nowPW").focus(); //+
         });
     },
-
     modifyPW() {
       if (this.newPW1 == "") {
         alert("새로운 비밀번호를 입력하세요.");
@@ -353,55 +389,49 @@ export default {
             let user = response.data.object;
             this.result = response.data;
             this.$session.set("user", user);
+            alert("비밀번호 변경 성공!");
             this.$router.go();
-            this.nowPW = "";
-            this.newPW1 = "";
-            this.newPW2 = "";
-            this.nowPWChk = false;
-
-            alert("회원정보수정 성공!");
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);
           });
       }
     },
-
+    updatePW_off() {
+      //+ && 모달 백드롭 backdrop 확인
+      this.nowPW = "";
+      this.newPW1 = "";
+      this.newPW2 = "";
+      this.nowPWChk = false;
+      document.getElementById("nowPW").removeAttribute("readonly");
+      document.getElementById("pwModBtn").setAttribute("disabled", true);
+    },
+    //자기소개변경관련메서드
     updateBio_on() {
+      if (this.bio) this.newBio = this.bio;
       this.update_bio = true;
     },
     modifyBio() {
-      console.log(document.getElementById("bio").value);
       axios
         .put("http://localhost:8080/account/modify/bio", {
           uid: this.uid,
-          bio: document.getElementById("bio").value,
+          bio: document.getElementById("newBio").value,
         })
         .then((response) => {
           this.result = response.data;
           console.log(this.result);
-          alert("회원정보수정 성공!");
-          this.update_bio = false;
+          alert("소개글 수정 성공!");
+          this.$router.go();
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
         });
     },
-
-    deleteUser() {
-      axios
-        .delete(`http://localhost:8080/account/dropout/${this.uid}`)
-        .then((response) => {
-          this.$session.destroy();
-          this.$cookie.delete("auth-token");
-          this.$router.push("/");
-          this.$router.go();
-        })
-        .catch((err) => {
-          console.log("Err!!!: ", err.response);
-        });
+    updateBio_off() {
+      this.newBio = "";
+      this.update_bio = false;
     },
-
+    //회원탈퇴관련메서드
     deleteAlert() {
       Swal.fire({
         title: "정말 탈퇴하시겠어요?",
@@ -416,13 +446,29 @@ export default {
       }).then((result) => {
         if (result.value) {
           this.deleteUser();
-          Swal.fire(
-            "탈퇴 완료!",
-            "데이터가 영구적으로 삭제되었습니다.",
-            "success"
-          );
         }
       });
+    },
+    deleteUser() {
+      axios
+        .delete(`http://localhost:8080/account/dropout/${this.uid}`)
+        .then((response) => {
+          this.$session.destroy();
+          this.$cookie.delete("auth-token");
+          Swal.fire({
+            title: "탈퇴 완료!",
+            text: "데이터가 영구적으로 삭제되었습니다.",
+            icon: "success",
+            showConfirmButton: true,
+            confirmButtonText: "확인",
+          }).then(() => {
+            this.$router.push("/");
+            this.$router.go();
+          });
+        })
+        .catch((err) => {
+          console.log("Err!!!: ", err.response);
+        });
     },
   },
   watch: {},
@@ -450,6 +496,9 @@ export default {
       nowPW: "",
       newPW1: "",
       newPW2: "",
+
+      newNick: "",
+      newBio: "",
     };
   },
 };
