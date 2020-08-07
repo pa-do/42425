@@ -7,7 +7,9 @@
     menu-classes="ml-auto"
   >
     <template>
-      <router-link v-popover:popover1 class="navbar-brand" to="/">42425</router-link>
+      <router-link v-popover:popover1 class="navbar-brand" to="/">
+        <img class="n-logo" src="img/wide-logo.png" style="width: 100px" alt />
+      </router-link>
       <el-popover
         ref="popover1"
         popper-class="popover"

@@ -1,8 +1,9 @@
 <template>
-  <div class="page-header clear-filter" filter-color="orange">
+  <div class="page-header clear-filter" filter-color="orange-">
     <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="content">
       <div class="container">
+        <div class="d-block d-sm-none py-5"></div>
         <div class="col-md-5 ml-auto mr-auto">
           <card type="login" plain>
             <div slot="header" class="logo-container">
@@ -50,7 +51,9 @@
         </div>
       </div>
     </div>
-    <main-footer></main-footer>
+    <div class="d-none d-sm-block">
+      <main-footer></main-footer>
+    </div>
   </div>
 </template>
 <script>
