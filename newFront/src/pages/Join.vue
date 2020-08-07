@@ -23,12 +23,6 @@
                     @click="checkNickname"
                     class="mt-2 btn btn-primary btn-round btn-md btn-block"
                   >중복 체크</button>
-                  <!-- <span v-if="nicknameChk" style="color: rgb(0, 191, 0)">
-                    <i class="fas fa-check-circle"></i>
-                  </span>
-                  <span v-else>
-                    <i class="fas fa-check-circle"></i>
-                  </span>-->
                 </div>
 
                 <div>
