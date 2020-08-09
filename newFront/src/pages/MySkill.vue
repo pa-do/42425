@@ -23,17 +23,29 @@
           </div>
           <!-- 수정 모드일 경우 -->
           <div class="progress-wrap ftco-animate" v-if="modifyMode"> 
+            <input class="input" v-model="skill.skill" :placeholder="skill.skill" />
             <button class="btn btn-danger" @click="delSkill(skill.uid, skill.skill)">삭제</button>
-
+            <v-slider v-model="skill.value"
+                      thumb-label="always"
+                      thumb-color="rgb(51,75,85)">
+            </v-slider>
+           
           </div>
+          
+        </div>
+        <div> 
+          <button class="btn btn-info" @click="addSkill">skill 추가</button>
         </div>
       </div>
     </div>
 </template>
 
+
 <script>
 import axios from 'axios';
 import Progress from '../components/Progress' 
+
+const path = "http://localhost:8080/portfolio"
 
 export default {
     components:{
@@ -48,33 +60,82 @@ export default {
     created(){
       this.getSkills();
     },
-    updated(){
+    mounted(){
       this.getSkills();
     },
     methods: {
       getSkills(){
          axios
-        .get(`http://localhost:8080/portfolio/skill/${this.$session.get("user").uid}`)
+        .get(path + `/skill/${this.$session.get("user").uid}`)
         .then((data) => {
             this.myskill = data.data.object; 
         });
       },
       updateSkills(){
+        console.log("?");
         this.modifyMode = true;
       },
       delSkill(uid, skill){
         axios
-        .delete(`http://localhost:8080/portfolio/skill/delete/${uid}/${skill}`)
+        .delete(path + `/skill/delete/${uid}/${skill}`)
         .then((data) => {
           console.log(data);
         })
         .catch((error) => {
-          console.log("왜에러??")
           console.log(error)
         })
       },
+      addSkill(){
+        // Swal.fire({
+        //   title: 'Skill 추가',
+        //   input: 'text',
+        //   input: 'text',
+        //   inputAttributes: {
+        //     autocapitalize: 'off'
+        //   },
+        //   showCancelButton: true,
+        //   confirmButtonText: 'Look up',
+        //   showLoaderOnConfirm: true,
+        //   preConfirm: (login) => {
+        //     return fetch(`//api.github.com/users/${login}`)
+        //       .then(response => {
+        //         if (!response.ok) {
+        //           throw new Error(response.statusText)
+        //         }
+        //         return response.json()
+        //       })
+        //       .catch(error => {
+        //         Swal.showValidationMessage(
+        //           `Request failed: ${error}`
+        //         )
+        //       })
+        //   },
+        //   allowOutsideClick: () => !Swal.isLoading()
+        // }).then((result) => {
+        //   if (result.value) {
+        //     Swal.fire({
+        //       title: `${result.value.login}'s avatar`,
+        //       imageUrl: result.value.avatar_url
+        //     })
+        //   }
+        // })
+      },
       modifyOk(){
+        axios
+        .put(path + `/skill/modify`,{
+            myskills : this.myskill,
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log("error");
+          console.log(error);
+        })
+
+
         this.modifyMode = false;
+
       }
     }
 }

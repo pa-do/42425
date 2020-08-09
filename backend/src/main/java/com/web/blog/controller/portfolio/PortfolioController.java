@@ -34,7 +34,7 @@ public class PortfolioController {
 	@Autowired
 	MySkillDao dao;
 	
-	@PostMapping("/createskill")
+	@PostMapping("/skill/create")
 	@ApiOperation(value = "스킬 등록하기")
 	public Object createSkill (@RequestBody Myskill ms) {
 		 final BasicResponse result = new BasicResponse();
@@ -74,15 +74,17 @@ public class PortfolioController {
 	}
 	
 	@PutMapping("/skill/modify")
-	@ApiOperation(value = "스킬 수정하기")
-	public Object modify(@RequestBody List<Myskill> ms) {
+	@ApiOperation(value = "스킬 퍼센테이지 수정하기")
+	public Object modify(@RequestBody List<Myskill> myskills) {
 		final BasicResponse result = new BasicResponse();
 		
+		System.out.println("헬로1");
 		try {
-			for (Myskill myskill : ms) {
+			for (Myskill myskill : myskills) {
 				System.out.println(myskill.getSkill());
 				dao.updateSkills(myskill.getUid(), myskill.getSkill(), myskill.getValue());
 			}
+			System.out.println("헬로2");
 			result.status = true;
 			result.data = "success";
 			return new ResponseEntity<>(result, HttpStatus.OK);

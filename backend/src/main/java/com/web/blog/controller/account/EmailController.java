@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.web.blog.model.BasicResponse;
 
+import io.swagger.annotations.ApiOperation;
+
 @Controller
 @RequestMapping("/email")
 public class EmailController {
@@ -25,6 +27,7 @@ public class EmailController {
 	private JavaMailSender sender;
 	
 	@GetMapping("/send/{userEmail}")
+	@ApiOperation(value = "사용자에게 인증번호 이메일 보내기")
 	public Object send(@PathVariable String userEmail) throws MessagingException{
 		int ran = new Random().nextInt(900000) + 100000;
 		String text = System.getProperty("line.separator") //한줄씩 줄간격을 두기위해 작성
