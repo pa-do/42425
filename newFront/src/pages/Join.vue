@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header clear-filter" filter-color="orange">
+  <div class="page-header clear-filter" filter-color="orange-">
     <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="mb-5">
       <div class="container">
