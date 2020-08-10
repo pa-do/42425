@@ -8,6 +8,7 @@ import Join from "./pages/Join.vue"
 import Modifypw from "./pages/Modifypw.vue"
 import Profile from "./pages/Profile.vue"
 import Contactme from "./pages/Contactme.vue"
+import Resume from "./pages/Resume.vue"
 import MainNavbar from "./layout/MainNavbar.vue"
 import MainFooter from "./layout/MainFooter.vue"
 
@@ -81,6 +82,11 @@ export default new Router({
       path: "/contactme",
       name: "contactme",
       components: { default: Contactme },
+    },
+    {
+      path: "/resume",
+      name: "resume",
+      components: { default: Resume },
     },
   ],
   scrollBehavior: (to) => {

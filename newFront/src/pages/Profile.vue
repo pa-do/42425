@@ -177,15 +177,16 @@
           >
             <tab-pane title="Profile">
               <i slot="label" class="far fa-address-card"></i>
-              <div class="col-md-10 ml-auto mr-auto">
+              <h3 class="title pt-0">Resume</h3>
+              <div class="col-md-10 mx-auto">
                 <div class="row collections">
                   <div class="col-md-6">
-                    <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />
+                    <Resume />
+                    <Resume />
                   </div>
                   <div class="col-md-6">
-                    <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />
+                    <Resume />
+                    <Resume />
                   </div>
                 </div>
               </div>
@@ -193,6 +194,7 @@
 
             <tab-pane title="Home">
               <i slot="label" class="fas fa-sliders-h"></i>
+              <h3 class="title pt-0">My Skill</h3>
               <div class="col-md-10 ml-auto mr-auto">
                 <div class="row collections">
                   <div class="col-md-6">
@@ -209,6 +211,7 @@
 
             <tab-pane title="Messages">
               <i slot="label" class="far fa-folder-open"></i>
+              <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
                 <div class="row collections">
                   <div class="col-md-6">
@@ -232,6 +235,7 @@
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
 import axios from "axios";
 import Contactme from "../pages/Contactme";
+import Resume from "../pages/Resume";
 
 export default {
   name: "profile",
@@ -244,6 +248,7 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
 
     Contactme,
+    Resume,
   },
   mounted() {
     this.getdata();
