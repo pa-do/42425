@@ -22,6 +22,10 @@ import NowUiKit from "./plugins/now-ui-kit";
 
 /* 뷰 쿠키 */
 import VueCookie from "vue-cookie";
+/* vue-session 추가*/
+import VueSession from "vue-session";
+
+import vuetify from './plugins/vuetify';
 
 Vue.use(VueCookie);
 
@@ -31,11 +35,11 @@ Vue.use(NowUiKit);
 
 new Vue({
   router,
-  render: (h) => h(App),
+  vuetify,
+  render: (h) => h(App)
 }).$mount("#app");
 
-/* vue-session 추가*/
-import VueSession from "vue-session";
+
 var sessionOptions = {
   persist: true,
 };

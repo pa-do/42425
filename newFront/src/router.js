@@ -9,6 +9,7 @@ import Modifypw from "./pages/Modifypw.vue";
 import Profile from "./pages/Profile.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
+import MySkill from "./pages/MySkill.vue";
 
 Vue.use(Router);
 
@@ -76,6 +77,15 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
+    {
+      path: "/myskill",
+      name: "myskill",
+      components: { default: MySkill, header: MainNavbar},
+      props: {
+        header: { colorOnScroll: 400 },
+        footer: { backgroundColor: "black" },
+      },
+    }
   ],
   scrollBehavior: (to) => {
     if (to.hash) {
