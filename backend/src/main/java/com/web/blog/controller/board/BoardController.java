@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web.blog.model.board.Board;
 import com.web.blog.service.board.BoardService;
 
+import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Model;
 
 @RestController
@@ -42,13 +43,13 @@ public class BoardController {
 		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
 	}
 
-	//게시글 번호로 조회
-	@GetMapping(value="/{bid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Board> getboard(@PathVariable("bid") int bid){
+	// 게시글 번호로 조회
+	@GetMapping(value = "/{bid}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Board> getboard(@PathVariable("bid") int bid) {
 		Board board = boardService.findByBid(bid);
-//		System.out.println(bid);
-//		System.out.println(board.toString());
-		return new ResponseEntity<Board>(board,HttpStatus.OK);
+		// System.out.println(bid);
+		// System.out.println(board.toString());
+		return new ResponseEntity<Board>(board, HttpStatus.OK);
 	}
 
 	// 게시글 번호로 삭제
@@ -59,9 +60,9 @@ public class BoardController {
 	}
 
 	// 게시글 번호로 게시글 수정
-	@PutMapping(value = "/modify/{bid}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Board> updateBoard(@PathVariable("bid") int bid, Board board) {
-		boardService.modify(bid, board);
+	@PutMapping(value = "/modify", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Board> updateBoard(Board board) {
+		boardService.modify(board);
 		return new ResponseEntity<Board>(board, HttpStatus.OK);
 
 	}
@@ -71,22 +72,29 @@ public class BoardController {
 	public ResponseEntity<Board> save(HttpServletRequest req, Board board) {
 		return new ResponseEntity<Board>(boardService.save(board), HttpStatus.OK);
 	}
-	
-	//검색
-	@GetMapping("/searchTitle/{keyword}") 
+
+	// 검색
+	@GetMapping("/searchTitle/{keyword}")
 	public Object searchTitle(@PathVariable String keyword) {
-	    List<Board> board = boardService.searchBoardTitle(keyword);
-//	    if(board == null) {
-//	    	 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//	    }
-	    return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
+		List<Board> board = boardService.searchBoardTitle(keyword);
+		// if(board == null) {
+		// return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		// }
+		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
 
 	}
 
-	@GetMapping("/searchContent/{keyword}") 
+	@GetMapping("/searchContent/{keyword}")
 	public Object searchContent(@PathVariable String keyword) {
 		List<Board> board = boardService.searchBoardContent(keyword);
 		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
-		
+	}
+
+	// 전체 게시글 중 특정 유저(uid)가 작성한 글 목록 조회
+	@ApiOperation(value = "전체 게시글 중 특정 유저(uid)가 작성한 글만 조회")
+	@GetMapping(value = "byUser/{uid}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<List<Board>> getBoardByUid(@PathVariable("uid") int uid) {
+		List<Board> board = boardService.findByUid(uid);
+		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
 	}
 }
