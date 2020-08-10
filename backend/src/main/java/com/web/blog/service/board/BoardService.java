@@ -2,7 +2,6 @@ package com.web.blog.service.board;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,9 @@ public class BoardService {
 
 	public List<Board> findAll() {
 		List<Board> boards = new ArrayList<>();
-		// boardDao.findAll().forEach(e -> boards.add(e));
 		boardDao.selectAllBoard().forEach(e -> boards.add(e));
 		return boards;
 	}
-
 
 	public Board findByBid(int bid) {
 		return boardDao.selectBoardByBid(bid);
@@ -37,36 +34,32 @@ public class BoardService {
 		return board;
 
 	}
-	
-	public void modify(int bid, Board board) {
-		boardDao.updateBoard(board.getBid(), board.getContent());
-	}
 
+	public void modify(Board board) {
+		boardDao.updateBoard(board.getBid(), board.getTitle(), board.getContent());
+	}
 
 	public List<Board> searchBoardTitle(String keyword) {
 		List<Board> board = boardDao.searchTitle(keyword);
-		
-//		System.out.println(boards.isEmpty() + "z");
-//		for (Board board : boards) {
-//			System.out.println( board.toString());
-//		}
-		
-	    if (board.isEmpty()) {
-	    	return null;
-	    }
-	   
-	    return board;
-	}
-	
-	public List<Board> searchBoardContent(String keyword) {
-		List<Board> board = boardDao.searchContent(keyword);
-		
+
 		if (board.isEmpty()) {
 			return null;
 		}
-		
 		return board;
 	}
 
+	public List<Board> searchBoardContent(String keyword) {
+		List<Board> board = boardDao.searchContent(keyword);
 
+		if (board.isEmpty()) {
+			return null;
+		}
+		return board;
+	}
+
+	public List<Board> findByUid(int uid) {
+		List<Board> boards = new ArrayList<>();
+		boardDao.selectAllBoardByUid(uid).forEach(e -> boards.add(e));
+		return boards;
+	}
 }

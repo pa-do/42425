@@ -46,6 +46,9 @@ public interface BoardDao extends JpaRepository<Board, Integer> {
 	// public Board detail(@Param("bid") int bid);
 
 	@Modifying
-	@Query(value = "UPDATE board SET content=?2 WHERE bid=?1", nativeQuery = true)
-	Integer updateBoard(@Param("bid") int bid, @Param("content") String content);
+	@Query(value = "UPDATE board SET title=?2,content=?3 WHERE bid=?1", nativeQuery = true)
+	Integer updateBoard(@Param("bid") int bid, @Param("title") String title, @Param("content") String content);
+
+	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid AND board.uid=?1 order by bid desc", nativeQuery = true)
+	public List<Board> selectAllBoardByUid(@Param("uid") int uid);
 }
