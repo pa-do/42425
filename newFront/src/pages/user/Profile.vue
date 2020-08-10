@@ -220,6 +220,7 @@
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
                 </div>
+                <Userpost />
               </div>
             </tab-pane>
           </tabs>
@@ -230,6 +231,7 @@
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
+import Userpost from "../post/Userpost";
 import axios from "axios";
 import Contactme from "../pages/Contactme";
 
@@ -239,11 +241,15 @@ export default {
   components: {
     Tabs,
     TabPane,
+    Userpost,
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
 
     Contactme,
+  },
+  created() {
+    this.pageuid = this.$route.params.uid;
   },
   mounted() {
     this.getdata();
@@ -252,7 +258,7 @@ export default {
     getdata() {
       const params = new URL(document.location).searchParams;
       axios
-        .get(`http://localhost:8080/account/${this.$cookie.get("auth-token")}`)
+        .get(`http://localhost:8080/account/${this.pageuid}`)
         .then(({ data }) => {
           console.log(data.object);
           this.uid = data.object.uid;
@@ -503,6 +509,9 @@ export default {
 
       newNick: "",
       newBio: "",
+
+      pageuid: "",
+      boards: [],
     };
   },
 };

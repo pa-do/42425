@@ -1,17 +1,27 @@
-import Vue from "vue"
-import Router from "vue-router"
-import Index from "./pages/Index.vue"
-import Landing from "./pages/Landing.vue"
-import Login from "./pages/Login.vue"
-import Logout from "./pages/Logout.vue"
-import Join from "./pages/Join.vue"
-import Modifypw from "./pages/Modifypw.vue"
-import Profile from "./pages/Profile.vue"
-import Contactme from "./pages/Contactme.vue"
-import MainNavbar from "./layout/MainNavbar.vue"
-import MainFooter from "./layout/MainFooter.vue"
+import Vue from "vue";
+import Router from "vue-router";
+import Index from "./pages/Index.vue";
+import Landing from "./pages/Landing.vue";
+import MainNavbar from "./layout/MainNavbar.vue";
+import MainFooter from "./layout/MainFooter.vue";
 
-Vue.use(Router)
+// 유저
+import Login from "./pages/user/Login.vue";
+import Logout from "./pages/user/Logout.vue";
+import Join from "./pages/user/Join.vue";
+import Modifypw from "./pages/user/Modifypw.vue";
+import Profile from "./pages/user/Profile.vue";
+import Contactme from "./pages/Contactme.vue";
+
+// 포스트
+import BoardDetail from "./pages/post/BoardDetail.vue";
+import Write from "./pages/post/Write.vue";
+import BoardModify from "./pages/post/BoardModify.vue";
+
+// 에러페이지
+import NotFound from "./pages/404.vue";
+
+Vue.use(Router);
 
 export default new Router({
   linkExactActiveClass: "active",
@@ -34,6 +44,8 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
+
+    // userpage
     {
       path: "/login",
       name: "login",
@@ -51,7 +63,7 @@ export default new Router({
       },
     },
     {
-      path: "/profile",
+      path: "/profile/:uid",
       name: "profile",
       components: { default: Profile, header: MainNavbar, footer: MainFooter },
       props: {
@@ -82,12 +94,39 @@ export default new Router({
       name: "contactme",
       components: { default: Contactme },
     },
+
+    // post 관련
+    {
+      path: "/board/write",
+      name: "write",
+      component: Write,
+    },
+    {
+      path: "/boardmodify/:mid",
+      name: "BoardModify",
+      component: BoardModify,
+    },
+    {
+      path: "/board/:bid",
+      name: "BoardDetail",
+      components: { default: BoardDetail, header: MainNavbar },
+      props: {
+        header: { colorOnScroll: 0 },
+        footer: { backgroundColor: "black" },
+      },
+    },
+
+    // 404 에러 페이지
+    {
+      path: "*",
+      component: NotFound,
+    },
   ],
   scrollBehavior: (to) => {
     if (to.hash) {
-      return { selector: to.hash }
+      return { selector: to.hash };
     } else {
-      return { x: 0, y: 0 }
+      return { x: 0, y: 0 };
     }
   },
-})
+});

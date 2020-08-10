@@ -59,7 +59,7 @@
           <nav-link to="/logout">
             <i class="now-ui-icons users_circle-08"></i> Logout
           </nav-link>
-          <nav-link to="/profile">
+          <nav-link :to="`/profile/${this.uid}`">
             <i class="now-ui-icons users_single-02"></i> Profile
           </nav-link>
         </div>
@@ -133,21 +133,19 @@ export default {
     NavLink,
     [Popover.name]: Popover,
   },
-  methods: {
-    gowrite() {
-      this.$router.push("/board/write");
-    },
-  },
+  methods: {},
   data: function () {
     return {
       isLogin: false,
       keyword: null,
+      uid: "",
     };
   },
   mounted() {
     console.log(this.$cookie.get("auth-token"));
     if (this.$cookie.get("auth-token") != null) {
       this.isLogin = true;
+      this.uid = this.$cookie.get("auth-token");
     } else {
       this.isLogin = false;
     }
