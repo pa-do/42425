@@ -99,7 +99,11 @@ export default new Router({
     {
       path: "/board/:bid",
       name: "BoardDetail",
-      component: BoardDetail,
+      components: { default: BoardDetail, header: MainNavbar },
+      props: {
+        header: { colorOnScroll: 0 },
+        footer: { backgroundColor: "black" },
+      },
     },
     // 404 에러 페이지
     {

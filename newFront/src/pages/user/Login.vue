@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header clear-filter" filter-color="orange-">
+  <div class="page-header clear-filter" filter-color="orange">
     <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="content">
       <div class="container">
@@ -99,7 +99,7 @@ export default {
           this.user = response.data.object;
 
           this.$session.set("user", this.user);
-          this.$router.push("/#/");
+          this.$router.push("/");
           this.$router.go();
           this.$cookie.set("auth-token", this.user.uid, 1);
           alert(this.user.nickname + "님 환영합니다!");

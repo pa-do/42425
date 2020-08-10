@@ -133,11 +133,7 @@ export default {
     NavLink,
     [Popover.name]: Popover,
   },
-  methods: {
-    gowrite() {
-      this.$router.push("/board/write");
-    },
-  },
+  methods: {},
   data: function () {
     return {
       isLogin: false,
