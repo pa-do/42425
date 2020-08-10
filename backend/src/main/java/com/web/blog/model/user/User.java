@@ -40,4 +40,6 @@ public class User {
 
     private String profileImg;
     private String bio;
+    private String phone;
+    private String website;
 }

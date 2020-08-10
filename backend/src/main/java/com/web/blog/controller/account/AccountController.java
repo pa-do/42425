@@ -257,4 +257,43 @@ public class AccountController {
         }
         return response;
     }
+    
+    @PutMapping("/modify/phone")
+    @ApiOperation(value = "회원정보수정 - 연락처 변경")
+    public Object modifyPhone(@RequestBody User user) {
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        if (userDao.updatePhone(user.getUid(), user.getPhone()) > 0) {
+        	User modifiedUser = userDao.findUserByUid(user.getUid());
+            result.status = true;
+            result.data = "success";
+            result.object = modifiedUser;
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @PutMapping("/modify/website")
+    @ApiOperation(value = "회원정보수정 - 웹사이트 변경")
+    public Object modifyWebsite(@RequestBody User user) {
+    	final BasicResponse result = new BasicResponse();
+    	
+    	ResponseEntity response = null;
+    	
+    	if (userDao.updateWebsite(user.getUid(), user.getWebsite()) > 0) {
+    		User modifiedUser = userDao.findUserByUid(user.getUid());
+    		result.status = true;
+    		result.data = "success";
+    		result.object = modifiedUser;
+    		response = new ResponseEntity<>(result, HttpStatus.OK);
+    	} else {
+    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    	}
+    	return response;
+    }
+    
 }
