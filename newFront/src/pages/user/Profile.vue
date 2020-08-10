@@ -220,7 +220,7 @@
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
                 </div>
-                <Userpost />
+                <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
           </tabs>
