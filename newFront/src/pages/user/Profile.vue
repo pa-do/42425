@@ -233,7 +233,7 @@
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
 import Userpost from "../post/Userpost";
 import axios from "axios";
-import Contactme from "../pages/Contactme";
+import Contactme from "../user/Contactme";
 
 export default {
   name: "profile",
