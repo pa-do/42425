@@ -11,6 +11,7 @@ import Logout from "./pages/user/Logout.vue";
 import Join from "./pages/user/Join.vue";
 import Modifypw from "./pages/user/Modifypw.vue";
 import Profile from "./pages/user/Profile.vue";
+import Contactme from "./pages/Contactme.vue";
 
 // 포스트
 import BoardDetail from "./pages/post/BoardDetail.vue";
@@ -43,6 +44,8 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
+
+    // userpage
     {
       path: "/login",
       name: "login",
@@ -87,6 +90,13 @@ export default new Router({
       },
     },
     {
+      path: "/contactme",
+      name: "contactme",
+      components: { default: Contactme },
+    },
+
+    // post 관련
+    {
       path: "/board/write",
       name: "write",
       component: Write,
@@ -105,6 +115,7 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
+
     // 404 에러 페이지
     {
       path: "*",
