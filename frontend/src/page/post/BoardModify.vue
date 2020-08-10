@@ -3,24 +3,14 @@
     <h1 class="text-center">글 수정</h1>
     <div class="form-group">
       <label for="exampleFormControlInput2" class="mb-3">글 제목</label>
-      <input
-        type="text"
-        class="form-control"
-        v-model="title"
-        id="exampleFormControlInput2"
-      />
+      <input type="text" class="form-control" v-model="title" id="exampleFormControlInput2" />
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea2" class="mb-3">글 내용</label>
-      <textarea
-        class="form-control"
-        id="exampleFormControlTextarea2"
-        v-model="content"
-        rows="3"
-      ></textarea>
+      <textarea class="form-control" id="exampleFormControlTextarea2" v-model="content" rows="3"></textarea>
     </div>
     <br />
-    <button @click="writeBoard" class="right btn btn-primary">확인</button>
+    <button @click="modifyBoard" class="right btn btn-primary">확인</button>
   </div>
 </template>
 
@@ -50,19 +40,19 @@ export default {
 
         .catch((err) => console.error(err));
     },
-    writeBoard() {
+    modifyBoard() {
       this.board.uid = this.$cookie.get("auth-token");
       axios
-        .put(BASE_URL + "/board", null, {
+        .put(BASE_URL + "/board/modify", null, {
           params: {
             bid: this.board.bid,
             content: this.content,
             title: this.title,
-            uid: this.board.uid,
+            // uid: this.board.uid,
           },
         })
         .then(() => {
-          this.$router.push("/#/");
+          this.$router.push("/");
         })
         .catch((err) => {
           console.log("!!!!!!");

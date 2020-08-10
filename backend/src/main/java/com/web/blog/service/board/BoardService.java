@@ -21,7 +21,6 @@ public class BoardService {
 		return boards;
 	}
 
-
 	public Board findByBid(int bid) {
 		return boardDao.selectBoardByBid(bid);
 	}
@@ -35,29 +34,32 @@ public class BoardService {
 		return board;
 
 	}
-	
-	public void modify(int bid, Board board) {
-		boardDao.updateBoard(board.getBid(),board.getTitle(), board.getContent());
-	}
 
+	public void modify(Board board) {
+		boardDao.updateBoard(board.getBid(), board.getTitle(), board.getContent());
+	}
 
 	public List<Board> searchBoardTitle(String keyword) {
 		List<Board> board = boardDao.searchTitle(keyword);
-		
-	    if (board.isEmpty()) {
-	    	return null;
-	    }
-	    return board;
-	}
-	
-	public List<Board> searchBoardContent(String keyword) {
-		List<Board> board = boardDao.searchContent(keyword);
-		
+
 		if (board.isEmpty()) {
 			return null;
 		}
 		return board;
 	}
 
+	public List<Board> searchBoardContent(String keyword) {
+		List<Board> board = boardDao.searchContent(keyword);
 
+		if (board.isEmpty()) {
+			return null;
+		}
+		return board;
+	}
+
+	public List<Board> findByUid(int uid) {
+		List<Board> boards = new ArrayList<>();
+		boardDao.selectAllBoardByUid(uid).forEach(e -> boards.add(e));
+		return boards;
+	}
 }
