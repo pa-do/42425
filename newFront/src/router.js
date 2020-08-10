@@ -2,13 +2,23 @@ import Vue from "vue";
 import Router from "vue-router";
 import Index from "./pages/Index.vue";
 import Landing from "./pages/Landing.vue";
-import Login from "./pages/Login.vue";
-import Logout from "./pages/Logout.vue";
-import Join from "./pages/Join.vue";
-import Modifypw from "./pages/Modifypw.vue";
-import Profile from "./pages/Profile.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
+
+// 유저
+import Login from "./pages/user/Login.vue";
+import Logout from "./pages/user/Logout.vue";
+import Join from "./pages/user/Join.vue";
+import Modifypw from "./pages/user/Modifypw.vue";
+import Profile from "./pages/user/Profile.vue";
+
+// 포스트
+import BoardDetail from "./pages/post/BoardDetail.vue";
+import Write from "./pages/post/Write.vue";
+import BoardModify from "./pages/post/BoardModify.vue";
+
+// 에러페이지
+import NotFound from "./pages/404.vue";
 
 Vue.use(Router);
 
@@ -50,7 +60,7 @@ export default new Router({
       },
     },
     {
-      path: "/profile",
+      path: "/profile/:uid",
       name: "profile",
       components: { default: Profile, header: MainNavbar, footer: MainFooter },
       props: {
@@ -75,6 +85,26 @@ export default new Router({
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" },
       },
+    },
+    {
+      path: "/board/write",
+      name: "write",
+      component: Write,
+    },
+    {
+      path: "/boardmodify/:mid",
+      name: "BoardModify",
+      component: BoardModify,
+    },
+    {
+      path: "/board/:bid",
+      name: "BoardDetail",
+      component: BoardDetail,
+    },
+    // 404 에러 페이지
+    {
+      path: "*",
+      component: NotFound,
     },
   ],
   scrollBehavior: (to) => {
