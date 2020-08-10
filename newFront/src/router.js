@@ -94,11 +94,6 @@ export default new Router({
       name: "contactme",
       components: { default: Contactme },
     },
-    {
-      path: "/resume",
-      name: "resume",
-      components: { default: Resume },
-    },
     // post 관련
     {
       path: "/board/write",
