@@ -113,7 +113,11 @@ export default new Router({
     {
       path: "/boardmodify/:mid",
       name: "BoardModify",
-      component: BoardModify,
+      components: { default: BoardModify, header: MainNavbar },
+      props: {
+        header: { colorOnScroll: 0 },
+        footer: { backgroundColor: "black" },
+      },
     },
     {
       path: "/board/:bid",

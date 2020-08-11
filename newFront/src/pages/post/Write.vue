@@ -52,7 +52,7 @@ export default {
           },
         })
         .then(() => {
-          this.$router.push("/#/");
+          this.$router.push(`/profile/${this.writeData.uid}`);
         })
         .catch((err) => {
           console.log("!!!!!!");

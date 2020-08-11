@@ -257,8 +257,8 @@
                     <img src="img/bg8.jpg" alt class="img-raised" />
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
-                </div>-->
-                <Userpost />
+                </div>
+                <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
           </tabs>
