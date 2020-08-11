@@ -18,7 +18,7 @@ import lombok.Setter;
 @Builder
 public class Resume {
 	@JoinColumn(name = "user_uid")
-	private int uid;
+	private int uid;    
 	
 	@Id
 	private int rid;

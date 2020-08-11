@@ -24,7 +24,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     User findUserByEmail(String email);
 
-    User findUserByUid(int uid);
+    User findUserByUid(int uid);   
 
     @Modifying // 수정,삭제 시 사용하는 어노테이션
     @Query(value = "UPDATE user SET nickname=?2 WHERE uid=?1", nativeQuery = true)
