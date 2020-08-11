@@ -55,6 +55,7 @@
                         placeholder="Select date"
                       ></el-date-picker>
                     </fg-input>
+                    <!-- <input type="date" v-model="newDB" /> -->
 
                     <n-button
                       @click="modifybirthDate"
@@ -241,7 +242,9 @@ export default {
             title: "회원정보 수정 성공",
             text: "이름을 성공적으로 수정하였습니다.",
           });
-          this.$router.go();
+          // this.$router.go();
+          this.updateName_off();
+          this.$emit("update");
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -270,7 +273,9 @@ export default {
             title: "회원정보 수정 성공",
             text: "생일을 성공적으로 수정하였습니다.",
           });
-          this.$router.go();
+          // this.$router.go();
+          this.updatebirthDate_off();
+          this.$emit("update");
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -299,7 +304,9 @@ export default {
             title: "회원정보 수정 성공",
             text: "주소를 성공적으로 수정하였습니다.",
           });
-          this.$router.go();
+          // this.$router.go();
+          this.updateAddress_off();
+          this.$emit("update");
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -341,7 +348,9 @@ export default {
             title: "회원정보 수정 성공",
             text: "휴대폰 번호를 성공적으로 수정하였습니다.",
           });
-          this.$router.go();
+          // this.$router.go();
+          this.updatePhone_off();
+          this.$emit("update");
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -370,7 +379,9 @@ export default {
             title: "회원정보 수정 성공",
             text: "깃허브 주소를 성공적으로 수정하였습니다.",
           });
-          this.$router.go();
+          // this.$router.go();
+          this.updateWebsite_off();
+          this.$emit("update");
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);

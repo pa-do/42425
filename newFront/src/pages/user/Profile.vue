@@ -159,7 +159,7 @@
             @click="updateBio_off"
           >취소</n-button>
         </div>
-        <Contactme :user="user" :mine="mine" />
+        <Contactme :user="user" :mine="mine" @update="getdata" />
 
         <div class="row">
           <!-- 
@@ -318,6 +318,7 @@ export default {
           }
           console.log(data.object);
           this.user = data.object;
+          console.log(this.user.birthDate);
 
           if (this.$session.get("user").uid === this.user.uid) {
             this.mine = true;
