@@ -15,7 +15,7 @@ import com.web.blog.model.user.User;
 
 @Transactional	// javax.persistence.TransactionRequiredException: Executing an update/delete
 				// query 에러
-public interface UserDao extends JpaRepository<User, String> {
+public interface UserDao extends JpaRepository<User, Integer> {
     int countByEmail(String email);
 
     int countByNickname(String nickname);

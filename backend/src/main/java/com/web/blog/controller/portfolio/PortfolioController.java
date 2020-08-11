@@ -75,7 +75,7 @@ public class PortfolioController {
 	
 	@PutMapping("/skill/modify")
 	@ApiOperation(value = "스킬 퍼센테이지 수정하기")
-	public Object modify(@RequestBody List<Myskill> myskills) {
+	public Object modifySkill(@RequestBody List<Myskill> myskills) {
 		final BasicResponse result = new BasicResponse();
 		
 		System.out.println("헬로1");
@@ -96,7 +96,7 @@ public class PortfolioController {
 	
 	@DeleteMapping("/skill/delete/{uid}/{skill}")
 	@ApiOperation(value = "스킬 삭제하기")
-	public Object delete(@PathVariable int uid, @PathVariable String skill) {
+	public Object deleteSkill(@PathVariable int uid, @PathVariable String skill) {
 		final BasicResponse result = new BasicResponse();
 		
 		ResponseEntity response = null;
@@ -109,5 +109,26 @@ public class PortfolioController {
 		}
 		
 		return response;
+	}
+	
+	@PutMapping("/resume/modify")
+	@ApiOperation(value = "스킬 퍼센테이지 수정하기")
+	public Object modifyResume(@RequestBody List<Myskill> myskills) {
+		final BasicResponse result = new BasicResponse();
+		
+		System.out.println("헬로1");
+		try {
+			for (Myskill myskill : myskills) {
+				System.out.println(myskill.getSkill());
+				dao.updateSkills(myskill.getUid(), myskill.getSkill(), myskill.getValue());
+			}
+			System.out.println("헬로2");
+			result.status = true;
+			result.data = "success";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		} 
 	}
 }

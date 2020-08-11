@@ -23,18 +23,19 @@
           </div>
           <!-- 수정 모드일 경우 -->
           <div class="progress-wrap ftco-animate" v-if="modifyMode"> 
-            <div class="col-sm-6 col-lg-3">
-              <fg-input :placeholder="skill.skill" v-model="skill.skill"></fg-input>
+            <div class="row">
+              <div class="col-sm-6 col-lg-3">
+                <fg-input :placeholder="skill.skill" v-model="skill.skill"></fg-input>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <fg-input :placeholder="skill.value" v-model="skill.value"></fg-input>
+              </div>
+              <button class="btn btn-danger" @click="delSkill(skill.uid, skill.skill)">삭제</button>
             </div>
-            <div class="col-sm-6 col-lg-3">
-              <fg-input :placeholder="skill.value" v-model="skill.value"></fg-input>
-            </div>
-            <button class="btn btn-danger" @click="delSkill(skill.uid, skill.skill)">삭제</button>
           </div>
-          
         </div>
         <div> 
-          <button class="btn btn-info" @click="addSkill">skill 추가</button>
+          <button class="btn btn-info" @click="addSkill" v-if="modifyMode">skill 추가</button>
         </div>
       </div>
     </div>
@@ -60,7 +61,7 @@ export default {
     created(){
       this.getSkills();
     },
-    updated(){
+    mounted(){
       this.getSkills();
     },
     methods: {
@@ -86,39 +87,7 @@ export default {
         })
       },
       addSkill(){
-        // Swal.fire({
-        //   title: 'Skill 추가',
-        //   input: 'text',
-        //   input: 'text',
-        //   inputAttributes: {
-        //     autocapitalize: 'off'
-        //   },
-        //   showCancelButton: true,
-        //   confirmButtonText: 'Look up',
-        //   showLoaderOnConfirm: true,
-        //   preConfirm: (login) => {
-        //     return fetch(`//api.github.com/users/${login}`)
-        //       .then(response => {
-        //         if (!response.ok) {
-        //           throw new Error(response.statusText)
-        //         }
-        //         return response.json()
-        //       })
-        //       .catch(error => {
-        //         Swal.showValidationMessage(
-        //           `Request failed: ${error}`
-        //         )
-        //       })
-        //   },
-        //   allowOutsideClick: () => !Swal.isLoading()
-        // }).then((result) => {
-        //   if (result.value) {
-        //     Swal.fire({
-        //       title: `${result.value.login}'s avatar`,
-        //       imageUrl: result.value.avatar_url
-        //     })
-        //   }
-        // })
+        // document.
       },
       modifyOk(){
         axios
