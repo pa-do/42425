@@ -64,7 +64,7 @@
         </div>
         <div class="d-flex justify-content-end">
           <n-button
-            class="btn btn-primary"
+            class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
           >비밀번호 변경</n-button>
@@ -111,7 +111,7 @@
             </template>
           </modal>
           <!--  -->
-          <button class="btn btn-danger" @click="deleteAlert">탈퇴 하기</button>
+          <button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</button>
         </div>
       </div>
     </div>
@@ -159,8 +159,7 @@
             @click="updateBio_off"
           >취소</button>
         </div>
-
-        <Contactme :user="user" />
+        <Contactme :user="user" :mine="mine" />
 
         <div class="row">
           <!-- 
@@ -270,9 +269,9 @@
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
+import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
 import axios from "axios";
-import Contactme from "../user/Contactme";
 
 export default {
   name: "profile",
@@ -315,6 +314,12 @@ export default {
           }
           console.log(data.object);
           this.user = data.object;
+
+          if (this.$session.get("user").uid === this.user.uid) {
+            this.mine = true;
+          } else {
+            this.mine = false;
+          }
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -554,6 +559,8 @@ export default {
 
       user: null,
       birthDate: "",
+
+      mine: false,
     };
   },
 };
