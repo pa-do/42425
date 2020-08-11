@@ -160,7 +160,7 @@
           >취소</button>
         </div>
 
-        <Contactme />
+        <Contactme :user="user" />
 
         <div class="row">
           <!-- 
@@ -299,7 +299,6 @@ export default {
       axios
         .get(`http://localhost:8080/account/${this.pageuid}`)
         .then(({ data }) => {
-          console.log(data.object);
           this.uid = data.object.uid;
           this.email = data.object.email;
           this.nickname = data.object.nickname;
@@ -314,7 +313,8 @@ export default {
             //+ null, undefined, "" 모두 처리할 수 있게 변경
             this.bio = data.object.bio;
           }
-          console.log(this.profile_img);
+          console.log(data.object);
+          this.user = data.object;
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -551,6 +551,9 @@ export default {
 
       pageuid: "",
       boards: [],
+
+      user: null,
+      birthDate: "",
     };
   },
 };
