@@ -54,7 +54,7 @@ export default {
         .delete(`http://localhost:8080/board/delete/${this.board.bid}`)
         .then((res) => {
           // console.log(res);
-          this.$router.push("/#/");
+          this.$router.push(`/profile/${this.board.uid}`);
         })
         .catch((err) => console.error(err));
     },

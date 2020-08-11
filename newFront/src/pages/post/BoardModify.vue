@@ -43,7 +43,7 @@ export default {
     writeBoard() {
       this.board.uid = this.$cookie.get("auth-token");
       axios
-        .put(BASE_URL + "/board", null, {
+        .put(BASE_URL + "/board/modify", null, {
           params: {
             bid: this.board.bid,
             content: this.content,
@@ -52,7 +52,7 @@ export default {
           },
         })
         .then(() => {
-          this.$router.push("/#/");
+          this.$router.push(`/profile/${this.board.uid}`);
         })
         .catch((err) => {
           console.log("!!!!!!");
