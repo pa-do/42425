@@ -185,9 +185,10 @@
                       <h2>Master Degree of Design</h2>
                       <span>Cambridge University</span>
                       <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
+                        A small river named Duden flows by their place and
+                        supplies it with the necessary regelialia. It is a
+                        paradisematic country, in which roasted parts of
+                        sentences fly into your mouth.
                       </p>
                     </div>
                     <div class="my-5">
@@ -195,9 +196,10 @@
                       <h2>Master Degree of Design</h2>
                       <span>Cambridge University</span>
                       <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
+                        A small river named Duden flows by their place and
+                        supplies it with the necessary regelialia. It is a
+                        paradisematic country, in which roasted parts of
+                        sentences fly into your mouth.
                       </p>
                     </div>
                   </div>
@@ -207,9 +209,10 @@
                       <h2>Master Degree of Design</h2>
                       <span>Cambridge University</span>
                       <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
+                        A small river named Duden flows by their place and
+                        supplies it with the necessary regelialia. It is a
+                        paradisematic country, in which roasted parts of
+                        sentences fly into your mouth.
                       </p>
                     </div>
                     <div class="my-5">
@@ -217,9 +220,10 @@
                       <h2>Master Degree of Design</h2>
                       <span>Cambridge University</span>
                       <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
+                        A small river named Duden flows by their place and
+                        supplies it with the necessary regelialia. It is a
+                        paradisematic country, in which roasted parts of
+                        sentences fly into your mouth.
                       </p>
                     </div>
                   </div>
@@ -248,7 +252,7 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <!-- <div class="row collections">
+                <div class="row collections">
                   <div class="col-md-6">
                     <img src="img/bg1.jpg" alt class="img-raised" />
                     <img src="img/bg3.jpg" alt class="img-raised" />
@@ -257,8 +261,8 @@
                     <img src="img/bg8.jpg" alt class="img-raised" />
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
-                </div>-->
-                <Userpost />
+                </div>
+                <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
           </tabs>

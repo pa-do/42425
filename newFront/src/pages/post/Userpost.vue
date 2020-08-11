@@ -12,9 +12,9 @@
               src="https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png"
               alt="Card image cap"
             />
-            <div>
+            <div class="container">
               <h4 class="card-title">{{ board.title }}</h4>
-              <p class="card-text">{{ board.content }}</p>
+              <p class="card-text">{{ board.content| truncate(20, '...') }}</p>
               <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
             </div>
           </div>
@@ -37,6 +37,7 @@ export default {
       limit: 0,
     };
   },
+  props: ["uid"],
   components: {
     // InfiniteLoading,
   },
@@ -44,7 +45,7 @@ export default {
   methods: {
     fetchBoards() {
       axios
-        .get("http://localhost:8080/board")
+        .get("http://localhost:8080/board/byUser/" + this.uid)
         .then((res) => (this.boards = res.data))
         .catch((err) => console.error(err));
     },
@@ -74,6 +75,15 @@ export default {
     },
     gowrite() {
       this.$router.push("/board/write");
+    },
+  },
+  filters: {
+    truncate: function (text, length, suffix) {
+      if (text.length > length) {
+        return text.substring(0, length) + suffix;
+      } else {
+        return text;
+      }
     },
   },
   created() {
