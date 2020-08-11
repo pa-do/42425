@@ -21,12 +21,16 @@ public class CommentService {
 		return comments;
 	}
 
-	public Comment findByBid(int bid) {
-		return commentDao.selectCommentByBid(bid);
+	public List<Comment> findByBid(int bid) {
+		List<Comment> comments = new ArrayList<>();
+		commentDao.selectCommentByBid(bid).forEach(e -> comments.add(e));
+		return comments;
 	}
 	
-	public Comment findByUid(int uid) {
-		return commentDao.selectCommentByUid(uid);
+	public List<Comment> findByUid(int uid) {
+		List<Comment> comments = new ArrayList<>();
+		commentDao.selectCommentByUid(uid).forEach(e -> comments.add(e));
+		return comments;
 	}
 	
 	public Comment findByCid(int cid) {

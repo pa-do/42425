@@ -42,16 +42,16 @@ public class CommentController {
 	
 	//게시글 번호로 댓글 조회
 	@GetMapping(value="/board/{bid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Comment> getCommentByBid(@PathVariable("bid") int bid){
-		Comment comment = commentService.findByBid(bid);
-		return new ResponseEntity<Comment>(comment,HttpStatus.OK);
+	public ResponseEntity<List<Comment>> getCommentByBid(@PathVariable("bid") int bid){
+		List<Comment> comment = commentService.findByBid(bid);
+		return new ResponseEntity<List<Comment>>(comment,HttpStatus.OK);
 	}
 
 	//유저 번호로 댓글 조회
 	@GetMapping(value="/user/{uid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Comment> getCommentByUid(@PathVariable("uid") int uid){
-		Comment comment = commentService.findByUid(uid);
-		return new ResponseEntity<Comment>(comment,HttpStatus.OK);
+	public ResponseEntity<List<Comment>> getCommentByUid(@PathVariable("uid") int uid){
+		List<Comment> comment = commentService.findByUid(uid);
+		return new ResponseEntity<List<Comment>>(comment,HttpStatus.OK);
 	}
 	
 //	//댓글 번호로 댓글 조회
