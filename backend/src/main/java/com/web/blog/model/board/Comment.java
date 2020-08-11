@@ -35,6 +35,9 @@ public class Comment {
     @JoinColumn(name="user_uid")
     private int uid;
     
+    @Column(insertable = false, updatable = true, nullable=true)
+    private String nickname;
+    
     private String content;
 
     @Column(insertable = false, updatable = false)
