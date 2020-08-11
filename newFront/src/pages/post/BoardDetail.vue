@@ -10,9 +10,9 @@
           <p>{{ board.writeDate.split("T").join(" ") }}</p>
         </blockquote>
       </div>
-      <div v-if="isAuthorized">
-        <button class="btn btn-primary" @click="updateBoard(bid)">수정</button>
-        <button class="btn btn-info" @click="deleteAlert">삭제</button>
+      <div v-if="isAuthorized" class="text-right">
+        <n-button type="info" round @click="updateBoard(bid)">수정</n-button>
+        <n-button type="danger" round @click="deleteAlert">삭제</n-button>
       </div>
     </div>
     <Comment :bid="this.bid" />
@@ -22,11 +22,13 @@
 <script>
 import axios from "axios";
 import Comment from "./Comment";
+import { Button } from "@/components";
 
 const BASE_URL = "http://localhost:8080";
 
 export default {
   components: {
+    [Button.name]: Button,
     Comment,
   },
   data: function () {
