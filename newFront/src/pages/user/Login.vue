@@ -73,7 +73,10 @@ export default {
   methods: {
     login() {
       if (this.email == "") {
-        alert("메일 주소를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "메일 주소를 입력하세요.",
+        });
         document.getElementById("email").focus();
         return;
       } else if (!this.validEmail(this.email)) {
