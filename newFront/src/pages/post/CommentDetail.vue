@@ -1,20 +1,19 @@
 <template>
   <blockquote class="blockquote text-center card">
     <div v-if="isMode">
-      <p v-if="isShow && filtering" @click="showup" class="mb-0">{{ comment.content }}</p>
-      <p v-else class="mb-0" @click="showup">
-        {{ comment.content| truncate(50, '...') }}
-        <i
-          v-if="filtering"
-          class="now-ui-icons gestures_tap-01"
-        ></i>
+      <p v-if="isShow && filtering" @click="showup" class="mb-0">
+        {{ comment.content }}
       </p>
-      <nav-link :to="`/profile/${this.comment.uid}`">
+      <p v-else class="mb-0" @click="showup">
+        {{ comment.content | truncate(50, "...") }}
+        <i v-if="filtering" class="now-ui-icons gestures_tap-01"></i>
+      </p>
+      <router-link :to="`/profile/${this.comment.uid}`">
         <footer class="blockquote-footer">
-          {{ comment.nickname| truncate(20, '...') }}
-          <cite title="프로필 보기">[{{comment.writeDate}}]</cite>
+          {{ comment.nickname | truncate(20, "...") }}
+          <cite title="프로필 보기">[{{ comment.writeDate }}]</cite>
         </footer>
-      </nav-link>
+      </router-link>
       <div v-if="check" class="text-right">
         <n-button type="info" round @click="updateMode">수정</n-button>
         <n-button type="danger" round @click="deleteAlert">삭제</n-button>
@@ -38,7 +37,7 @@
 </template>
 
 <script>
-import { FormGroupInput, Button, NavLink } from "@/components";
+import { FormGroupInput, Button } from "@/components";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:8080";
@@ -47,10 +46,9 @@ export default {
   components: {
     [FormGroupInput.name]: FormGroupInput,
     [Button.name]: Button,
-    NavLink,
   },
   props: ["comment"],
-  data: function () {
+  data: function() {
     return {
       isShow: false,
       isMode: true,
@@ -126,7 +124,7 @@ export default {
     },
   },
   filters: {
-    truncate: function (text, length, suffix) {
+    truncate: function(text, length, suffix) {
       if (text.length > length) {
         return text.substring(0, length) + suffix;
       } else {
@@ -137,5 +135,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
