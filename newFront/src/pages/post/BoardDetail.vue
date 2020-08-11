@@ -15,6 +15,9 @@
         <button class="btn btn-info" @click="deleteAlert">삭제</button>
       </div>
     </div>
+    <!-- <div v-for="comment in comments" :key="`${comment.cid}`">
+      <p>{{ comment.content }}</p>
+    </div>-->
   </div>
 </template>
 
@@ -27,13 +30,14 @@ export default {
   data: function () {
     return {
       board: Object,
+      comments: Object,
       bid: "",
       isAuthorized: false,
     };
   },
   methods: {
     fetchBoard() {
-      console.log(this.$route.params.bid);
+      // console.log(this.$route.params.bid);
       axios
         .get(BASE_URL + `/board/${this.$route.params.bid}`)
         .then((res) => {
@@ -75,9 +79,19 @@ export default {
         }
       });
     },
+    fetchComment() {
+      axios
+        .get(BASE_URL + `/comment/board/${this.$route.params.bid}`)
+        .then((res) => {
+          this.comments = res.data;
+        })
+        // .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+    },
   },
   created() {
     this.fetchBoard();
+    // this.fetchComment();
   },
 };
 </script>

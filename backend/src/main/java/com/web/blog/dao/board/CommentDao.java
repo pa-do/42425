@@ -25,10 +25,10 @@ public interface CommentDao extends JpaRepository<Comment, Integer> {
 
 	
 	@Query(value = "SELECT user.nickname, comment.* FROM comment, user WHERE comment.uid=user.uid and comment.bid=?1", nativeQuery = true)
-	public Comment selectCommentByBid(@Param("bid") int bid);
+	public List<Comment> selectCommentByBid(@Param("bid") int bid);
 	
 	@Query(value = "SELECT user.nickname, comment.* FROM comment, user WHERE comment.uid=user.uid and comment.uid=?1", nativeQuery = true)
-	public Comment selectCommentByUid(@Param("uid") int uid);
+	public List<Comment> selectCommentByUid(@Param("uid") int uid);
 
 	@Query(value = "SELECT user.nickname, comment.* FROM comment, user WHERE comment.uid=user.uid and comment.cid=?1", nativeQuery = true)
 	public Comment selectCommentByCid(@Param("cid") int cid);
