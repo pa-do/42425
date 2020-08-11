@@ -10,16 +10,20 @@
       <textarea class="form-control" id="exampleFormControlTextarea2" v-model="content" rows="3"></textarea>
     </div>
     <br />
-    <button @click="writeBoard" class="right btn btn-primary">확인</button>
+    <n-button @click="writeBoard" class="right btn btn-primary">확인</n-button>
   </div>
 </template>
 
 <script>
+import { Button } from "@/components";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:8080";
 
 export default {
+  components: {
+    [Button.name]: Button,
+  },
   data: function () {
     return {
       title: "",
@@ -43,7 +47,7 @@ export default {
     writeBoard() {
       this.board.uid = this.$cookie.get("auth-token");
       axios
-        .put(BASE_URL + "/board", null, {
+        .put(BASE_URL + "/board/modify", null, {
           params: {
             bid: this.board.bid,
             content: this.content,
@@ -52,7 +56,7 @@ export default {
           },
         })
         .then(() => {
-          this.$router.push("/#/");
+          this.$router.push(`/profile/${this.board.uid}`);
         })
         .catch((err) => {
           console.log("!!!!!!");

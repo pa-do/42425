@@ -28,21 +28,21 @@
                 autofocus
               ></fg-input>
               <div class="d-flex">
-                <n-button
+                <button
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                >중복 체크</n-button>
-                <n-button
+                >중복 체크</button>
+                <button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                >수정</n-button>
-                <n-button
+                >수정</button>
+                <button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                >취소</n-button>
+                >취소</button>
               </div>
             </div>
           </div>
@@ -64,7 +64,7 @@
         </div>
         <div class="d-flex justify-content-end">
           <n-button
-            class="btn btn-primary btn-round btn-md mr-1"
+            class="btn btn-primary"
             type="primary"
             @click.native="modals.classic = true"
           >비밀번호 변경</n-button>
@@ -111,7 +111,7 @@
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
+          <button class="btn btn-danger" @click="deleteAlert">탈퇴 하기</button>
         </div>
       </div>
     </div>
@@ -153,13 +153,14 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
-          <n-button
+          <button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</button>
+          <button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-          >취소</n-button>
+          >취소</button>
         </div>
-        <Contactme :user="user" :mine="mine" />
+
+        <Contactme />
 
         <div class="row">
           <!-- 
@@ -180,52 +181,12 @@
               <div class="col-md-10 mx-auto">
                 <div class="row collections">
                   <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
+                    <Resume />
+                    <Resume />
                   </div>
                   <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
+                    <Resume />
+                    <Resume />
                   </div>
                 </div>
               </div>
@@ -251,7 +212,7 @@
             <tab-pane title="Messages">
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
-              <div class="col-md-10 ml-auto mr-auto">
+              <!-- <div class="col-md-10 ml-auto mr-auto">
                 <div class="row collections">
                   <div class="col-md-6">
                     <img src="img/bg1.jpg" alt class="img-raised" />
@@ -262,8 +223,7 @@
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
                 </div>
-                <Userpost :uid="this.pageuid" />
-              </div>
+              </div>-->
             </tab-pane>
           </tabs>
         </div>
@@ -273,9 +233,9 @@
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
-import Contactme from "../user/Contactme";
-import Userpost from "../post/Userpost";
 import axios from "axios";
+import Contactme from "../pages/Contactme";
+import Resume from "../pages/Resume";
 
 export default {
   name: "profile",
@@ -283,15 +243,12 @@ export default {
   components: {
     Tabs,
     TabPane,
-    Userpost,
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
 
     Contactme,
-  },
-  created() {
-    this.pageuid = this.$route.params.uid;
+    Resume,
   },
   mounted() {
     this.getdata();
@@ -300,8 +257,9 @@ export default {
     getdata() {
       const params = new URL(document.location).searchParams;
       axios
-        .get(`http://localhost:8080/account/${this.pageuid}`)
+        .get(`http://localhost:8080/account/${this.$cookie.get("auth-token")}`)
         .then(({ data }) => {
+          console.log(data.object);
           this.uid = data.object.uid;
           this.email = data.object.email;
           this.nickname = data.object.nickname;
@@ -316,14 +274,7 @@ export default {
             //+ null, undefined, "" 모두 처리할 수 있게 변경
             this.bio = data.object.bio;
           }
-          console.log(data.object);
-          this.user = data.object;
-
-          if (this.$session.get("user").uid === this.user.uid) {
-            this.mine = true;
-          } else {
-            this.mine = false;
-          }
+          console.log(this.profile_img);
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -336,10 +287,7 @@ export default {
     },
     checkNickname() {
       if (this.newNick == "") {
-        Swal.fire({
-          icon: "info",
-          title: "닉네임을 입력하세요.",
-        });
+        alert("닉네임을 입력하세요.");
         return;
       } else {
         axios
@@ -350,17 +298,10 @@ export default {
               this.result.data == "fail" &&
               this.result.object == "nickname"
             ) {
-              Swal.fire({
-                icon: "warning",
-                title: "이미 사용중인 닉네임입니다.",
-                text: "새로운 닉네임을 입력하세요.",
-              });
+              alert("이미 가입된 닉네임입니다. 새로운 닉네임을 입력하세요.");
               document.getElementById("newNick").focus();
             } else {
-              Swal.fire({
-                icon: "success",
-                title: "사용 가능한 닉네임입니다.",
-              });
+              alert("사용 가능한 닉네임입니다.");
               this.nicknameChk = true;
               document.getElementById("newNick").setAttribute("readonly", true);
               document
@@ -377,10 +318,7 @@ export default {
     },
     modifyNickname() {
       if (this.nicknameChk != true) {
-        Swal.fire({
-          icon: "warning",
-          title: "닉네임 중복체크를 해 주세요.",
-        });
+        alert("닉네임 중복 체크를 해 주세요.");
       } else {
         axios
           .put("http://localhost:8080/account/modify/nickname", {
@@ -390,10 +328,7 @@ export default {
           .then((response) => {
             this.result = response.data;
             this.$session.set("user", response.data.object);
-            Swal.fire({
-              icon: "success",
-              title: "회원정보수정 성공",
-            });
+            alert("회원정보수정 성공!");
             this.$router.go();
           })
           .catch((err) => {
@@ -409,10 +344,7 @@ export default {
     //비밀번호변경관련메서드
     checkNowPW() {
       if (this.nowPW == "") {
-        Swal.fire({
-          icon: "info",
-          title: "현재 비밀번호를 입력하세요.",
-        });
+        alert("현재 비밀번호를 입력하세요.");
         document.getElementById("nowPW").focus(); //+
         return;
       }
@@ -427,45 +359,32 @@ export default {
       })
         .then((response) => {
           this.nowPWChk = true;
-          Swal.fire({
-            icon: "success",
-            title: "현재 비밀번호가 확인되었습니다.",
-            text: "새로운 비밀번호를 입력해주세요.",
-          });
+          alert(
+            "현재 비밀번호가 확인되었습니다. 새로운 비밀번호를 입력해주세요."
+          ); //+
           document.getElementById("nowPW").setAttribute("readonly", true);
           document.getElementById("pwModBtn").removeAttribute("disabled"); //+
         })
         .catch((err) => {
           console.log("ERROR :", err);
-          Swal.fire({
-            icon: "error",
-            title: "비밀번호를 확인해주세요.",
-            text: "비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.",
-          });
+          alert(
+            "비밀번호를 확인해주세요. \n비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다."
+          );
           this.nowPW = ""; //+??
           document.getElementById("nowPW").focus(); //+
         });
     },
     modifyPW() {
       if (this.newPW1 == "") {
-        Swal.fire({
-          icon: "info",
-          title: "새로운 비밀번호를 입력하세요.",
-        });
+        alert("새로운 비밀번호를 입력하세요.");
         document.getElementById("newPW1").focus();
         return;
       } else if (this.newPW2 == "") {
-        Swal.fire({
-          icon: "info",
-          title: "새로운 비밀번호를 한번 더 입력하세요.",
-        });
+        alert("새로운 비밀번호를 한번 더 입력하세요.");
         document.getElementById("newPW2").focus();
         return;
       } else if (this.newPW1 != this.newPW2) {
-        Swal.fire({
-          icon: "error",
-          title: "비밀번호가 일치하지 않습니다.",
-        });
+        alert("비밀번호가 일치하지 않습니다.");
         document.getElementById("newPW2").focus();
         return;
       } else {
@@ -479,10 +398,7 @@ export default {
             let user = response.data.object;
             this.result = response.data;
             this.$session.set("user", user);
-            Swal.fire({
-              icon: "success",
-              title: "비밀번호가 변경되었습니다.",
-            });
+            alert("비밀번호 변경 성공!");
             this.$router.go();
           })
           .catch((err) => {
@@ -513,10 +429,7 @@ export default {
         .then((response) => {
           this.result = response.data;
           console.log(this.result);
-          Swal.fire({
-            icon: "success",
-            title: "나를 소개하는 글이 변경되었습니다.",
-          });
+          alert("소개글 수정 성공!");
           this.$router.go();
         })
         .catch((err) => {
@@ -595,14 +508,6 @@ export default {
 
       newNick: "",
       newBio: "",
-
-      pageuid: "",
-      boards: [],
-
-      user: null,
-      birthDate: "",
-
-      mine: false,
     };
   },
 };

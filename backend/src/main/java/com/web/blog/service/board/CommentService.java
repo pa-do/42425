@@ -21,18 +21,22 @@ public class CommentService {
 		return comments;
 	}
 
-	public Comment findByBid(int bid) {
-		return commentDao.selectCommentByBid(bid);
+	public List<Comment> findByBid(int bid) {
+		List<Comment> comments = new ArrayList<>();
+		commentDao.selectCommentByBid(bid).forEach(e -> comments.add(e));
+		return comments;
 	}
-	
-	public Comment findByUid(int uid) {
-		return commentDao.selectCommentByUid(uid);
+
+	public List<Comment> findByUid(int uid) {
+		List<Comment> comments = new ArrayList<>();
+		commentDao.selectCommentByUid(uid).forEach(e -> comments.add(e));
+		return comments;
 	}
-	
+
 	public Comment findByCid(int cid) {
 		return commentDao.selectCommentByCid(cid);
 	}
-	
+
 	public void deleteByCid(int cid) {
 		commentDao.delete(findByCid(cid));
 	}
@@ -41,36 +45,35 @@ public class CommentService {
 		commentDao.save(comment);
 		return comment;
 	}
-	
-	public void modify(int cid, Comment comment) {
+
+	public void modify(Comment comment) {
 		commentDao.updateComment(comment.getCid(), comment.getContent());
 	}
-//
-//
-//	public List<Board> searchBoardTitle(String keyword) {
-//		List<Board> board = boardDao.searchTitle(keyword);
-//		
-////		System.out.println(boards.isEmpty() + "z");
-////		for (Board board : boards) {
-////			System.out.println( board.toString());
-////		}
-//		
-//	    if (board.isEmpty()) {
-//	    	return null;
-//	    }
-//	   
-//	    return board;
-//	}
-//	
-//	public List<Board> searchBoardContent(String keyword) {
-//		List<Board> board = boardDao.searchContent(keyword);
-//		
-//		if (board.isEmpty()) {
-//			return null;
-//		}
-//		
-//		return board;
-//	}
-
+	//
+	//
+	// public List<Board> searchBoardTitle(String keyword) {
+	// List<Board> board = boardDao.searchTitle(keyword);
+	//
+	//// System.out.println(boards.isEmpty() + "z");
+	//// for (Board board : boards) {
+	//// System.out.println( board.toString());
+	//// }
+	//
+	// if (board.isEmpty()) {
+	// return null;
+	// }
+	//
+	// return board;
+	// }
+	//
+	// public List<Board> searchBoardContent(String keyword) {
+	// List<Board> board = boardDao.searchContent(keyword);
+	//
+	// if (board.isEmpty()) {
+	// return null;
+	// }
+	//
+	// return board;
+	// }
 
 }

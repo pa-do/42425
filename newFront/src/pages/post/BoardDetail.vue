@@ -10,20 +10,27 @@
           <p>{{ board.writeDate.split("T").join(" ") }}</p>
         </blockquote>
       </div>
-      <div v-if="isAuthorized">
-        <button class="btn btn-primary" @click="updateBoard(bid)">수정</button>
-        <button class="btn btn-info" @click="deleteAlert">삭제</button>
+      <div v-if="isAuthorized" class="text-right">
+        <n-button type="info" round @click="updateBoard(bid)">수정</n-button>
+        <n-button type="danger" round @click="deleteAlert">삭제</n-button>
       </div>
     </div>
+    <Comment :bid="this.bid" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Comment from "./Comment";
+import { Button } from "@/components";
 
 const BASE_URL = "http://localhost:8080";
 
 export default {
+  components: {
+    [Button.name]: Button,
+    Comment,
+  },
   data: function () {
     return {
       board: Object,
@@ -33,7 +40,7 @@ export default {
   },
   methods: {
     fetchBoard() {
-      console.log(this.$route.params.bid);
+      // console.log(this.$route.params.bid);
       axios
         .get(BASE_URL + `/board/${this.$route.params.bid}`)
         .then((res) => {
@@ -54,7 +61,7 @@ export default {
         .delete(`http://localhost:8080/board/delete/${this.board.bid}`)
         .then((res) => {
           // console.log(res);
-          this.$router.push("/#/");
+          this.$router.push(`/profile/${this.board.uid}`);
         })
         .catch((err) => console.error(err));
     },

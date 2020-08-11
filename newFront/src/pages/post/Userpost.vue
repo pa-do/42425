@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>전체글</h2>
-    <button class="btn btn-danger" @click="gowrite">글쓰기</button>
+    <n-button class="btn btn-danger" @click="gowrite">글쓰기</n-button>
     <div class="row">
       <div v-for="board in boards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
         <div class="d-flex justify-content-center mt-4">
@@ -12,9 +12,9 @@
               src="https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png"
               alt="Card image cap"
             />
-            <div>
+            <div class="container">
               <h4 class="card-title">{{ board.title }}</h4>
-              <p class="card-text">{{ board.content }}</p>
+              <p class="card-text">{{ board.content| truncate(20, '...') }}</p>
               <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
             </div>
           </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { Button } from "@/components";
 import axios from "axios";
 // import InfiniteLoading from "vue-infinite-loading";
 
@@ -37,14 +38,16 @@ export default {
       limit: 0,
     };
   },
+  props: ["uid"],
   components: {
+    [Button.name]: Button,
     // InfiniteLoading,
   },
   watch: {},
   methods: {
     fetchBoards() {
       axios
-        .get("http://localhost:8080/board")
+        .get("http://localhost:8080/board/byUser/" + this.uid)
         .then((res) => (this.boards = res.data))
         .catch((err) => console.error(err));
     },
@@ -74,6 +77,15 @@ export default {
     },
     gowrite() {
       this.$router.push("/board/write");
+    },
+  },
+  filters: {
+    truncate: function (text, length, suffix) {
+      if (text.length > length) {
+        return text.substring(0, length) + suffix;
+      } else {
+        return text;
+      }
     },
   },
   created() {
