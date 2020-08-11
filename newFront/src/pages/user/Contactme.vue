@@ -8,7 +8,6 @@
         <span v-if="mine">
           <table class="table table-borderless">
             <tbody>
-              <!-- <span v-if="!update_name">  -->
               <tr>
                 <th scope="row">
                   Name
@@ -21,16 +20,15 @@
                 </span>
                 <span v-else>
                   <td>
-                    <textarea
-                      class="form-control"
+                    <fg-input
                       v-model="newName"
                       id="newName"
                       placeholder="이름을 입력하세요."
                       type="text"
                       style="width:100%;"
-                    />
-                    <button @click="modifyName" class="btn btn-primary btn-round btn-md mr-1">수정</button>
-                    <button @click="updateName_off" class="btn btn-danger btn-round btn-md">취소</button>
+                    ></fg-input>
+                    <n-button @click="modifyName" class="btn btn-primary btn-round btn-md mr-1">수정</n-button>
+                    <n-button @click="updateName_off" class="btn btn-danger btn-round btn-md">취소</n-button>
                   </td>
                 </span>
               </tr>
@@ -43,23 +41,29 @@
                   </span>
                 </th>
                 <span v-if="!update_birthDate">
-                  <td class="date">{{user.birthDate.split("T")[0]}}</td>
+                  <span v-if="user.birthDate">
+                    <td class="date">{{user.birthDate.substring(0,10)}}</td>
+                  </span>
                 </span>
                 <span v-else>
                   <td>
-                    <textarea
-                      class="form-control"
-                      v-model="newBD"
-                      id="newBD"
-                      placeholder="생일을 'yyyy-mm-dd'의 형태로 입력하세요."
-                      type="text"
-                      style="width:100%;"
-                    />
-                    <button
+                    <fg-input>
+                      <el-date-picker
+                        v-model="newBD"
+                        popper-class="date-picker"
+                        type="date"
+                        placeholder="Select date"
+                      ></el-date-picker>
+                    </fg-input>
+
+                    <n-button
                       @click="modifybirthDate"
                       class="btn btn-primary btn-round btn-md mr-1"
-                    >수정</button>
-                    <button @click="updatebirthDate_off" class="btn btn-danger btn-round btn-md">취소</button>
+                    >수정</n-button>
+                    <n-button
+                      @click="updatebirthDate_off"
+                      class="btn btn-danger btn-round btn-md"
+                    >취소</n-button>
                   </td>
                 </span>
               </tr>
@@ -74,16 +78,15 @@
                   <td>{{user.address}}</td>
                 </span>
                 <span v-else>
-                  <textarea
-                    class="form-control"
+                  <fg-input
                     v-model="newAddress"
                     id="newAddress"
                     placeholder="주소를 입력하세요."
                     type="text"
                     style="width:100%;"
-                  />
-                  <button @click="modifyAddress" class="btn btn-primary btn-round btn-md mr-1">수정</button>
-                  <button @click="updateAddress_off" class="btn btn-danger btn-round btn-md">취소</button>
+                  ></fg-input>
+                  <n-button @click="modifyAddress" class="btn btn-primary btn-round btn-md mr-1">수정</n-button>
+                  <n-button @click="updateAddress_off" class="btn btn-danger btn-round btn-md">취소</n-button>
                 </span>
               </tr>
               <tr>
@@ -101,16 +104,15 @@
                   <td>{{user.phone}}</td>
                 </span>
                 <span v-else>
-                  <textarea
-                    class="form-control"
+                  <fg-input
                     v-model="newPhone"
                     id="newPhone"
                     placeholder="휴대폰 번호를 '숫자만' 입력하세요."
                     type="text"
                     style="width:100%;"
-                  />
-                  <button @click="modifyPhone" class="btn btn-primary btn-round btn-md mr-1">수정</button>
-                  <button @click="updatePhone_off" class="btn btn-danger btn-round btn-md">취소</button>
+                  ></fg-input>
+                  <n-button @click="modifyPhone" class="btn btn-primary btn-round btn-md mr-1">수정</n-button>
+                  <n-button @click="updatePhone_off" class="btn btn-danger btn-round btn-md">취소</n-button>
                 </span>
               </tr>
               <tr>
@@ -124,16 +126,15 @@
                   <td>{{user.website}}</td>
                 </span>
                 <span v-else>
-                  <textarea
-                    class="form-control"
+                  <fg-input
                     v-model="newWeb"
                     id="newWeb"
                     placeholder="깃허브 주소를 입력해 주세요."
                     type="text"
                     style="width:100%;"
-                  />
-                  <button @click="modifyWebsite" class="btn btn-primary btn-round btn-md mr-1">수정</button>
-                  <button @click="updateWebsite_off" class="btn btn-danger btn-round btn-md">취소</button>
+                  ></fg-input>
+                  <n-button @click="modifyWebsite" class="btn btn-primary btn-round btn-md mr-1">수정</n-button>
+                  <n-button @click="updateWebsite_off" class="btn btn-danger btn-round btn-md">취소</n-button>
                 </span>
               </tr>
             </tbody>
@@ -151,8 +152,7 @@
               <span v-if="user.birthDate">
                 <tr>
                   <th scope="row">Date of birth</th>
-
-                  <td class="date">{{user.birthDate.split("T")[0]}}</td>
+                  <td class="date">{{user.birthDate.substring(0,10)}}</td>
                 </tr>
               </span>
               <span v-if="user.address">
@@ -189,12 +189,13 @@
 
 <script>
 import axios from "axios";
-// import vueMoment from 'vue-moment';
+import { FormGroupInput as FgInput, Button } from "@/components";
+import { DatePicker } from "element-ui";
 
 export default {
   name: "contactme",
   bodyClass: "contactme-page",
-  components: {},
+  components: { [DatePicker.name]: DatePicker, FgInput, [Button.name]: Button },
   props: {
     user: Object,
     mine: Boolean,
@@ -220,6 +221,7 @@ export default {
     // 이름 수정
     updateName_on() {
       this.update_name = true;
+      this.newName = this.user.name;
     },
     updateName_off() {
       this.update_name = false;
@@ -234,7 +236,12 @@ export default {
         .then((response) => {
           this.result = response.data;
           this.$session.set("user", response.data.object);
-          alert("회원정보수정 성공!");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "회원정보 수정 성공",
+            text: "이름을 성공적으로 수정하였습니다.",
+          });
           this.$router.go();
         })
         .catch((err) => {
@@ -244,21 +251,13 @@ export default {
     // 생일 수정
     updatebirthDate_on() {
       this.update_birthDate = true;
+      this.newBD = this.user.birthDate;
     },
     updatebirthDate_off() {
       this.update_birthDate = false;
       this.newBD = null;
     },
-    validBD: function (bd) {
-      var re = /^([1-2][0-9][0-9][0-9])-([0-1][0-9])-([0-3][0-9])$/;
-      return re.test(bd);
-    },
     modifybirthDate() {
-      if (!this.validBD(this.newBD)) {
-        alert("yyyy-mm-dd의 형태로 입력해 주세요.");
-        document.getElementById("newBD").focus();
-        return;
-      }
       axios
         .put("http://localhost:8080/account/modify/birthdate", {
           uid: this.user.uid,
@@ -267,7 +266,12 @@ export default {
         .then((response) => {
           this.result = response.data;
           this.$session.set("user", response.data.object);
-          alert("회원정보수정 성공!");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "회원정보 수정 성공",
+            text: "생일을 성공적으로 수정하였습니다.",
+          });
           this.$router.go();
         })
         .catch((err) => {
@@ -277,6 +281,7 @@ export default {
     // 주소 수정
     updateAddress_on() {
       this.update_address = true;
+      this.newAddress = this.user.address;
     },
     updateAddress_off() {
       this.update_address = false;
@@ -291,7 +296,12 @@ export default {
         .then((response) => {
           this.result = response.data;
           this.$session.set("user", response.data.object);
-          alert("회원정보수정 성공!");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "회원정보 수정 성공",
+            text: "주소를 성공적으로 수정하였습니다.",
+          });
           this.$router.go();
         })
         .catch((err) => {
@@ -301,6 +311,7 @@ export default {
     // 휴대폰 번호 수정
     updatePhone_on() {
       this.update_phone = true;
+      this.newPhone = this.user.phone;
     },
     updatePhone_off() {
       this.update_phone = false;
@@ -312,7 +323,12 @@ export default {
     },
     modifyPhone() {
       if (!this.validPhone(this.newPhone)) {
-        alert("숫자만 입력해 주세요.");
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "숫자만 입력해 주세요.",
+          text: "한글, 영문, 특수문자 등은 입력하실 수 없습니다.",
+        });
         document.getElementById("newPhone").focus();
         return;
       }
@@ -324,7 +340,12 @@ export default {
         .then((response) => {
           this.result = response.data;
           this.$session.set("user", response.data.object);
-          alert("회원정보수정 성공!");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "회원정보 수정 성공",
+            text: "휴대폰 번호를 성공적으로 수정하였습니다.",
+          });
           this.$router.go();
         })
         .catch((err) => {
@@ -334,6 +355,7 @@ export default {
     // 깃허브 수정
     updateWebsite_on() {
       this.update_website = true;
+      this.newWeb = this.user.website;
     },
     updateWebsite_off() {
       this.update_website = false;
@@ -348,7 +370,12 @@ export default {
         .then((response) => {
           this.result = response.data;
           this.$session.set("user", response.data.object);
-          alert("회원정보수정 성공!");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "회원정보 수정 성공",
+            text: "깃허브 주소를 성공적으로 수정하였습니다.",
+          });
           this.$router.go();
         })
         .catch((err) => {
