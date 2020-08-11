@@ -12,23 +12,24 @@
           <tbody>
             <tr>
               <th scope="row">Name</th>
-              <td>박도희</td>
+              <td>{{user.name}}</td>
             </tr>
             <tr>
               <th scope="row">Date of birth</th>
-              <td>92.11.22.</td>
+              <!-- <td>{{moment(user.birthDate).format("YYYY-MM-DD")}}</td> -->
+              <td>{{user.birthDate}}</td>
             </tr>
             <tr>
               <th scope="row">Address</th>
-              <td>{{address}}</td>
+              <td>{{user.address}}</td>
             </tr>
             <tr>
               <th scope="row">Email</th>
-              <td>{{email}}</td>
+              <td>{{user.email}}</td>
             </tr>
             <tr>
               <th scope="row">Phone</th>
-              <td>{{phone}}</td>
+              <td>{{user.phone}}</td>
             </tr>
           </tbody>
         </table>
@@ -38,24 +39,18 @@
 </template>
 
 <script>
+import axios from "axios";
+// import vueMoment from 'vue-moment';
+
 export default {
   name: "contactme",
   bodyClass: "contactme-page",
   components: {},
-  mounted() {
-    this.getdata();
+  created() {
+    console.log(this.user.birthDate);
   },
-  methods: {
-    getdata() {},
-  },
-  data: () => {
-    return {
-      uid: "1",
-      address: "경북 구미시",
-      phone: "010-4822-3759",
-      email: "dohee.pa@gmail.com",
-      git: "github.com/do-park",
-    };
+  props: {
+    user: Object,
   },
 };
 </script>
