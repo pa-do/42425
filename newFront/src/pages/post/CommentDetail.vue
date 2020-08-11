@@ -9,12 +9,12 @@
           class="now-ui-icons gestures_tap-01"
         ></i>
       </p>
-      <footer class="blockquote-footer">
-        {{ comment.nickname| truncate(20, '...') }}
-        <cite
-          title="Source Title"
-        >[{{comment.writeDate}}]</cite>
-      </footer>
+      <nav-link :to="`/profile/${this.comment.uid}`">
+        <footer class="blockquote-footer">
+          {{ comment.nickname| truncate(20, '...') }}
+          <cite title="프로필 보기">[{{comment.writeDate}}]</cite>
+        </footer>
+      </nav-link>
       <div v-if="check" class="text-right">
         <n-button type="info" round @click="updateMode">수정</n-button>
         <n-button type="danger" round @click="deleteAlert">삭제</n-button>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { FormGroupInput, Button } from "@/components";
+import { FormGroupInput, Button, NavLink } from "@/components";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:8080";
@@ -47,6 +47,7 @@ export default {
   components: {
     [FormGroupInput.name]: FormGroupInput,
     [Button.name]: Button,
+    NavLink,
   },
   props: ["comment"],
   data: function () {
