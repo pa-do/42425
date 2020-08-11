@@ -43,7 +43,7 @@
 
 <script>
 import axios from 'axios';
-import FormGroupInput from '../components/Inputs/formGroupInput' 
+import FormGroupInput from '../../components/Inputs/formGroupInput' 
 
 const path = "http://localhost:8080/portfolio"
 

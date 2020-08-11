@@ -1,19 +1,17 @@
 
 package com.web.blog.dao.user;
 
+import java.util.Date;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.web.blog.model.user.User;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import org.springframework.stereotype.Repository;
+import com.web.blog.model.user.User;
 
 @Transactional	// javax.persistence.TransactionRequiredException: Executing an update/delete
 				// query 에러
@@ -53,5 +51,18 @@ public interface UserDao extends JpaRepository<User, String> {
     @Modifying
     @Query(value = "UPDATE user SET website=?2 WHERE uid=?1", nativeQuery = true)
     Integer updateWebsite(@Param("uid") int uid, @Param("website") String website);
+    
+    @Modifying
+    @Query(value = "UPDATE user SET name=?2 WHERE uid=?1", nativeQuery = true)
+    Integer updateName(@Param("uid") int uid, @Param("name") String name);
+    
+    @Modifying
+    @Query(value = "UPDATE user SET birth_date=?2 WHERE uid=?1", nativeQuery = true)
+    Integer updateBirthDate(@Param("uid") int uid, @Param("birthDate") Date birthDate);
+    
+    @Modifying
+    @Query(value = "UPDATE user SET address=?2 WHERE uid=?1", nativeQuery = true)
+    Integer updateAddress(@Param("uid") int uid, @Param("address") String address);
+    
     
 }

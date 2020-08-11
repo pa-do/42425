@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="page-header clear-filter" filter-color="a">
+    <div class="page-header clear-filter" filter-color="orange-">
       <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
         <div class="photo-container">
@@ -160,37 +160,39 @@
           >취소</button>
         </div>
 
+        <Contactme :user="user"/>
+
         <div class="row">
+          <!-- 
           <div class="col-md-6 ml-auto mr-auto">
             <h4 class="title text-center">My Portfolio</h4>
           </div>
+          -->
           <tabs
             pills
-            class="nav-align-center"
+            class="nav-align-center mx-auto"
             tab-content-classes="gallery"
             tab-nav-classes="nav-pills-just-icons"
             type="primary"
           >
             <tab-pane title="Profile">
-              <i slot="label" class="now-ui-icons design_image"></i>
-
+              <i slot="label" class="far fa-address-card"></i>
               <div class="col-md-10 ml-auto mr-auto">
                 <div class="row collections">
                   <div class="col-md-6">
-                    <img src="img/bg6.jpg" class="img-raised" />
-                    <img src="img/bg11.jpg" alt class="img-raised" />
+                    <img src="img/bg1.jpg" alt class="img-raised" />
+                    <img src="img/bg3.jpg" alt class="img-raised" />
                   </div>
                   <div class="col-md-6">
-                    <img src="img/bg7.jpg" alt class="img-raised" />
                     <img src="img/bg8.jpg" alt class="img-raised" />
+                    <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
                 </div>
               </div>
             </tab-pane>
 
             <tab-pane title="Home">
-              <i slot="label" class="now-ui-icons location_world"></i>
-
+              <i slot="label" class="fas fa-sliders-h"></i>
               <div class="col-md-10 ml-auto mr-auto">
                 <div class="row collections">
                   <div class="col-md-6">
@@ -206,19 +208,19 @@
             </tab-pane>
 
             <tab-pane title="Messages">
-              <i slot="label" class="now-ui-icons sport_user-run"></i>
-
+              <i slot="label" class="far fa-folder-open"></i>
               <div class="col-md-10 ml-auto mr-auto">
                 <div class="row collections">
                   <div class="col-md-6">
+                    <img src="img/bg1.jpg" alt class="img-raised" />
                     <img src="img/bg3.jpg" alt class="img-raised" />
-                    <img src="img/bg8.jpg" alt class="img-raised" />
                   </div>
                   <div class="col-md-6">
+                    <img src="img/bg8.jpg" alt class="img-raised" />
                     <img src="img/bg7.jpg" alt class="img-raised" />
-                    <img src="img/bg6.jpg" class="img-raised" />
                   </div>
                 </div>
+                <Userpost />
               </div>
             </tab-pane>
           </tabs>
@@ -229,7 +231,9 @@
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
+import Userpost from "../post/Userpost";
 import axios from "axios";
+import Contactme from "../user/Contactme";
 
 export default {
   name: "profile",
@@ -237,9 +241,15 @@ export default {
   components: {
     Tabs,
     TabPane,
+    Userpost,
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
+
+    Contactme,
+  },
+  created() {
+    this.pageuid = this.$route.params.uid;
   },
   mounted() {
     this.getdata();
@@ -248,9 +258,8 @@ export default {
     getdata() {
       const params = new URL(document.location).searchParams;
       axios
-        .get(`http://localhost:8080/account/${this.$cookie.get("auth-token")}`)
+        .get(`http://localhost:8080/account/${this.pageuid}`)
         .then(({ data }) => {
-          console.log(data.object);
           this.uid = data.object.uid;
           this.email = data.object.email;
           this.nickname = data.object.nickname;
@@ -265,7 +274,8 @@ export default {
             //+ null, undefined, "" 모두 처리할 수 있게 변경
             this.bio = data.object.bio;
           }
-          console.log(this.profile_img);
+console.log(data.object);
+          this.user = data.object;
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -499,6 +509,12 @@ export default {
 
       newNick: "",
       newBio: "",
+
+      pageuid: "",
+      boards: [],
+
+      user: null,
+      birthDate: "",
     };
   },
 };

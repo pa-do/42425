@@ -241,22 +241,6 @@ public class AccountController {
         return response;
     }
 
-    @DeleteMapping("/dropout/{uid}")
-    @ApiOperation(value = "회원탈퇴")
-    public Object dropOut(@PathVariable int uid) {
-        final BasicResponse result = new BasicResponse();
-
-        ResponseEntity response = null;
-
-        if (userDao.removeUserByUid(uid) > 0) {
-            result.status = true;
-            result.data = "success";
-            response = new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        return response;
-    }
     
     @PutMapping("/modify/phone")
     @ApiOperation(value = "회원정보수정 - 연락처 변경")
@@ -295,5 +279,80 @@ public class AccountController {
     	}
     	return response;
     }
+    
+    @PutMapping("/modify/name")
+    @ApiOperation(value = "회원정보수정 - 이름 변경")
+    public Object modifyName(@RequestBody User user) {
+    	final BasicResponse result = new BasicResponse();
+    	
+    	ResponseEntity response = null;
+    	
+    	if (userDao.updateName(user.getUid(), user.getName()) > 0) {
+    		User modifiedUser = userDao.findUserByUid(user.getUid());
+    		result.status = true;
+    		result.data = "success";
+    		result.object = modifiedUser;
+    		response = new ResponseEntity<>(result, HttpStatus.OK);
+    	} else {
+    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    	}
+    	return response;
+    }
+
+    @PutMapping("/modify/birthdate")
+    @ApiOperation(value = "회원정보수정 - 생일 변경")
+    public Object modifyBirthDate(@RequestBody User user) {
+    	final BasicResponse result = new BasicResponse();
+    	
+    	ResponseEntity response = null;
+    	
+    	if (userDao.updateBirthDate(user.getUid(), user.getBirthDate()) > 0) {
+    		User modifiedUser = userDao.findUserByUid(user.getUid());
+    		result.status = true;
+    		result.data = "success";
+    		result.object = modifiedUser;
+    		response = new ResponseEntity<>(result, HttpStatus.OK);
+    	} else {
+    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    	}
+    	return response;
+    }
+    
+    @PutMapping("/modify/address")
+    @ApiOperation(value = "회원정보수정 - 주소 변경")
+    public Object modifyAddress(@RequestBody User user) {
+    	final BasicResponse result = new BasicResponse();
+    	
+    	ResponseEntity response = null;
+    	
+    	if (userDao.updateAddress(user.getUid(), user.getAddress()) > 0) {
+    		User modifiedUser = userDao.findUserByUid(user.getUid());
+    		result.status = true;
+    		result.data = "success";
+    		result.object = modifiedUser;
+    		response = new ResponseEntity<>(result, HttpStatus.OK);
+    	} else {
+    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    	}
+    	return response;
+    }
+
+    @DeleteMapping("/dropout/{uid}")
+    @ApiOperation(value = "회원탈퇴")
+    public Object dropOut(@PathVariable int uid) {
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        if (userDao.removeUserByUid(uid) > 0) {
+            result.status = true;
+            result.data = "success";
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
     
 }
