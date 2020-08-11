@@ -64,7 +64,7 @@
         </div>
         <div class="d-flex justify-content-end">
           <n-button
-            class="btn btn-primary btn-round btn-md mr-1"
+            class="btn btn-primary"
             type="primary"
             @click.native="modals.classic = true"
           >비밀번호 변경</n-button>
@@ -111,7 +111,7 @@
             </template>
           </modal>
           <!--  -->
-          <button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</button>
+          <button class="btn btn-danger" @click="deleteAlert">탈퇴 하기</button>
         </div>
       </div>
     </div>
@@ -159,7 +159,8 @@
             @click="updateBio_off"
           >취소</button>
         </div>
-        <Contactme :user="user" :mine="mine" />
+
+        <Contactme />
 
         <div class="row">
           <!-- 
@@ -180,48 +181,12 @@
               <div class="col-md-10 mx-auto">
                 <div class="row collections">
                   <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
-                      </p>
-                    </div>
+                    <Resume />
+                    <Resume />
                   </div>
                   <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and supplies it with the necessary
-                        regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                        into your mouth.
-                      </p>
-                    </div>
+                    <Resume />
+                    <Resume />
                   </div>
                 </div>
               </div>
@@ -247,8 +212,8 @@
             <tab-pane title="Messages">
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
-              <div class="col-md-10 ml-auto mr-auto">
-                <!-- <div class="row collections">
+              <!-- <div class="col-md-10 ml-auto mr-auto">
+                <div class="row collections">
                   <div class="col-md-6">
                     <img src="img/bg1.jpg" alt class="img-raised" />
                     <img src="img/bg3.jpg" alt class="img-raised" />
@@ -258,8 +223,7 @@
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
                 </div>
-                <Userpost :uid="this.pageuid" />
-              </div>
+              </div>-->
             </tab-pane>
           </tabs>
         </div>
@@ -269,9 +233,9 @@
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
-import Contactme from "../user/Contactme";
-import Userpost from "../post/Userpost";
 import axios from "axios";
+import Contactme from "../pages/Contactme";
+import Resume from "../pages/Resume";
 
 export default {
   name: "profile",
@@ -279,15 +243,12 @@ export default {
   components: {
     Tabs,
     TabPane,
-    Userpost,
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
 
     Contactme,
-  },
-  created() {
-    this.pageuid = this.$route.params.uid;
+    Resume,
   },
   mounted() {
     this.getdata();
@@ -296,8 +257,9 @@ export default {
     getdata() {
       const params = new URL(document.location).searchParams;
       axios
-        .get(`http://localhost:8080/account/${this.pageuid}`)
+        .get(`http://localhost:8080/account/${this.$cookie.get("auth-token")}`)
         .then(({ data }) => {
+          console.log(data.object);
           this.uid = data.object.uid;
           this.email = data.object.email;
           this.nickname = data.object.nickname;
@@ -312,14 +274,7 @@ export default {
             //+ null, undefined, "" 모두 처리할 수 있게 변경
             this.bio = data.object.bio;
           }
-          console.log(data.object);
-          this.user = data.object;
-
-          if (this.$session.get("user").uid === this.user.uid) {
-            this.mine = true;
-          } else {
-            this.mine = false;
-          }
+          console.log(this.profile_img);
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -553,14 +508,6 @@ export default {
 
       newNick: "",
       newBio: "",
-
-      pageuid: "",
-      boards: [],
-
-      user: null,
-      birthDate: "",
-
-      mine: false,
     };
   },
 };
