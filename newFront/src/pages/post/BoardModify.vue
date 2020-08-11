@@ -10,16 +10,20 @@
       <textarea class="form-control" id="exampleFormControlTextarea2" v-model="content" rows="3"></textarea>
     </div>
     <br />
-    <button @click="writeBoard" class="right btn btn-primary">확인</button>
+    <n-button @click="writeBoard" class="right btn btn-primary">확인</n-button>
   </div>
 </template>
 
 <script>
+import { Button } from "@/components";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:8080";
 
 export default {
+  components: {
+    [Button.name]: Button,
+  },
   data: function () {
     return {
       title: "",

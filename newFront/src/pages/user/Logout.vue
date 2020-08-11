@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <button @click="logout">로그아웃</button>
-    로그아웃일까?
-  </div>
+  <div></div>
 </template>
 
 <script>
 export default {
   methods: {
     logout() {
-      alert("BYE " + this.$session.get("user").nickname);
+      Swal.fire({
+        icon: "success",
+        title: "BYE " + this.$session.get("user").nickname,
+      });
       this.$session.destroy();
       this.$router.push("/");
       this.$cookie.delete("auth-token");

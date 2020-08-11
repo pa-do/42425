@@ -19,10 +19,10 @@
                     addon-left-icon="now-ui-icons business_badge"
                     type="text"
                   ></fg-input>
-                  <button
+                  <n-button
                     @click="checkNickname"
                     class="mt-2 btn btn-primary btn-round btn-md btn-block"
-                  >중복 체크</button>
+                  >중복 체크</n-button>
                 </div>
 
                 <div>
@@ -35,14 +35,14 @@
                     type="text"
                   ></fg-input>
                   <div class="d-flex mt-2">
-                    <button
+                    <n-button
                       @click="checkEmail"
                       class="btn btn-primary btn-round btn-md btn-block mr-1 mt-0"
-                    >중복 체크</button>
-                    <button
+                    >중복 체크</n-button>
+                    <n-button
                       @click="sendEmail"
                       class="btn btn-primary btn-round btn-md btn-block ml-1 mt-0"
-                    >인증 메일 전송</button>
+                    >인증 메일 전송</n-button>
                   </div>
                 </div>
                 <div class="input-wrap">
@@ -54,10 +54,10 @@
                     addon-left-icon="now-ui-icons ui-1_send"
                     type="text"
                   ></fg-input>
-                  <button
+                  <n-button
                     @click="authEmail"
                     class="mt-2 btn btn-primary btn-round btn-md btn-block"
-                  >인증</button>
+                  >인증</n-button>
                 </div>
 
                 <div>
@@ -82,9 +82,9 @@
                   ></fg-input>
                 </div>
               </div>
-              <button class="btn mb-5 btn-danger btn-round btn-md btn-block" @click="join">
+              <n-button class="btn mb-5 btn-danger btn-round btn-md btn-block" @click="join">
                 <span>작성완료</span>
-              </button>
+              </n-button>
             </div>
           </card>
         </div>
@@ -114,10 +114,17 @@ export default {
         .then((response) => {
           this.result = response.data;
           if (this.result.data == "fail" && this.result.object == "nickname") {
-            alert("이미 가입된 닉네임입니다. 새로운 닉네임을 입력하세요.");
+            Swal.fire({
+              icon: "warning",
+              title: "이미 가입된 닉네임입니다.",
+              text: "새로운 닉네임을 입력하세요.",
+            });
             document.getElementById("nickname").focus();
           } else {
-            alert("사용 가능한 닉네임입니다.");
+            Swal.fire({
+              icon: "success",
+              title: "사용 가능한 닉네임입니다.",
+            });
             this.nicknameChk = true;
             document.getElementById("nickname").setAttribute("readonly", true);
           }
@@ -128,7 +135,10 @@ export default {
     },
     checkEmail() {
       if (!this.validEmail(this.email)) {
-        alert("메일 형식을 확인하세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "메일 형식을 확인하세요.",
+        });
         document.getElementById("Jemail").focus();
         return;
       }
@@ -139,11 +149,18 @@ export default {
           console.log(this.result);
           if (this.result.data == "fail" && this.result.object == "email") {
             document.getElementById("Jemail").focus();
-            alert("이미 가입된 이메일입니다. 새로운 이메일을 입력하세요.");
+            Swal.fire({
+              icon: "warning",
+              title: "이미 가입된 이메일입니다.",
+              text: "새로운 이메일을 입력하세요.",
+            });
           } else {
             this.emailChk = true;
             document.getElementById("Jemail").setAttribute("readonly", true);
-            alert("사용 가능한 이메일입니다.");
+            Swal.fire({
+              icon: "success",
+              title: "사용 가능한 이메일입니다.",
+            });
           }
         })
         .catch((err) => {
@@ -152,41 +169,71 @@ export default {
     },
     join() {
       if (this.nickname == "") {
-        alert("닉네임을 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "닉네임을 입력하세요.",
+        });
         document.getElementById("nickname").focus();
         return;
       } else if (!this.nicknameChk) {
-        alert("닉네임 중복 체크하세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "닉네임 중복 체크를 진행하세요,",
+        });
         return;
       } else if (this.email == "") {
-        alert("메일 주소를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "메일 주소를 입력하세요.",
+        });
         document.getElementById("Jemail").focus();
         return;
       } else if (!this.validEmail(this.email)) {
-        alert("메일 형식을 확인하세요.");
+        Swal.fire({
+          icon: "error",
+          title: "메일 형식을 확인하세요.",
+        });
         document.getElementById("Jemail").focus();
         return;
       } else if (!this.emailChk) {
-        alert("이메일 중복 체크하세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "이메일 중복 체크를 진행하세요.",
+        });
         return;
       } else if (this.authChk == false) {
-        alert("이메일 인증을 진행해주세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "이메일 인증을 진행하세요.",
+        });
         document.getElementById("input_authnum").focus();
         return;
       } else if (this.password == "") {
-        alert("비밀번호를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "비밀번호를 입력하세요.",
+        });
         document.getElementById("password").focus();
         return;
       } else if (this.passwordConfirm == "") {
-        alert("비밀번호를 한번 더 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "비밀번호를 한번 더 입력하세요.",
+        });
         document.getElementById("password-confirm").focus();
         return;
       } else if (this.password != this.passwordConfirm) {
-        alert("비밀번호가 일치하지 않습니다.");
+        Swal.fire({
+          icon: "warning",
+          title: "비밀번호가 일치하지 않습니다.",
+        });
         document.getElementById("password-confirm").focus();
         return;
       } else if (!this.validPW(this.password)) {
-        alert("비밀번호는 영문과 숫자를 합쳐 8자 이상이어야 합니다.");
+        Swal.fire({
+          icon: "warning",
+          title: "비밀번호는 영문과 숫자를 합쳐 8자 이상이어야 합니다.",
+        });
         document.getElementById("password").focus();
         return;
       } else {
@@ -201,9 +248,13 @@ export default {
             this.result = response.data;
             console.log(this.result);
             if (this.result.data != "fail") {
-              alert("가입 성공! 회원가입을 축하합니다.");
               this.user = response.data.object;
               this.$session.set("user", this.user);
+              Swal.fire({
+                icon: "success",
+                title: "가입 완료",
+                text: "가입을 축하드립니다.",
+              });
               this.$router.push("/");
               this.$cookie.set("auth-token", this.user.uid, 1);
             }
@@ -225,7 +276,11 @@ export default {
       axios
         .get(`http://localhost:8080/email/send/${this.email}`)
         .then((response) => {
-          alert("이메일이 발송되었습니다. 인증번호를 입력해주세요.");
+          Swal.fire({
+            icon: "info",
+            title: "이메일이 발송되었습니다.",
+            text: "인증번호를 입력해주세요.",
+          });
           this.authnum = response.data.data;
         })
         .catch((err) => {
@@ -234,11 +289,17 @@ export default {
     },
     authEmail() {
       if (this.authnum === this.input_authnum) {
-        alert("인증이 완료되었습니다.");
+        Swal.fire({
+          icon: "success",
+          title: "인증이 완료되었습니다.",
+        });
         document.getElementById("input_authnum").setAttribute("readonly", true);
         this.authChk = true;
       } else {
-        alert("인증번호가 일치하지 않습니다. 다시 입력해주세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "인증번호가 일치하지 않습니다. 다시 입력해주세요.",
+        });
       }
     },
   },

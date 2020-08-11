@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>전체글</h2>
-    <button class="btn btn-danger" @click="gowrite">글쓰기</button>
+    <n-button class="btn btn-danger" @click="gowrite">글쓰기</n-button>
     <div class="row">
       <div v-for="board in boards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
         <div class="d-flex justify-content-center mt-4">
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { Button } from "@/components";
 import axios from "axios";
 // import InfiniteLoading from "vue-infinite-loading";
 
@@ -39,6 +40,7 @@ export default {
   },
   props: ["uid"],
   components: {
+    [Button.name]: Button,
     // InfiniteLoading,
   },
   watch: {},
