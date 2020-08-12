@@ -316,9 +316,7 @@ export default {
             //+ null, undefined, "" 모두 처리할 수 있게 변경
             this.bio = data.object.bio;
           }
-          console.log(data.object);
           this.user = data.object;
-          console.log(this.user.birthDate);
 
           if (this.$session.get("user").uid === this.user.uid) {
             this.mine = true;
