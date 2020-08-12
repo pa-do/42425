@@ -56,7 +56,7 @@ public class LikesController {
 		return new ResponseEntity<List<Likes>>(likes,HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/checkLikes")
+	@PostMapping(value="/checkLikes")
 	public boolean check(int uid,int bid) {
 		return likesService.checkLikes(uid, bid);
 	}
