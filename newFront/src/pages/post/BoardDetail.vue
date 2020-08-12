@@ -10,8 +10,8 @@
             {{ board.nickname }}
             <p>{{ board.writeDate.split("T").join(" ") }}</p>
             <h3 class="mb-0">
-              <i v-if="likechk" class="far fa-heart" @click="likes"></i>
-              <i v-else class="far fa-heart" @click="likes"></i>
+              <i v-if="!likechk" class="far fa-heart" @click="likes"></i>
+              <i v-else class="far fa-heart text-danger" @click="likes"></i>
               {{ board.likes_count }}
             </h3>
           </footer>
@@ -54,6 +54,7 @@ export default {
         .then((res) => {
           this.board = res.data;
           this.bid = this.board.bid;
+          this.likechking();
           if (this.board.uid == this.$cookie.get("auth-token")) {
             this.isAuthorized = true;
           }
@@ -99,8 +100,24 @@ export default {
           },
         })
         .then((res) => {
-          this.likechk = res;
+          console.log(res.data);
+          this.likechk = res.data;
           this.fetchBoard();
+        })
+        // .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+    },
+    likechking() {
+      axios
+        .post("http://localhost:8080/likes/likesCheck", null, {
+          params: {
+            bid: this.board.bid,
+            uid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.likechk = res.data;
         })
         // .then((res) => console.log(res))
         .catch((err) => console.error(err));
@@ -108,7 +125,6 @@ export default {
   },
   created() {
     this.fetchBoard();
-    this.likes();
   },
 };
 </script>
