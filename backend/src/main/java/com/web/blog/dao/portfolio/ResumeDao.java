@@ -38,5 +38,6 @@ public interface ResumeDao extends JpaRepository<Resume, Integer> {
 				 + "WHERE uid=?1 AND rid=?2", nativeQuery = true)
 	int deleteResume(@Param(value = "uid") int uid, @Param(value = "rid") int rid);
 	
+	Resume findResumeByRid(int rid);
 
 }

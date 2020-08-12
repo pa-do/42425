@@ -164,7 +164,7 @@ public class PortfolioController {
 	} 
 	
 	@GetMapping("/resume/{uid}")
-	@ApiOperation(value = "이력 가져오기")
+	@ApiOperation(value = "uid로 이력 가져오기")
 	public Object resume(@PathVariable int uid) {
 		final BasicResponse result = new BasicResponse();
 			
@@ -176,6 +176,25 @@ public class PortfolioController {
 	        result.data = "success";
 	        result.object = resumes;
 	        response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}  
+	
+	@GetMapping("/resume/detail/{rid}")
+	@ApiOperation(value = "rid로 이력 가져오기")
+	public Object resume2(@PathVariable int rid) {
+		final BasicResponse result = new BasicResponse();
+		
+		ResponseEntity response = null;
+		
+		Resume resume = resumeDao.findResumeByRid(rid);
+		if(resume != null) {
+			result.status = true;
+			result.data = "success";
+			result.object = resume;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
