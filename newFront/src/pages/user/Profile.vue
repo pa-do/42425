@@ -160,7 +160,6 @@
           >취소</n-button>
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
-
         <div class="row">
           <!-- 
           <div class="col-md-6 ml-auto mr-auto">
@@ -252,8 +251,8 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <!-- <div class="row collections"> -->
-                <!-- <div class="col-md-6">
+                <!-- <div class="row collections">
+                  <div class="col-md-6">
                     <img src="img/bg1.jpg" alt class="img-raised" />
                     <img src="img/bg3.jpg" alt class="img-raised" />
                   </div>
@@ -608,4 +607,5 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+</style>

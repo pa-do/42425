@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <!-- <img src="../assets/img/404.jpg" alt="" /> -->
-    에러랍니당
+  <div class="page-header clear-filter" filter-color="orange-">
+    <div class="page-header-image" style="background-image: url('img/error.jpg')"></div>
+    <!-- <img src="img/error.jpg" alt /> -->
   </div>
 </template>
 
