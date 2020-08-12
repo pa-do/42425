@@ -55,5 +55,16 @@ public class LikesController {
 		List<Likes> likes= likesService.findByUid(uid);
 		return new ResponseEntity<List<Likes>>(likes,HttpStatus.OK);
 	}
+	
+	@PostMapping(value="/checkLikes")
+	public boolean check(int uid,int bid) {
+		return likesService.checkLikes(uid, bid);
+	}
 
+	
+	/*
+	 * (bid uid로 좋아요 여부 확인)=>lid
+	 * if(좋아요no) save(new Likes(bid uid))
+	 * else(deleteLikes)
+	 * */
 }

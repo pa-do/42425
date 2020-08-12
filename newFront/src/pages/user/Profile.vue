@@ -29,21 +29,21 @@
                 autofocus
               ></fg-input>
               <div class="d-flex">
-                <button
+                <n-button
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                >중복 체크</button>
-                <button
+                >중복 체크</n-button>
+                <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                >수정</button>
-                <button
+                >수정</n-button>
+                <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                >취소</button>
+                >취소</n-button>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
             </template>
           </modal>
           <!--  -->
-          <button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</button>
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
         </div>
       </div>
     </div>
@@ -154,13 +154,13 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</button>
-          <button
+          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+          <n-button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-          >취소</button>
+          >취소</n-button>
         </div>
-        <Contactme :user="user" :mine="mine" />
+        <Contactme :user="user" :mine="mine" @update="getdata" />
 
         <div class="row">
           <!-- 
@@ -253,8 +253,8 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
+                <!-- <div class="row collections"> -->
+                <!-- <div class="col-md-6">
                     <img src="img/bg1.jpg" alt class="img-raised" />
                     <img src="img/bg3.jpg" alt class="img-raised" />
                   </div>
@@ -262,7 +262,7 @@
                     <img src="img/bg8.jpg" alt class="img-raised" />
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
-                </div>
+                </div>-->
                 <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
@@ -321,6 +321,7 @@ export default {
           }
           console.log(data.object);
           this.user = data.object;
+          console.log(this.user.birthDate);
 
           if (this.$session.get("user").uid === this.user.uid) {
             this.mine = true;
@@ -339,7 +340,10 @@ export default {
     },
     checkNickname() {
       if (this.newNick == "") {
-        alert("닉네임을 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "닉네임을 입력하세요.",
+        });
         return;
       } else {
         axios
@@ -350,10 +354,17 @@ export default {
               this.result.data == "fail" &&
               this.result.object == "nickname"
             ) {
-              alert("이미 가입된 닉네임입니다. 새로운 닉네임을 입력하세요.");
+              Swal.fire({
+                icon: "warning",
+                title: "이미 사용중인 닉네임입니다.",
+                text: "새로운 닉네임을 입력하세요.",
+              });
               document.getElementById("newNick").focus();
             } else {
-              alert("사용 가능한 닉네임입니다.");
+              Swal.fire({
+                icon: "success",
+                title: "사용 가능한 닉네임입니다.",
+              });
               this.nicknameChk = true;
               document.getElementById("newNick").setAttribute("readonly", true);
               document
@@ -370,7 +381,10 @@ export default {
     },
     modifyNickname() {
       if (this.nicknameChk != true) {
-        alert("닉네임 중복 체크를 해 주세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "닉네임 중복체크를 해 주세요.",
+        });
       } else {
         axios
           .put("http://localhost:8080/account/modify/nickname", {
@@ -380,7 +394,10 @@ export default {
           .then((response) => {
             this.result = response.data;
             this.$session.set("user", response.data.object);
-            alert("회원정보수정 성공!");
+            Swal.fire({
+              icon: "success",
+              title: "회원정보수정 성공",
+            });
             this.$router.go();
           })
           .catch((err) => {
@@ -396,7 +413,10 @@ export default {
     //비밀번호변경관련메서드
     checkNowPW() {
       if (this.nowPW == "") {
-        alert("현재 비밀번호를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "현재 비밀번호를 입력하세요.",
+        });
         document.getElementById("nowPW").focus(); //+
         return;
       }
@@ -411,32 +431,45 @@ export default {
       })
         .then((response) => {
           this.nowPWChk = true;
-          alert(
-            "현재 비밀번호가 확인되었습니다. 새로운 비밀번호를 입력해주세요."
-          ); //+
+          Swal.fire({
+            icon: "success",
+            title: "현재 비밀번호가 확인되었습니다.",
+            text: "새로운 비밀번호를 입력해주세요.",
+          });
           document.getElementById("nowPW").setAttribute("readonly", true);
           document.getElementById("pwModBtn").removeAttribute("disabled"); //+
         })
         .catch((err) => {
           console.log("ERROR :", err);
-          alert(
-            "비밀번호를 확인해주세요. \n비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다."
-          );
+          Swal.fire({
+            icon: "error",
+            title: "비밀번호를 확인해주세요.",
+            text: "비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.",
+          });
           this.nowPW = ""; //+??
           document.getElementById("nowPW").focus(); //+
         });
     },
     modifyPW() {
       if (this.newPW1 == "") {
-        alert("새로운 비밀번호를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "새로운 비밀번호를 입력하세요.",
+        });
         document.getElementById("newPW1").focus();
         return;
       } else if (this.newPW2 == "") {
-        alert("새로운 비밀번호를 한번 더 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "새로운 비밀번호를 한번 더 입력하세요.",
+        });
         document.getElementById("newPW2").focus();
         return;
       } else if (this.newPW1 != this.newPW2) {
-        alert("비밀번호가 일치하지 않습니다.");
+        Swal.fire({
+          icon: "error",
+          title: "비밀번호가 일치하지 않습니다.",
+        });
         document.getElementById("newPW2").focus();
         return;
       } else {
@@ -450,7 +483,10 @@ export default {
             let user = response.data.object;
             this.result = response.data;
             this.$session.set("user", user);
-            alert("비밀번호 변경 성공!");
+            Swal.fire({
+              icon: "success",
+              title: "비밀번호가 변경되었습니다.",
+            });
             this.$router.go();
           })
           .catch((err) => {
@@ -481,7 +517,10 @@ export default {
         .then((response) => {
           this.result = response.data;
           console.log(this.result);
-          alert("소개글 수정 성공!");
+          Swal.fire({
+            icon: "success",
+            title: "나를 소개하는 글이 변경되었습니다.",
+          });
           this.$router.go();
         })
         .catch((err) => {

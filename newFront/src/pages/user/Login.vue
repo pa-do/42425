@@ -73,15 +73,24 @@ export default {
   methods: {
     login() {
       if (this.email == "") {
-        alert("메일 주소를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "메일 주소를 입력하세요.",
+        });
         document.getElementById("email").focus();
         return;
       } else if (!this.validEmail(this.email)) {
-        alert("메일 형식을 확인하세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "메일 형식을 확인하세요.",
+        });
         document.getElementById("email").focus();
         return;
       } else if (this.password == "") {
-        alert("비밀번호를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "비밀번호를 입력하세요.",
+        });
         document.getElementById("password").focus();
         return;
       }
@@ -99,16 +108,25 @@ export default {
           this.user = response.data.object;
 
           this.$session.set("user", this.user);
-          this.$router.push("/");
-          this.$router.go();
-          this.$cookie.set("auth-token", this.user.uid, 1);
-          alert(this.user.nickname + "님 환영합니다!");
+          // this.$router.push("/");
+          // this.$router.go();
+          // this.$cookie.set("auth-token", this.user.uid, 1);
+          Swal.fire({
+            icon: "success",
+            title: this.user.nickname + "님 환영합니다!",
+          }).then(() => {
+            this.$router.push("/");
+            this.$router.go();
+            this.$cookie.set("auth-token", this.user.uid, 1);
+          });
         })
         .catch((err) => {
           console.log("ERROR :", err);
-          alert(
-            "이메일 또는 비밀번호를 확인해주세요. \n비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다."
-          );
+          Swal.fire({
+            icon: "error",
+            title: "이메일 또는 비밀번호를 확인하세요.",
+            text: "비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.",
+          });
         });
     },
     validEmail: function (email) {
