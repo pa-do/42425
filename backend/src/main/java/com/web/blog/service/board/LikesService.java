@@ -43,6 +43,29 @@ public class LikesService {
 		return likes;
 	}
 	
+	public boolean checkLikes(int uid,int bid) {
+		if(likesDao.checkLikes(uid, bid)!=null) {
+			likesDao.deleteByBidAndUid(bid, uid);
+			return true;
+		}
+		else {
+			likesDao.savebyBidAndUid(bid, uid);
+			return false;
+		}
+		}
+	
+	public boolean likesCheck(int uid,int bid) {
+		if(likesDao.checkLikes(uid, bid)!=null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+			
+		
+	
+	
 	
 
 }
