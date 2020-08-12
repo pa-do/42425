@@ -1,13 +1,11 @@
 <template>
   <div>
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax
-        class="page-header-image"
-        style="background-image:url('img/bg5.jpg')"
-      ></parallax>
+      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
         <div class="photo-container">
-          <img src="img/julie.jpg" alt />
+          <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+          <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
         </div>
         <div class="container">
           <div class="col-md-5 mx-auto">
@@ -35,23 +33,17 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                >
-                  중복 체크
-                </button>
+                >중복 체크</button>
                 <button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                >
-                  수정
-                </button>
+                >수정</button>
                 <button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                >
-                  취소
-                </button>
+                >취소</button>
               </div>
             </div>
           </div>
@@ -76,16 +68,10 @@
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-            >비밀번호 변경</n-button
-          >
+          >비밀번호 변경</n-button>
           <!--  -->
-          <modal
-            :show.sync="modals.classic"
-            headerClasses="justify-content-center"
-          >
-            <h4 slot="header" class="title title-up text-dark">
-              비밀번호 변경
-            </h4>
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -95,12 +81,7 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div
-              class="btn btn-primary btn-round btn-md btn-block"
-              @click="checkNowPW"
-            >
-              확인
-            </div>
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -122,21 +103,16 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
-                >수정</n-button
-              >
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </template>
           </modal>
           <!--  -->
-          <button class="btn btn-danger btn-round btn-md" @click="deleteAlert">
-            탈퇴 하기
-          </button>
+          <button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</button>
         </div>
       </div>
     </div>
@@ -168,9 +144,7 @@
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">
-            아직 자기소개를 입력하지 않았습니다.
-          </h5>
+          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
         </div>
         <div v-else>
           <textarea
@@ -180,18 +154,11 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <button
-            class="m-0 btn btn-primary btn-round btn-md mr-1"
-            @click="modifyBio"
-          >
-            수정
-          </button>
+          <button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</button>
           <button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-          >
-            취소
-          </button>
+          >취소</button>
         </div>
         <Contactme :user="user" :mine="mine" />
 
@@ -303,6 +270,8 @@
         </div>
       </div>
     </div>
+    <input type="file" ref="profileImg" id="profileImg" accept />
+    <button v-on:change="fileSelect()" @click="modifyProfileImg">ㄱㄱ</button>
   </div>
 </template>
 <script>
@@ -562,6 +531,41 @@ export default {
           console.log("Err!!!: ", err.response);
         });
     },
+    modifyProfileImg() {
+      // const requestHeaders = {
+      //   headers: { "content-Type": "multipart/form-data" },
+      // };
+
+      const formData = new FormData();
+      formData.append("profileImg", this.$refs.profileImg.files[0]);
+      console.log(formData);
+      // ret profileImg = document.getElementById("profileImg");
+      // formData.append("profileImg", profileImg.files[0]);
+
+      // console.log(requestHeaders);
+      console.log(this.$refs.profileImg.files[0]);
+
+      axios
+        .post(
+          `http://localhost:8080/file/uploadProfileImg/${this.uid}`,
+          formData,
+          {
+            headers: { "content-Type": "multipart/form-data" },
+          }
+        )
+        .then((response) => {
+          this.result = response.data;
+          this.$session.set("user", response.data.object);
+          alert("프로필 사진 변경 성공!");
+          this.$router.go();
+        })
+        .catch((err) => {
+          console.log("Err!!! :", err.response);
+        });
+    },
+    selectProfileImg() {
+      this.profileImg = this.$refs.profileImg.files[0];
+    },
   },
   watch: {},
   data: () => {
@@ -572,7 +576,7 @@ export default {
       email: "",
       nickname: "",
       password: "",
-      profile_img: "",
+      profileImg: "",
       bio: "",
       passwordType: "password",
       passwordConfirmType: "password",
