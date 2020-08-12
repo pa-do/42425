@@ -276,6 +276,7 @@
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
 import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
+import Resume from "../user/Resume";
 import axios from "axios";
 
 export default {
@@ -284,12 +285,13 @@ export default {
   components: {
     Tabs,
     TabPane,
-    Userpost,
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
 
     Contactme,
+    Userpost,
+    Resume,
   },
   created() {
     this.pageuid = this.$route.params.uid;
