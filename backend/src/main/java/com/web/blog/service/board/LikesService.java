@@ -54,6 +54,14 @@ public class LikesService {
 		}
 		}
 	
+	public boolean likesCheck(int uid,int bid) {
+		if(likesDao.checkLikes(uid, bid)!=null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 			
 		
 	
