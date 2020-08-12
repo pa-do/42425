@@ -60,6 +60,12 @@ public class LikesController {
 	public boolean check(int uid,int bid) {
 		return likesService.checkLikes(uid, bid);
 	}
+	
+	@PostMapping(value="/likesCheck")
+	public boolean checkLikes(int uid,int bid) {
+		return likesService.likesCheck(uid, bid);
+	}
+	
 
 	
 	/*
