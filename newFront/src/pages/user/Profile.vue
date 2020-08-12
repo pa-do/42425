@@ -129,12 +129,12 @@
             <i class="fab fa-twitter"></i>
           </a>
           <a
-            href="#button"
+            :href="`${user.website}`"
             class="btn btn-default btn-round btn-lg btn-icon"
             rel="tooltip"
-            title="Follow me on Instagram"
+            title="Follow me on github"
           >
-            <i class="fab fa-instagram"></i>
+            <i class="fab fa-github"></i>
           </a>
         </div>
         <h3 class="title">
@@ -178,7 +178,8 @@
               <i slot="label" class="far fa-address-card"></i>
               <h3 class="title pt-0">Resume</h3>
               <div class="col-md-10 mx-auto">
-                <div class="row collections">
+                <Resume :uid="this.pageuid" :mine="mine" @update="getdata" />
+                <!-- <div class="row collections">
                   <div class="col-md-6">
                     <div class="my-5">
                       <span class="text-primary">2014-2015</span>
@@ -227,7 +228,7 @@
                       </p>
                     </div>
                   </div>
-                </div>
+                </div>-->
               </div>
             </tab-pane>
 

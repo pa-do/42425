@@ -124,7 +124,7 @@
                   </span>
                 </th>
                 <span v-if="!update_website">
-                  <td>{{user.website}}</td>
+                  <a :href="`${user.website}`">{{user.website}}</a>
                 </span>
                 <span v-else>
                   <fg-input
@@ -177,7 +177,9 @@
               <span v-if="user.website">
                 <tr>
                   <th scope="row">Github</th>
-                  <td>{{user.website}}</td>
+                  <td>
+                    <a :href="`${user.website}`">{{user.website}}</a>
+                  </td>
                 </tr>
               </span>
             </tbody>
