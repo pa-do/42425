@@ -47,15 +47,15 @@
                 </span>
                 <span v-else>
                   <td>
-                    <fg-input>
+                    <!-- <fg-input>
                       <el-date-picker
                         v-model="newBD"
                         popper-class="date-picker"
                         type="date"
                         placeholder="Select date"
                       ></el-date-picker>
-                    </fg-input>
-                    <!-- <input type="date" v-model="newDB" /> -->
+                    </fg-input>-->
+                    <input type="date" v-model="newBD" id="newBD" placeholder="생년월일을 입력하세요." />
 
                     <n-button
                       @click="modifybirthDate"

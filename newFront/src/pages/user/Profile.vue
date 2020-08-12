@@ -6,9 +6,17 @@
         style="background-image:url('img/bg5.jpg')"
       ></parallax>
       <div class="container">
-        <div class="photo-container">
-          <img v-if="!user.profileImg" src="img/julie.jpg" alt />
-          <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
+          <div id="pimg">
+            <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+          </div>
+        </div>
+        <div v-else class="photo-container" @click="modifyPimg">
+          <div id="pimg">
+            <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+          </div>
         </div>
         <div class="container">
           <div class="col-md-5 mx-auto">
@@ -298,8 +306,6 @@
         </div>
       </div>
     </div>
-    <input type="file" ref="profileImg" id="profileImg" accept />
-    <button v-on:change="fileSelect()" @click="modifyProfileImg">ㄱㄱ</button>
   </div>
 </template>
 <script>
@@ -347,9 +353,7 @@ export default {
             //+ null, undefined, "" 모두 처리할 수 있게 변경
             this.bio = data.object.bio;
           }
-          console.log(data.object);
           this.user = data.object;
-          console.log(this.user.birthDate);
 
           if (this.$session.get("user").uid === this.user.uid) {
             this.mine = true;
@@ -598,40 +602,51 @@ export default {
           console.log("Err!!!: ", err.response);
         });
     },
-    modifyProfileImg() {
-      // const requestHeaders = {
-      //   headers: { "content-Type": "multipart/form-data" },
-      // };
 
-      const formData = new FormData();
-      formData.append("profileImg", this.$refs.profileImg.files[0]);
-      console.log(formData);
-      // ret profileImg = document.getElementById("profileImg");
-      // formData.append("profileImg", profileImg.files[0]);
+    async modifyPimg() {
+      if (this.mine === false) {
+        return;
+      }
+      const { value: file } = await Swal.fire({
+        title: "Select image",
+        input: "file",
+        inputAttributes: {
+          accept: "image/*",
+          "aria-label": "Upload your profile picture",
+        },
+      });
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          Swal.fire({
+            title: "Your uploaded picture",
+            imageUrl: e.target.result,
+            imageAlt: "The uploaded picture",
+          });
+        };
+        reader.readAsDataURL(file);
+        console.log(file);
 
-      // console.log(requestHeaders);
-      console.log(this.$refs.profileImg.files[0]);
+        const formData = new FormData();
+        formData.append("profileImg", file);
 
-      axios
-        .post(
-          `http://localhost:8080/file/uploadProfileImg/${this.uid}`,
-          formData,
-          {
-            headers: { "content-Type": "multipart/form-data" },
-          }
-        )
-        .then((response) => {
-          this.result = response.data;
-          this.$session.set("user", response.data.object);
-          alert("프로필 사진 변경 성공!");
-          this.$router.go();
-        })
-        .catch((err) => {
-          console.log("Err!!! :", err.response);
-        });
-    },
-    selectProfileImg() {
-      this.profileImg = this.$refs.profileImg.files[0];
+        axios
+          .post(
+            `http://localhost:8080/file/uploadProfileImg/${this.uid}`,
+            formData,
+            {
+              headers: { "content-Type": "multipart/form-data" },
+            }
+          )
+          .then((response) => {
+            this.result = response.data;
+            this.$session.set("user", response.data.object);
+            this.$router.go();
+          })
+          .catch((err) => {
+            console.log("Err!!! :", err.response);
+          });
+      }
     },
   },
   watch: {},
@@ -674,4 +689,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+#myphoto :hover {
+  filter: grayscale(80%);
+}
+</style>

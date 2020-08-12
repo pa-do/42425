@@ -6,13 +6,13 @@ import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 
 // 유저
-import Login from "./pages/user/Login.vue";
-import Logout from "./pages/user/Logout.vue";
-import Join from "./pages/user/Join.vue";
-import Modifypw from "./pages/user/Modifypw.vue";
-import Profile from "./pages/user/Profile.vue";
-import Contactme from "./pages/user/Contactme.vue";
-import MySkill from "./pages/user/MySkill.vue";
+import Login from "./pages/user/Login.vue"
+import Logout from "./pages/user/Logout.vue"
+import Join from "./pages/user/Join.vue"
+import Modifypw from "./pages/user/Modifypw.vue"
+import Profile from "./pages/user/Profile.vue"
+import Resume from "./pages/user/Resume.vue"
+import MySkill from "./pages/user/MySkill.vue"
 
 // 포스트
 import BoardDetail from "./pages/post/BoardDetail.vue";
@@ -100,9 +100,9 @@ export default new Router({
       },
     },
     {
-      path: "/contactme",
-      name: "contactme",
-      components: { default: Contactme },
+      path: "/resume",
+      name: "resume",
+      components: { default: Resume },
     },
     // post 관련
     {
