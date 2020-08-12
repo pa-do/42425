@@ -7,6 +7,7 @@
       <p class="mt-4">{{resume.content}}</p>
       <div v-if="mine">
         <n-button @click="modifyResume_on" class="btn btn-primary">수정</n-button>
+        <n-button @click="deleteResume" class="btn btn-danger">삭제</n-button>
       </div>
     </span>
     <span v-else>
@@ -67,7 +68,7 @@ export default {
     [Button.name]: Button,
     FgInput,
   },
-  props: ["uid", "mine", "resume"],
+  props: ["rid", "mine"],
   data: () => {
     return {
       modifyResume: false,
@@ -87,25 +88,73 @@ export default {
   methods: {
     getdata() {
       axios
-        .get(BASE_URL + `/portfolio/resume/${this.rid}`)
+        .get(BASE_URL + `/portfolio/resume/detail/${this.rid}`)
         .then((res) => {
-          console.log("here~!");
-          this.resumes = res.data.object;
+          this.resume = res.data.object;
         })
         .catch((err) => console.error(err));
     },
     modifyResume_on() {
       this.modifyResume = true;
       console.log(this.modifyResume);
-      this.getData();
+      this.getdata();
+      this.newSYear = this.resume.startYear;
+      this.newEYear = this.resume.endYear;
+      this.newTitle = this.resume.title;
+      this.newPlace = this.resume.place;
+      this.newContent = this.resume.content;
     },
     modifyResume_off() {
       this.modifyResume = false;
       console.log(this.modifyResume);
-      this.getData();
+      this.getdata();
     },
     modifyResume_() {
-      console.log(typeof resume);
+      axios
+        .put(BASE_URL + `/portfolio/resume/modify`, {
+          uid: this.resume.uid,
+          rid: this.resume.rid,
+          startYear: this.newSYear,
+          endYear: this.newEYear,
+          title: this.newTitle,
+          place: this.newPlace,
+          content: this.newContent,
+        })
+        .then((res) => {
+          console.log(res);
+          Swal.fire({
+            icon: "success",
+            title: "이력 수정 성공",
+            text: "이력을 성공적으로 수정하였습니다.",
+          });
+          this.modifyResume_off();
+          this.$emit("update");
+        })
+        .catch((err) => {
+          console.log("Err!!! :", err.response);
+        });
+    },
+    deleteResume() {
+      axios
+        .delete(
+          BASE_URL +
+            `/portfolio/resume/delete/${this.resume.uid}/${this.resume.rid}`
+        )
+        .then((res) => {
+          console.log(res);
+          Swal.fire({
+            title: "삭제 완료!",
+            text: "이력이 영구적으로 삭제되었습니다.",
+            icon: "success",
+            showConfirmButton: true,
+            confirmButtonText: "확인",
+          }).then(() => {
+            this.$emit("update");
+          });
+        })
+        .catch((err) => {
+          console.log("Err!!!: ", err);
+        });
     },
   },
 };

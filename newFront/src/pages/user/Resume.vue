@@ -6,7 +6,7 @@
     <div class="row justify-content-between">
       <span v-for="resume in resumes" :key="resume.rid">
         <div class="d-block col-md-6 my-5">
-          <ResumeDetail :uid="uid" :resume="resume" :mine="mine" @update="getdata" />
+          <ResumeDetail :rid="resume.rid" :mine="mine" @update="getdata" />
         </div>
       </span>
     </div>
