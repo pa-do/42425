@@ -2,10 +2,10 @@
   <div class="container">
     <div class="mt-5"></div>
     <div class="card mt-5">
-      <div class="card-header">{{ board.title }}</div>
+      <h1 class="card-header text-center">{{ board.title }}</h1>
       <div class="card-body">
-        <blockquote class="blockquote mb-0">
-          <p>{{ board.content }}</p>
+        <blockquote class="blockquote mb-0 text-right">
+          <p class="text-left">{{ board.content }}</p>
           <footer class="blockquote-footer">{{ board.nickname }}</footer>
           <p>{{ board.writeDate.split("T").join(" ") }}</p>
         </blockquote>
