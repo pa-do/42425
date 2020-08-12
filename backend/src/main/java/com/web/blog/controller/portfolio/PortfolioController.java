@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.blog.dao.portfolio.MySkillDao;
@@ -20,6 +21,7 @@ import com.web.blog.dao.portfolio.ResumeDao;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.portfolio.Myskill;
 import com.web.blog.model.portfolio.Resume;
+import com.web.blog.model.user.User;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -39,17 +41,15 @@ public class PortfolioController {
 	ResumeDao resumeDao;
 	
 	@PostMapping("/skill/create")
-	@ApiOperation(value = "스킬 등록하기")
-	public Object createSkill (@RequestBody Myskill ms) {
+	@ApiOperation(value = "스킬 등록하기", notes = "default 스킬 등록 (uid, '기술명', 0 )")
+	public Object createSkill (@RequestBody User user) {
 		 final BasicResponse result = new BasicResponse();
-		
+  
 		 ResponseEntity response = null;
-		 
-		 Myskill newskill = mySkillDao.save(ms);
-		if(newskill != null) {
+
+		 if(mySkillDao.insertDefaultSkill(user.getUid()) != 0) {
 			result.status = true;
 	        result.data = "success";
-	        result.object = newskill;
 	        response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -65,7 +65,11 @@ public class PortfolioController {
 			
 		ResponseEntity response = null;
 		
-		List<Myskill> skills = mySkillDao.findByUid(uid);
+//		List<Myskill> skills = mySkillDao.select(uid);
+		List<Myskill> skills = mySkillDao.findMyskillByUserUid(uid);
+		for (Myskill myskill : skills) {
+			System.out.println(myskill);
+		}
 		if(skills != null) {
 			result.status = true;
 	        result.data = "success";
@@ -74,18 +78,22 @@ public class PortfolioController {
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
+		
 		return response;
 	}
 	
 	@PutMapping("/skill/modify")
-	@ApiOperation(value = "스킬 퍼센테이지 수정하기")
+	@ApiOperation(value = "스킬 수정하기")
 	public Object modifySkill(@RequestBody List<Myskill> myskills) {
 		final BasicResponse result = new BasicResponse();
 		
 		try {
 			for (Myskill myskill : myskills) {
 				System.out.println(myskill.getSkill());
-				mySkillDao.updateSkills(myskill.getUid(), myskill.getSkill(), myskill.getValue());
+				mySkillDao.updateSkills(myskill.getUser().getUid(), 
+										myskill.getSid(), 
+										myskill.getSkill(), 
+										myskill.getValue());
 			}
 			result.status = true;
 			result.data = "success";

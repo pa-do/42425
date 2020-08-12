@@ -12,7 +12,8 @@
       <div class="row">
         <div class="col-md-6 animate-box" v-for="(skill,index) in myskill" :key="index" >
           <!-- 수정 모드 아닐 경우 -->
-          <div class="progress-wrap ftco-animate" v-if="!modifyMode"> 
+          <div class="progress-wrap ftco-animate" v-if="!modifyMode">
+            <h3>{{ skill.sid }}</h3> 
             <h3>{{ skill.skill }}</h3>
             <div class="progress">
               <div class="progress-bar btn-primary" role="progressbar" :aria-valuenow="skill.value"
@@ -73,7 +74,6 @@ export default {
         });
       },
       updateSkills(){
-        console.log("?");
         this.modifyMode = true;
       },
       delSkill(uid, skill){
@@ -87,39 +87,15 @@ export default {
         })
       },
       addSkill(){
-        Swal.fire({
-          title: 'Skill 추가',
-          input: 'text',
-          input: 'text',
-          inputAttributes: {
-            autocapitalize: 'off'
-          },
-          showCancelButton: true,
-          confirmButtonText: 'Look up',
-          showLoaderOnConfirm: true,
-          preConfirm: (login) => {
-            return fetch(`//api.github.com/users/${login}`)
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(response.statusText)
-                }
-                return response.json()
-              })
-              .catch(error => {
-                Swal.showValidationMessage(
-                  `Request failed: ${error}`
-                )
-              })
-          },
-          allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-          if (result.value) {
-            Swal.fire({
-              title: `${result.value.login}'s avatar`,
-              imageUrl: result.value.avatar_url
-            })
-          }
+        axios
+        .post(path + "/skill/create",{
+          uid : this.$session.get("user").uid
         })
+        .then((data) => {
+          console.log(this.myskill);
+          this.getSkills();
+        })
+        .catch((err) => console.log(err));
       },
       modifyOk(){
         axios
@@ -127,6 +103,7 @@ export default {
             myskills : this.myskill,
         })
         .then((data) => {
+          console.log("성공 !!!ㄴ");
           console.log(data);
         })
         .catch((error) => {
