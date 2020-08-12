@@ -7,7 +7,8 @@
       ></parallax>
       <div class="container">
         <div class="photo-container">
-          <img src="img/julie.jpg" alt />
+          <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+          <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
         </div>
         <div class="container">
           <div class="col-md-5 mx-auto">
@@ -297,6 +298,8 @@
         </div>
       </div>
     </div>
+    <input type="file" ref="profileImg" id="profileImg" accept />
+    <button v-on:change="fileSelect()" @click="modifyProfileImg">ㄱㄱ</button>
   </div>
 </template>
 <script>
@@ -595,6 +598,41 @@ export default {
           console.log("Err!!!: ", err.response);
         });
     },
+    modifyProfileImg() {
+      // const requestHeaders = {
+      //   headers: { "content-Type": "multipart/form-data" },
+      // };
+
+      const formData = new FormData();
+      formData.append("profileImg", this.$refs.profileImg.files[0]);
+      console.log(formData);
+      // ret profileImg = document.getElementById("profileImg");
+      // formData.append("profileImg", profileImg.files[0]);
+
+      // console.log(requestHeaders);
+      console.log(this.$refs.profileImg.files[0]);
+
+      axios
+        .post(
+          `http://localhost:8080/file/uploadProfileImg/${this.uid}`,
+          formData,
+          {
+            headers: { "content-Type": "multipart/form-data" },
+          }
+        )
+        .then((response) => {
+          this.result = response.data;
+          this.$session.set("user", response.data.object);
+          alert("프로필 사진 변경 성공!");
+          this.$router.go();
+        })
+        .catch((err) => {
+          console.log("Err!!! :", err.response);
+        });
+    },
+    selectProfileImg() {
+      this.profileImg = this.$refs.profileImg.files[0];
+    },
   },
   watch: {},
   data: () => {
@@ -605,7 +643,7 @@ export default {
       email: "",
       nickname: "",
       password: "",
-      profile_img: "",
+      profileImg: "",
       bio: "",
       passwordType: "password",
       passwordConfirmType: "password",
