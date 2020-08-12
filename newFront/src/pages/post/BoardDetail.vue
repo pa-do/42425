@@ -6,8 +6,15 @@
       <div class="card-body">
         <blockquote class="blockquote mb-0 text-right">
           <p class="text-left">{{ board.content }}</p>
-          <footer class="blockquote-footer">{{ board.nickname }}</footer>
-          <p>{{ board.writeDate.split("T").join(" ") }}</p>
+          <footer class="blockquote-footer">
+            {{ board.nickname }}
+            <p>{{ board.writeDate.split("T").join(" ") }}</p>
+            <h3 class="mb-0">
+              <i v-if="!likechk" class="far fa-heart" @click="likes"></i>
+              <i v-else class="far fa-heart text-danger" @click="likes"></i>
+              {{ board.likes_count }}
+            </h3>
+          </footer>
         </blockquote>
       </div>
       <div v-if="isAuthorized" class="text-right">
@@ -31,11 +38,12 @@ export default {
     [Button.name]: Button,
     Comment,
   },
-  data: function () {
+  data: function() {
     return {
       board: Object,
       bid: "",
       isAuthorized: false,
+      likechk: false,
     };
   },
   methods: {
@@ -46,6 +54,7 @@ export default {
         .then((res) => {
           this.board = res.data;
           this.bid = this.board.bid;
+          this.likechking();
           if (this.board.uid == this.$cookie.get("auth-token")) {
             this.isAuthorized = true;
           }
@@ -81,6 +90,37 @@ export default {
           this.deleteBoard();
         }
       });
+    },
+    likes() {
+      axios
+        .post("http://localhost:8080/likes/checkLikes", null, {
+          params: {
+            bid: this.board.bid,
+            uid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.likechk = res.data;
+          this.fetchBoard();
+        })
+        // .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+    },
+    likechking() {
+      axios
+        .post("http://localhost:8080/likes/likesCheck", null, {
+          params: {
+            bid: this.board.bid,
+            uid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.likechk = res.data;
+        })
+        // .then((res) => console.log(res))
+        .catch((err) => console.error(err));
     },
   },
   created() {
