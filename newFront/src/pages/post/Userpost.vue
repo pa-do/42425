@@ -31,7 +31,7 @@
                 >{{ board.writeDate.split("T").join(" ") }}ㆍ</span
               >
               <span>댓글 0개ㆍ</span>
-              <span class="text-danger" @click="likes">❤ 0</span>
+              <span class="text-danger">❤ {{ board.likes_count }}</span>
             </div>
           </div>
         </div>
@@ -93,19 +93,6 @@ export default {
     },
     gowrite() {
       this.$router.push("/board/write");
-    },
-    likes() {
-      axios
-        .get(BASE_URL + `/board/${this.$route.params.bid}`)
-        .then((res) => {
-          this.board = res.data;
-          this.bid = this.board.bid;
-          if (this.board.uid == this.$cookie.get("auth-token")) {
-            this.isAuthorized = true;
-          }
-        })
-        // .then((res) => console.log(res))
-        .catch((err) => console.error(err));
     },
   },
   filters: {
