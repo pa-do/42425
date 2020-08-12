@@ -108,12 +108,16 @@ export default {
           this.user = response.data.object;
 
           this.$session.set("user", this.user);
-          this.$router.push("/");
-          this.$router.go();
-          this.$cookie.set("auth-token", this.user.uid, 1);
+          // this.$router.push("/");
+          // this.$router.go();
+          // this.$cookie.set("auth-token", this.user.uid, 1);
           Swal.fire({
             icon: "success",
             title: this.user.nickname + "님 환영합니다!",
+          }).then(() => {
+            this.$router.push("/");
+            this.$router.go();
+            this.$cookie.set("auth-token", this.user.uid, 1);
           });
         })
         .catch((err) => {

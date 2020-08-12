@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h2>전체글</h2>
-    <n-button class="btn btn-danger" @click="gowrite">글쓰기</n-button>
+    <!-- <h2>전체글</h2> -->
+    <div class="text-right">
+      <n-button class="btn btn-danger" @click="gowrite">글쓰기</n-button>
+    </div>
     <div class="row">
       <div v-for="board in boards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
         <div class="d-flex justify-content-center mt-4">
@@ -12,10 +14,18 @@
               src="https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png"
               alt="Card image cap"
             />
+            <!-- <img
+              slot="image"
+              class="card-img-top"
+              src="https://picsum.photos/200/300"
+              alt="Card image cap"
+            />-->
             <div class="container">
               <h4 class="card-title">{{ board.title }}</h4>
               <p class="card-text">{{ board.content| truncate(20, '...') }}</p>
               <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
+              <span>댓글 0개ㆍ</span>
+              <span class="text-danger">❤ 0</span>
             </div>
           </div>
         </div>

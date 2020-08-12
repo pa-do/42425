@@ -4,7 +4,8 @@
       <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
         <div class="photo-container">
-          <img src="img/julie.jpg" alt />
+          <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+          <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
         </div>
         <div class="container">
           <div class="col-md-5 mx-auto">
@@ -252,8 +253,8 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
+                <!-- <div class="row collections"> -->
+                <!-- <div class="col-md-6">
                     <img src="img/bg1.jpg" alt class="img-raised" />
                     <img src="img/bg3.jpg" alt class="img-raised" />
                   </div>
@@ -261,7 +262,7 @@
                     <img src="img/bg8.jpg" alt class="img-raised" />
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
-                </div>
+                </div>-->
                 <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
@@ -269,6 +270,8 @@
         </div>
       </div>
     </div>
+    <input type="file" ref="profileImg" id="profileImg" accept />
+    <button v-on:change="fileSelect()" @click="modifyProfileImg">ㄱㄱ</button>
   </div>
 </template>
 <script>
@@ -565,6 +568,41 @@ export default {
           console.log("Err!!!: ", err.response);
         });
     },
+    modifyProfileImg() {
+      // const requestHeaders = {
+      //   headers: { "content-Type": "multipart/form-data" },
+      // };
+
+      const formData = new FormData();
+      formData.append("profileImg", this.$refs.profileImg.files[0]);
+      console.log(formData);
+      // ret profileImg = document.getElementById("profileImg");
+      // formData.append("profileImg", profileImg.files[0]);
+
+      // console.log(requestHeaders);
+      console.log(this.$refs.profileImg.files[0]);
+
+      axios
+        .post(
+          `http://localhost:8080/file/uploadProfileImg/${this.uid}`,
+          formData,
+          {
+            headers: { "content-Type": "multipart/form-data" },
+          }
+        )
+        .then((response) => {
+          this.result = response.data;
+          this.$session.set("user", response.data.object);
+          alert("프로필 사진 변경 성공!");
+          this.$router.go();
+        })
+        .catch((err) => {
+          console.log("Err!!! :", err.response);
+        });
+    },
+    selectProfileImg() {
+      this.profileImg = this.$refs.profileImg.files[0];
+    },
   },
   watch: {},
   data: () => {
@@ -575,7 +613,7 @@ export default {
       email: "",
       nickname: "",
       password: "",
-      profile_img: "",
+      profileImg: "",
       bio: "",
       passwordType: "password",
       passwordConfirmType: "password",
