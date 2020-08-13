@@ -81,7 +81,6 @@
 <script>
 import { Card, Button, FormGroupInput } from "@/components";
 import MainFooter from "@/layout/MainFooter";
-import axios from "axios";
 
 export default {
   name: "modifypw-page",
@@ -101,8 +100,8 @@ export default {
         });
         return;
       }
-      axios
-        .get(`http://localhost:8080/account/emailChk/${this.email}`)
+      this.$axios
+        .get(`/account/emailChk/${this.email}`)
         .then((response) => {
           this.result = response.data;
           if (this.result.data == "fail" && this.result.object == "email") {
@@ -126,8 +125,8 @@ export default {
       return re.test(email);
     },
     sendEmail() {
-      axios
-        .get(`http://localhost:8080/email/send/${this.email}`)
+      this.$axios
+        .get(`/email/send/${this.email}`)
         .then((response) => {
           Swal.fire({
             icon: "success",
@@ -142,20 +141,8 @@ export default {
     },
     authEmail() {
       if (this.authnum === this.input_authnum) {
-        console.log(this.email);
-        // axios
-        //   .post(`http://localhost:8080/account/getuid/`, {
-        //     email: this.email,
-        //   })
-        //   .then((response) => {
-        //     alert(response);
-        //   })
-        //   .catch((err) => {
-        //     alert(err);
-        //   });
-        axios({
-          method: "POST",
-          url: `http://localhost:8080/account/getuid`,
+        this.$axios
+          .post(`/account/getuid`, null, {
           params: {
             email: this.email,
           },
@@ -212,8 +199,8 @@ export default {
         document.getElementById("passwordConfirm").focus();
         return;
       } else {
-        axios
-          .put("http://localhost:8080/account/modify/password", {
+        this.$axios
+          .put("/account/modify/password", {
             uid: this.uid,
             password: this.password,
           })

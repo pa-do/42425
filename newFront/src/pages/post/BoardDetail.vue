@@ -27,11 +27,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import Comment from "./Comment";
 import { Button } from "@/components";
-
-const BASE_URL = "http://localhost:8080";
 
 export default {
   components: {
@@ -49,8 +46,8 @@ export default {
   methods: {
     fetchBoard() {
       // console.log(this.$route.params.bid);
-      axios
-        .get(BASE_URL + `/board/${this.$route.params.bid}`)
+      this.$axios
+        .get(`/board/${this.$route.params.bid}`)
         .then((res) => {
           this.board = res.data;
           this.bid = this.board.bid;
@@ -66,8 +63,8 @@ export default {
       this.$router.push(`/boardmodify/${item}`);
     },
     deleteBoard() {
-      axios
-        .delete(`http://localhost:8080/board/delete/${this.board.bid}`)
+      this.$axios
+        .delete(`/board/delete/${this.board.bid}`)
         .then((res) => {
           // console.log(res);
           this.$router.push(`/profile/${this.board.uid}`);
@@ -92,8 +89,8 @@ export default {
       });
     },
     likes() {
-      axios
-        .post("http://localhost:8080/likes/checkLikes", null, {
+      this.$axios
+        .post("/likes/checkLikes", null, {
           params: {
             bid: this.board.bid,
             uid: this.$cookie.get("auth-token"),
@@ -108,8 +105,8 @@ export default {
         .catch((err) => console.error(err));
     },
     likechking() {
-      axios
-        .post("http://localhost:8080/likes/likesCheck", null, {
+      this.$axios
+        .post("/likes/likesCheck", null, {
           params: {
             bid: this.board.bid,
             uid: this.$cookie.get("auth-token"),

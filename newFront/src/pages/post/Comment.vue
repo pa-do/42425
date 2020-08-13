@@ -22,8 +22,6 @@
 <script>
 import { FormGroupInput, Button } from "@/components";
 import CommentDetail from "./CommentDetail";
-import axios from "axios";
-const BASE_URL = "http://localhost:8080";
 
 export default {
   props: ["bid"],
@@ -41,8 +39,8 @@ export default {
   },
   methods: {
     fetchComment() {
-      axios
-        .get(BASE_URL + "/comment/board/" + this.bid)
+      this.$axios
+        .get("/comment/board/" + this.bid)
         .then((res) => {
           this.comments = res.data;
         })
@@ -57,8 +55,8 @@ export default {
     },
     writeComment() {
       this.cuid = this.$cookie.get("auth-token");
-      axios
-        .post(BASE_URL + "/comment/write", null, {
+      this.$axios
+        .post("/comment/write", null, {
           params: {
             bid: this.bid,
             content: this.newComment,

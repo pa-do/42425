@@ -21,9 +21,6 @@
 
 <script>
 import { Button, FormGroupInput as FgInput } from "@/components";
-import axios from "axios";
-
-const BASE_URL = "http://127.0.0.1:8080";
 
 export default {
   name: "Write",
@@ -43,8 +40,8 @@ export default {
   methods: {
     writeBoard() {
       this.writeData.uid = this.$cookie.get("auth-token");
-      axios
-        .post(BASE_URL + "/board/write", null, {
+      this.$axios
+        .post("/board/write", null, {
           params: {
             content: this.writeData.content,
             title: this.writeData.title,

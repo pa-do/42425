@@ -16,9 +16,6 @@
 
 <script>
 import { Button } from "@/components";
-import axios from "axios";
-
-const BASE_URL = "http://localhost:8080";
 
 export default {
   components: {
@@ -33,8 +30,8 @@ export default {
   },
   methods: {
     fetchBoard() {
-      axios
-        .get(BASE_URL + `/board/${this.$route.params.mid}`)
+      this.$axios
+        .get(`/board/${this.$route.params.mid}`)
         .then((res) => {
           this.board = res.data;
           this.title = this.board.title;
@@ -46,8 +43,8 @@ export default {
     },
     writeBoard() {
       this.board.uid = this.$cookie.get("auth-token");
-      axios
-        .put(BASE_URL + "/board/modify", null, {
+      this.$axios
+        .put("/board/modify", null, {
           params: {
             bid: this.board.bid,
             content: this.content,
