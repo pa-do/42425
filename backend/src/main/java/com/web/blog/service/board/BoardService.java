@@ -56,6 +56,15 @@ public class BoardService {
 		}
 		return board;
 	}
+	
+	public List<Board> searchBoardNickname(String keyword) {
+		List<Board> board = boardDao.searchNickname(keyword);
+		
+		if (board.isEmpty()) {
+			return null;
+		}
+		return board;
+	}
 
 	public List<Board> findByUid(int uid) {
 		List<Board> boards = new ArrayList<>();
