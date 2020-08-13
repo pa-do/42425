@@ -1,10 +1,7 @@
 <template>
   <div>
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax
-        class="page-header-image"
-        style="background-image:url('img/bg5.jpg')"
-      ></parallax>
+      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
         <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
           <div id="pimg">
@@ -44,20 +41,17 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                  >중복 체크</n-button
-                >
+                >중복 체크</n-button>
                 <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                  >수정</n-button
-                >
+                >수정</n-button>
                 <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                  >취소</n-button
-                >
+                >취소</n-button>
               </div>
             </div>
           </div>
@@ -82,16 +76,10 @@
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-            >비밀번호 변경</n-button
-          >
+          >비밀번호 변경</n-button>
           <!--  -->
-          <modal
-            :show.sync="modals.classic"
-            headerClasses="justify-content-center"
-          >
-            <h4 slot="header" class="title title-up text-dark">
-              비밀번호 변경
-            </h4>
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -101,12 +89,7 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div
-              class="btn btn-primary btn-round btn-md btn-block"
-              @click="checkNowPW"
-            >
-              확인
-            </div>
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -128,21 +111,16 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
-                >수정</n-button
-              >
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert"
-            >탈퇴 하기</n-button
-          >
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
         </div>
       </div>
     </div>
@@ -174,9 +152,7 @@
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">
-            아직 자기소개를 입력하지 않았습니다.
-          </h5>
+          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
         </div>
         <div v-else>
           <textarea
@@ -186,16 +162,11 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <n-button
-            class="m-0 btn btn-primary btn-round btn-md mr-1"
-            @click="modifyBio"
-            >수정</n-button
-          >
+          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
           <n-button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-            >취소</n-button
-          >
+          >취소</n-button>
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
@@ -215,57 +186,7 @@
               <i slot="label" class="far fa-address-card"></i>
               <h3 class="title pt-0">Resume</h3>
               <div class="col-md-10 mx-auto">
-                <Resume :uid="this.pageuid" :mine="mine" @update="getdata" />
-                <!-- <div class="row collections">
-                  <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                  </div>
-                </div>-->
+                <Resume :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
 

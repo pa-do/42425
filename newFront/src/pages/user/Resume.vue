@@ -4,10 +4,10 @@
       <n-button @click="createResume" class="btn btn-primary">이력 추가</n-button>
     </div>
     <div class="row justify-content-between">
-      <span v-for="resume in resumes" :key="resume.rid">
-        <div class="d-block col-md-6 my-5">
-          <ResumeDetail :rid="resume.rid" :mine="mine" @update="getdata" />
-        </div>
+      <div class="d-block col-md-6 px-5 py-1"></div>
+      <div class="d-block col-md-6 px-5 py-1"></div>
+      <span v-for="resume in resumes" :key="resume.rid" class="col-md-6 my-5">
+        <ResumeDetail :rid="resume.rid" :mine="mine" @update="getdata" />
       </span>
     </div>
   </div>
@@ -56,10 +56,28 @@ export default {
           {
             title: "입사년도",
             text: "네 자리의 숫자를 입력하세요. (2020)",
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if ((1900 <= value) & (value <= 2020)) {
+                  resolve();
+                } else {
+                  resolve("입사년도를 네 자리의 숫자로 입력해주세요.");
+                }
+              });
+            },
           },
           {
             title: "퇴사년도",
             text: "네 자리의 숫자를 입력하세요. (2020)",
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if ((1900 <= value) & (value <= 2020)) {
+                  resolve();
+                } else {
+                  resolve("퇴사년도를 네 자리의 숫자로 입력해주세요.");
+                }
+              });
+            },
           },
           {
             title: "기업 또는 교육기관명",
@@ -99,7 +117,7 @@ export default {
                       title: "이력 등록 완료",
                       text: "새로운 이력을 등록하였습니다..",
                     });
-                    this.$emit("update");
+                    this.getdata();
                   }
                 })
                 .catch((err) => {
