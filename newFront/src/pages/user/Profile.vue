@@ -1,10 +1,7 @@
 <template>
   <div>
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax
-        class="page-header-image"
-        style="background-image:url('img/bg5.jpg')"
-      ></parallax>
+      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
         <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
           <div id="pimg">
@@ -44,20 +41,17 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                  >중복 체크</n-button
-                >
+                >중복 체크</n-button>
                 <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                  >수정</n-button
-                >
+                >수정</n-button>
                 <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                  >취소</n-button
-                >
+                >취소</n-button>
               </div>
             </div>
           </div>
@@ -82,16 +76,10 @@
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-            >비밀번호 변경</n-button
-          >
+          >비밀번호 변경</n-button>
           <!--  -->
-          <modal
-            :show.sync="modals.classic"
-            headerClasses="justify-content-center"
-          >
-            <h4 slot="header" class="title title-up text-dark">
-              비밀번호 변경
-            </h4>
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -101,12 +89,7 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div
-              class="btn btn-primary btn-round btn-md btn-block"
-              @click="checkNowPW"
-            >
-              확인
-            </div>
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -128,21 +111,16 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
-                >수정</n-button
-              >
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert"
-            >탈퇴 하기</n-button
-          >
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
         </div>
       </div>
     </div>
@@ -160,12 +138,12 @@
             <i class="fab fa-twitter"></i>
           </a>
           <a
-            href="#button"
+            :href="`${user.website}`"
             class="btn btn-default btn-round btn-lg btn-icon"
             rel="tooltip"
-            title="Follow me on Instagram"
+            title="Follow me on github"
           >
-            <i class="fab fa-instagram"></i>
+            <i class="fab fa-github"></i>
           </a>
         </div>
         <h3 class="title">
@@ -174,9 +152,7 @@
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">
-            아직 자기소개를 입력하지 않았습니다.
-          </h5>
+          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
         </div>
         <div v-else>
           <textarea
@@ -186,16 +162,11 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <n-button
-            class="m-0 btn btn-primary btn-round btn-md mr-1"
-            @click="modifyBio"
-            >수정</n-button
-          >
+          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
           <n-button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-            >취소</n-button
-          >
+          >취소</n-button>
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
@@ -215,56 +186,7 @@
               <i slot="label" class="far fa-address-card"></i>
               <h3 class="title pt-0">Resume</h3>
               <div class="col-md-10 mx-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <Resume :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
 
@@ -312,6 +234,7 @@
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
 import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
+import Resume from "../user/Resume";
 
 export default {
   name: "profile",
@@ -319,12 +242,13 @@ export default {
   components: {
     Tabs,
     TabPane,
-    Userpost,
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
 
     Contactme,
+    Userpost,
+    Resume,
   },
   created() {
     this.pageuid = this.$route.params.uid;
@@ -428,8 +352,10 @@ export default {
             Swal.fire({
               icon: "success",
               title: "회원정보수정 성공",
+            }).then(() => {
+              this.getdata();
+              this.updateNickname_off();
             });
-            this.$router.go();
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);
@@ -453,12 +379,12 @@ export default {
       }
       // console.log(this.email, this.nowPW);
       this.$axios
-      .post("/account/login", null, {
-        params: {
-          email: this.email,
-          password: this.nowPW,
-        },
-      })
+        .post("/account/login", null, {
+          params: {
+            email: this.email,
+            password: this.nowPW,
+          },
+        })
         .then((response) => {
           this.nowPWChk = true;
           Swal.fire({
@@ -516,8 +442,9 @@ export default {
             Swal.fire({
               icon: "success",
               title: "비밀번호가 변경되었습니다.",
+            }).then(() => {
+              this.$router.go();
             });
-            this.$router.go();
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);
@@ -550,8 +477,10 @@ export default {
           Swal.fire({
             icon: "success",
             title: "나를 소개하는 글이 변경되었습니다.",
+          }).then(() => {
+            this.getdata();
+            this.updateBio_off();
           });
-          this.$router.go();
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -629,17 +558,13 @@ export default {
         formData.append("profileImg", file);
 
         this.$axios
-          .post(
-            `/file/uploadProfileImg/${this.uid}`,
-            formData,
-            {
-              headers: { "content-Type": "multipart/form-data" },
-            }
-          )
+          .post(`/file/uploadProfileImg/${this.uid}`, formData, {
+            headers: { "content-Type": "multipart/form-data" },
+          })
           .then((response) => {
             this.result = response.data;
             this.$session.set("user", response.data.object);
-            this.$router.go();
+            this.getdata();
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);
