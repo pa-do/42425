@@ -38,9 +38,6 @@
 
 <script>
 import { FormGroupInput, Button } from "@/components";
-import axios from "axios";
-
-const BASE_URL = "http://localhost:8080";
 
 export default {
   components: {
@@ -63,8 +60,8 @@ export default {
       this.isShow = !this.isShow;
     },
     updateComment(item) {
-      axios
-        .put(BASE_URL + "/comment/modify", null, {
+      this.$axios
+        .put("/comment/modify", null, {
           params: {
             cid: this.comment.cid,
             content: this.newComment,
@@ -85,8 +82,8 @@ export default {
       }).then((this.isMode = true), this.updateComment());
     },
     deleteComment() {
-      axios
-        .delete(`http://localhost:8080/comment/delete/${this.comment.cid}`)
+      this.$axios
+        .delete(`/comment/delete/${this.comment.cid}`)
         .then((res) => {
           // console.log(res);
           this.$emit("update");

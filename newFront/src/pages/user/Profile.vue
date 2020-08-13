@@ -235,7 +235,6 @@ import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
 import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
-import axios from "axios";
 
 export default {
   name: "profile",
@@ -260,8 +259,8 @@ export default {
   methods: {
     getdata() {
       const params = new URL(document.location).searchParams;
-      axios
-        .get(`http://localhost:8080/account/${this.pageuid}`)
+      this.$axios
+        .get(`/account/${this.pageuid}`)
         .then(({ data }) => {
           this.uid = data.object.uid;
           this.email = data.object.email;
@@ -302,8 +301,8 @@ export default {
         });
         return;
       } else {
-        axios
-          .get(`http://localhost:8080/account/nicknameChk/${this.newNick}`)
+        this.$axios
+          .get(`/account/nicknameChk/${this.newNick}`)
           .then((response) => {
             this.result = response.data;
             if (
@@ -342,8 +341,8 @@ export default {
           title: "닉네임 중복체크를 해 주세요.",
         });
       } else {
-        axios
-          .put("http://localhost:8080/account/modify/nickname", {
+        this.$axios
+          .put("/account/modify/nickname", {
             uid: this.uid,
             nickname: this.newNick,
           })
@@ -379,14 +378,13 @@ export default {
         return;
       }
       // console.log(this.email, this.nowPW);
-      axios({
-        method: "POST",
-        url: `http://localhost:8080/account/login`,
-        params: {
-          email: this.email,
-          password: this.nowPW,
-        },
-      })
+      this.$axios
+        .post("/account/login", null, {
+          params: {
+            email: this.email,
+            password: this.nowPW,
+          },
+        })
         .then((response) => {
           this.nowPWChk = true;
           Swal.fire({
@@ -432,8 +430,8 @@ export default {
         return;
       } else {
         console.log(this.newPW1);
-        axios
-          .put("http://localhost:8080/account/modify/password", {
+        this.$axios
+          .put("/account/modify/password", {
             uid: this.uid,
             password: this.newPW1,
           })
@@ -468,8 +466,8 @@ export default {
       this.update_bio = true;
     },
     modifyBio() {
-      axios
-        .put("http://localhost:8080/account/modify/bio", {
+      this.$axios
+        .put("/account/modify/bio", {
           uid: this.uid,
           bio: document.getElementById("newBio").value,
         })
@@ -511,8 +509,8 @@ export default {
       });
     },
     deleteUser() {
-      axios
-        .delete(`http://localhost:8080/account/dropout/${this.uid}`)
+      this.$axios
+        .delete(`/account/dropout/${this.uid}`)
         .then((response) => {
           this.$session.destroy();
           this.$cookie.delete("auth-token");
@@ -559,14 +557,10 @@ export default {
         const formData = new FormData();
         formData.append("profileImg", file);
 
-        axios
-          .post(
-            `http://localhost:8080/file/uploadProfileImg/${this.uid}`,
-            formData,
-            {
-              headers: { "content-Type": "multipart/form-data" },
-            }
-          )
+        this.$axios
+          .post(`/file/uploadProfileImg/${this.uid}`, formData, {
+            headers: { "content-Type": "multipart/form-data" },
+          })
           .then((response) => {
             this.result = response.data;
             this.$session.set("user", response.data.object);

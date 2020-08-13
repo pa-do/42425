@@ -43,7 +43,6 @@
 
 <script>
 import { Button } from "@/components";
-import axios from "axios";
 // import InfiniteLoading from "vue-infinite-loading";
 
 export default {
@@ -62,8 +61,8 @@ export default {
   watch: {},
   methods: {
     fetchBoards() {
-      axios
-        .get("http://localhost:8080/board/byUser/" + this.uid)
+      this.$axios
+        .get("/board/byUser/" + this.uid)
         .then((res) => (this.boards = res.data))
         .catch((err) => console.error(err));
     },
@@ -73,8 +72,8 @@ export default {
       });
     },
     infiniteHandler($state) {
-      axios
-        .get("http://localhost:8080/board" + (this.limit + 10))
+      this.$axios
+        .get("/board" + (this.limit + 10))
         .then((response) => {
           setTimeout(() => {
             if (response.data.length) {
@@ -106,7 +105,7 @@ export default {
   },
   created() {
     this.fetchBoards();
-    // axios.get("http://localhost:8080/board" + this.limit).then((response) => {
+    // this.$axios.get("/board" + this.limit).then((response) => {
     //   this.boards = response.data;
     // });
   },

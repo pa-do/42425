@@ -41,6 +41,9 @@ public interface BoardDao extends JpaRepository<Board, Integer> {
 
 	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid and board.content like %?1% ORDER BY bid DESC", nativeQuery = true)
 	public List<Board> searchContent(@Param("keyword") String keyword);
+	
+	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid and user.nickname like %?1% ORDER BY bid DESC", nativeQuery = true)
+	public List<Board> searchNickname(@Param("keyword") String keyword);
 	// @Query(value = "select uid,bid,title,content from board where uid=?1",
 	// nativeQuery = true)
 	// public Board detail(@Param("bid") int bid);

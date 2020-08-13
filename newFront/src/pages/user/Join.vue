@@ -96,7 +96,6 @@
 <script>
 import { Card, Button, FormGroupInput } from "@/components";
 import MainFooter from "@/layout/MainFooter";
-import axios from "axios";
 export default {
   name: "join-page",
   bodyClass: "login-page",
@@ -108,9 +107,8 @@ export default {
   },
   methods: {
     checkNickname() {
-      console.log(this.nickname);
-      axios
-        .get(`http://localhost:8080/account/nicknameChk/${this.nickname}`)
+      this.$axios
+        .get(`/account/nicknameChk/${this.nickname}`)
         .then((response) => {
           this.result = response.data;
           if (this.result.data == "fail" && this.result.object == "nickname") {
@@ -142,8 +140,8 @@ export default {
         document.getElementById("Jemail").focus();
         return;
       }
-      axios
-        .get(`http://localhost:8080/account/emailChk/${this.email}`)
+      this.$axios
+        .get(`/account/emailChk/${this.email}`)
         .then((response) => {
           this.result = response.data;
           console.log(this.result);
@@ -237,16 +235,14 @@ export default {
         document.getElementById("password").focus();
         return;
       } else {
-        console.log(this.nickname, this.email, this.password);
-        axios
-          .post("http://localhost:8080/account/signup", {
+        this.$axios
+          .post("/account/signup", {
             nickname: this.nickname,
             email: this.email,
             password: this.password,
           })
           .then((response) => {
             this.result = response.data;
-            console.log(this.result);
             if (this.result.data != "fail") {
               this.user = response.data.object;
               this.$session.set("user", this.user);
@@ -273,8 +269,8 @@ export default {
       return re.test(email);
     },
     sendEmail() {
-      axios
-        .get(`http://localhost:8080/email/send/${this.email}`)
+      this.$axios
+        .get(`/email/send/${this.email}`)
         .then((response) => {
           Swal.fire({
             icon: "info",
