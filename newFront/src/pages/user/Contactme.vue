@@ -189,7 +189,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { FormGroupInput as FgInput, Button } from "@/components";
 import { DatePicker } from "element-ui";
 
@@ -229,8 +228,8 @@ export default {
       this.newName = null;
     },
     modifyName() {
-      axios
-        .put("http://localhost:8080/account/modify/name", {
+      this.$axios
+        .put("/account/modify/name", {
           uid: this.user.uid,
           name: this.newName,
         })
@@ -260,8 +259,8 @@ export default {
       this.newBD = null;
     },
     modifybirthDate() {
-      axios
-        .put("http://localhost:8080/account/modify/birthdate", {
+      this.$axios
+        .put("/account/modify/birthdate", {
           uid: this.user.uid,
           birthDate: this.newBD,
         })
@@ -291,8 +290,8 @@ export default {
       this.newAddress = null;
     },
     modifyAddress() {
-      axios
-        .put("http://localhost:8080/account/modify/address", {
+      this.$axios
+        .put("/account/modify/address", {
           uid: this.user.uid,
           address: this.newAddress,
         })
@@ -335,8 +334,8 @@ export default {
         document.getElementById("newPhone").focus();
         return;
       }
-      axios
-        .put("http://localhost:8080/account/modify/phone", {
+      this.$axios
+        .put("/account/modify/phone", {
           uid: this.user.uid,
           phone: this.newPhone.replace(/[^0-9]/g, ""),
         })
@@ -366,8 +365,8 @@ export default {
       this.newWeb = null;
     },
     modifyWebsite() {
-      axios
-        .put("http://localhost:8080/account/modify/website", {
+      this.$axios
+        .put("/account/modify/website", {
           uid: this.user.uid,
           website: this.newWeb,
         })

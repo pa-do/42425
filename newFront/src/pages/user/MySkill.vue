@@ -43,10 +43,7 @@
 
 
 <script>
-import axios from 'axios';
 import FormGroupInput from '../../components/Inputs/formGroupInput' 
-
-const path = "http://localhost:8080/portfolio"
 
 export default {
     components:{
@@ -66,8 +63,8 @@ export default {
     },
     methods: {
       getSkills(){
-         axios
-        .get(path + `/skill/${this.$session.get("user").uid}`)
+        this.$axios
+        .get(`/portfolio/skill/${this.$session.get("user").uid}`)
         .then((data) => {
             this.myskill = data.data.object; 
         });
@@ -77,8 +74,8 @@ export default {
         this.modifyMode = true;
       },
       delSkill(uid, skill){
-        axios
-        .delete(path + `/skill/delete/${uid}/${skill}`)
+        this.$axios
+        .delete(`/portfolio/skill/delete/${uid}/${skill}`)
         .then((data) => {
           console.log(data);
         })
@@ -122,8 +119,8 @@ export default {
         })
       },
       modifyOk(){
-        axios
-        .put(path + `/skill/modify`,{
+        this.$axios
+        .put(`/portfolio/skill/modify`,{
             myskills : this.myskill,
         })
         .then((data) => {
