@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { Button } from "@/components";
 import ResumeDetail from "../user/ResumeDetail";
 
@@ -38,8 +37,8 @@ export default {
   },
   methods: {
     getdata() {
-      axios
-        .get(BASE_URL + `/portfolio/resume/${this.uid}`)
+      this.$axios
+        .get(`/portfolio/resume/${this.uid}`)
         .then((res) => {
           this.resumes = res.data.object;
         })
@@ -100,8 +99,8 @@ export default {
               html: `Your answers: <pre><code>${answers}</code></pre>`,
               confirmButtonText: "이력 등록",
             }).then(() => {
-              axios
-                .post(BASE_URL + `/portfolio/resume/create`, {
+              this.$axios
+                .post(`/portfolio/resume/create`, {
                   uid: this.uid,
                   startYear: result.value[0],
                   endYear: result.value[1],

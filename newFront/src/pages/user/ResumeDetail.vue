@@ -72,10 +72,7 @@
 </template>
 
 <script>
-import axios from "axios";
 import { Button, FormGroupInput as FgInput } from "@/components";
-
-const BASE_URL = "http://localhost:8080";
 
 export default {
   name: "resume",
@@ -102,8 +99,8 @@ export default {
   },
   methods: {
     getdata() {
-      axios
-        .get(BASE_URL + `/portfolio/resume/detail/${this.rid}`)
+      this.$axios
+        .get(`/portfolio/resume/detail/${this.rid}`)
         .then((res) => {
           this.resume = res.data.object;
         })
@@ -142,8 +139,8 @@ export default {
         return;
       }
 
-      axios
-        .put(BASE_URL + `/portfolio/resume/modify`, {
+      this.$axios
+        .put(`/portfolio/resume/modify`, {
           uid: this.resume.uid,
           rid: this.resume.rid,
           startYear: this.newSYear,
@@ -167,10 +164,9 @@ export default {
         });
     },
     deleteResume() {
-      axios
+      this.$axios
         .delete(
-          BASE_URL +
-            `/portfolio/resume/delete/${this.resume.uid}/${this.resume.rid}`
+          `/portfolio/resume/delete/${this.resume.uid}/${this.resume.rid}`
         )
         .then((res) => {
           console.log(res);
