@@ -111,7 +111,6 @@ export default {
     },
     modifyResume_on() {
       this.modifyResume = true;
-      console.log(this.modifyResume);
       this.getdata();
       this.newSYear = this.resume.startYear;
       this.newEYear = this.resume.endYear;
@@ -121,10 +120,28 @@ export default {
     },
     modifyResume_off() {
       this.modifyResume = false;
-      console.log(this.modifyResume);
       this.getdata();
     },
     modifyResume_() {
+      const nsy = this.newSYear * 1;
+      if (nsy < 1900 || nsy > 3000) {
+        Swal.fire({
+          icon: "warning",
+          title: "잘못된 입사년도입니다.",
+          text: "입사년도를 네 자리의 숫자로 입력해주세요.",
+        });
+        return;
+      }
+      const ney = this.newEYear * 1;
+      if (ney < 1900 || ney > 3000) {
+        Swal.fire({
+          icon: "warning",
+          title: "잘못된 퇴사년도입니다.",
+          text: "퇴사년도를 네 자리의 숫자로 입력해주세요.",
+        });
+        return;
+      }
+
       axios
         .put(BASE_URL + `/portfolio/resume/modify`, {
           uid: this.resume.uid,
