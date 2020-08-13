@@ -353,8 +353,10 @@ export default {
             Swal.fire({
               icon: "success",
               title: "회원정보수정 성공",
+            }).then(() => {
+              this.getdata();
+              this.updateNickname_off();
             });
-            this.$router.go();
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);
@@ -442,8 +444,9 @@ export default {
             Swal.fire({
               icon: "success",
               title: "비밀번호가 변경되었습니다.",
+            }).then(() => {
+              this.$router.go();
             });
-            this.$router.go();
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);
@@ -476,8 +479,10 @@ export default {
           Swal.fire({
             icon: "success",
             title: "나를 소개하는 글이 변경되었습니다.",
+          }).then(() => {
+            this.getdata();
+            this.updateBio_off();
           });
-          this.$router.go();
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -565,7 +570,7 @@ export default {
           .then((response) => {
             this.result = response.data;
             this.$session.set("user", response.data.object);
-            this.$router.go();
+            this.getdata();
           })
           .catch((err) => {
             console.log("Err!!! :", err.response);

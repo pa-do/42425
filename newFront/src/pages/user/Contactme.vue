@@ -93,7 +93,9 @@
                   </span>
                 </th>
                 <span v-if="!update_phone">
-                  <td>{{user.phone.substring(0,3)}} - {{user.phone.substring(3,7)}} - {{user.phone.substring(7,11)}}</td>
+                  <span v-if="user.phone">
+                    <td>{{user.phone.substring(0,3)}} - {{user.phone.substring(3,7)}} - {{user.phone.substring(7,11)}}</td>
+                  </span>
                 </span>
                 <span v-else>
                   <fg-input
