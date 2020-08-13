@@ -1,35 +1,38 @@
 <template>
-  <div class="page-header clear-filter" filter-color="orange">
+  <div class="page-header clear-filter" filter-color="orange-">
     <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="content">
       <div class="container">
+        <div class="d-block d-sm-none py-5"></div>
         <div class="col-md-5 ml-auto mr-auto">
           <card type="login" plain>
             <div slot="header" class="logo-container">
               <img v-lazy="'img/now-logo.png'" alt />
             </div>
 
-            <input
-              v-model="email"
+            <fg-input
               id="email"
+              v-model="email"
+              class="no-border form-control-md"
               placeholder="이메일을 입력해주세요"
+              addon-left-icon="now-ui-icons users_circle-08"
               type="text"
-              class="form-control no-border input-l py-3 my-3"
               @keyup.enter="login"
-            />
+            ></fg-input>
 
-            <input
-              v-model="password"
-              type="password"
+            <fg-input
               id="password"
+              v-model="password"
+              class="no-border form-control-md mt-2"
               placeholder="영문, 숫자 혼용 8자 이상"
-              class="form-control no-border input-lg py-3 my-3"
+              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+              type="password"
               @keyup.enter="login"
-            />
+            ></fg-input>
 
             <template slot="raw-content">
               <div class="card-footer text-center">
-                <div class="btn btn-primary btn-round btn-lg btn-block" @click="login">Login</div>
+                <div class="btn btn-primary btn-round btn-md btn-block" @click="login">Login</div>
               </div>
               <div class="pull-left">
                 <h6>
@@ -48,13 +51,14 @@
         </div>
       </div>
     </div>
-    <main-footer></main-footer>
+    <div class="d-none d-sm-block">
+      <main-footer></main-footer>
+    </div>
   </div>
 </template>
 <script>
 import { Card, Button, FormGroupInput } from "@/components";
 import MainFooter from "@/layout/MainFooter";
-import axios from "axios";
 
 export default {
   name: "login-page",
@@ -68,22 +72,30 @@ export default {
   methods: {
     login() {
       if (this.email == "") {
-        alert("메일 주소를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "메일 주소를 입력하세요.",
+        });
         document.getElementById("email").focus();
         return;
       } else if (!this.validEmail(this.email)) {
-        alert("메일 형식을 확인하세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "메일 형식을 확인하세요.",
+        });
         document.getElementById("email").focus();
         return;
       } else if (this.password == "") {
-        alert("비밀번호를 입력하세요.");
+        Swal.fire({
+          icon: "info",
+          title: "비밀번호를 입력하세요.",
+        });
         document.getElementById("password").focus();
         return;
       }
 
-      axios({
-        method: "POST",
-        url: `http://localhost:8080/account/login`,
+      this.$axios
+      .post("/account/login", null, {
         params: {
           email: this.email,
           password: this.password,
@@ -94,18 +106,25 @@ export default {
           this.user = response.data.object;
 
           this.$session.set("user", this.user);
-          this.$router.push("/#/");
-          this.$router.go();
-
-          this.$cookie.set("auth-token", this.user.uid, 1);
-
-          alert(this.user.nickname + "님 환영합니다!");
+          // this.$router.push("/");
+          // this.$router.go();
+          // this.$cookie.set("auth-token", this.user.uid, 1);
+          Swal.fire({
+            icon: "success",
+            title: this.user.nickname + "님 환영합니다!",
+          }).then(() => {
+            this.$router.push("/");
+            this.$router.go();
+            this.$cookie.set("auth-token", this.user.uid, 1);
+          });
         })
         .catch((err) => {
           console.log("ERROR :", err);
-          alert(
-            "이메일 또는 비밀번호를 확인해주세요. \n비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다."
-          );
+          Swal.fire({
+            icon: "error",
+            title: "이메일 또는 비밀번호를 확인하세요.",
+            text: "비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.",
+          });
         });
     },
     validEmail: function (email) {

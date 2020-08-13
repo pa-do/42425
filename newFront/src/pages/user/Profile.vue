@@ -1,0 +1,619 @@
+<template>
+  <div>
+    <div class="page-header clear-filter" filter-color="orange-">
+      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
+      <div class="container">
+        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
+          <div id="pimg">
+            <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+          </div>
+        </div>
+        <div v-else class="photo-container" @click="modifyPimg">
+          <div id="pimg">
+            <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+          </div>
+        </div>
+        <div class="container">
+          <div class="col-md-5 mx-auto">
+            <div v-if="!update_nickname">
+              <div>
+                <h3 class="title">
+                  {{ nickname }}
+                  <i class="far fa-edit" @click="updateNickname_on"></i>
+                </h3>
+              </div>
+            </div>
+            <div v-else>
+              <p>새로운 닉네임을 입력하고 중복 체크해주세요.</p>
+              <fg-input
+                v-model="newNick"
+                id="newNick"
+                placeholder="닉네임을 입력해주세요"
+                type="text"
+                class="no-border form-control-md my-3"
+                addon-left-icon="now-ui-icons users_circle-08"
+                autofocus
+              ></fg-input>
+              <div class="d-flex">
+                <n-button
+                  id="nickDuplChkBtn"
+                  class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
+                  @click="checkNickname"
+                >중복 체크</n-button>
+                <n-button
+                  id="nickModBtn"
+                  class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
+                  @click="modifyNickname"
+                  disabled
+                >수정</n-button>
+                <n-button
+                  class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
+                  @click="updateNickname_off"
+                >취소</n-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="category">Programmer</p>
+        <div class="content">
+          <div class="social-description">
+            <h2>26</h2>
+            <p>Project</p>
+          </div>
+          <div class="social-description">
+            <h2>26</h2>
+            <p>Post</p>
+          </div>
+          <div class="social-description">
+            <h2>48</h2>
+            <p>Follower</p>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <n-button
+            class="btn btn-primary btn-round btn-md mr-1"
+            type="primary"
+            @click.native="modals.classic = true"
+          >비밀번호 변경</n-button>
+          <!--  -->
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
+            <fg-input
+              v-model="nowPW"
+              id="nowPW"
+              placeholder="현재 비밀번호를 입력하세요."
+              type="password"
+              class="no-border form-control-md my-3"
+              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+            ></fg-input>
+
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
+            <div v-if="nowPWChk">
+              <fg-input
+                v-model="newPW1"
+                id="newPW1"
+                placeholder="새로운 비밀번호를 입력하세요."
+                type="password"
+                class="no-border form-control-md my-3"
+                @keyup.enter="modifyPW"
+                addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+              ></fg-input>
+              <fg-input
+                v-model="newPW2"
+                id="newPW2"
+                placeholder="새로운 비밀번호를 입력하세요."
+                type="password"
+                @keyup.enter="modifyPW"
+                class="no-border form-control-md my-3"
+                addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+              ></fg-input>
+            </div>
+            <template slot="footer">
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
+              <n-button
+                type="danger"
+                @click.native="modals.classic = false"
+                @click="updatePW_off"
+              >취소</n-button>
+            </template>
+          </modal>
+          <!--  -->
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container">
+        <div class="button-container">
+          <a href="#button" class="btn btn-primary btn-round btn-lg">Follow</a>
+          <a
+            href="#button"
+            class="btn btn-default btn-round btn-lg btn-icon"
+            rel="tooltip"
+            title="Follow me on Twitter"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            :href="`${user.website}`"
+            class="btn btn-default btn-round btn-lg btn-icon"
+            rel="tooltip"
+            title="Follow me on github"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <h3 class="title">
+          About me
+          <i class="far fa-edit" @click="updateBio_on"></i>
+        </h3>
+        <div v-if="!update_bio">
+          <h5 v-if="bio" class="description">{{ bio }}</h5>
+          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
+        </div>
+        <div v-else>
+          <textarea
+            class="form-control"
+            v-model="newBio"
+            id="newBio"
+            placeholder="나를 소개하는 글을 입력해주세요"
+            type="text"
+          />
+          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+          <n-button
+            class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
+            @click="updateBio_off"
+          >취소</n-button>
+        </div>
+        <Contactme :user="user" :mine="mine" @update="getdata" />
+        <div class="row">
+          <!-- 
+          <div class="col-md-6 ml-auto mr-auto">
+            <h4 class="title text-center">My Portfolio</h4>
+          </div>
+          -->
+          <tabs
+            pills
+            class="nav-align-center mx-auto"
+            tab-content-classes="gallery"
+            tab-nav-classes="nav-pills-just-icons"
+            type="primary"
+          >
+            <tab-pane title="Profile">
+              <i slot="label" class="far fa-address-card"></i>
+              <h3 class="title pt-0">Resume</h3>
+              <div class="col-md-10 mx-auto">
+                <Resume :uid="this.pageuid" :mine="mine" />
+              </div>
+            </tab-pane>
+
+            <tab-pane title="Home">
+              <i slot="label" class="fas fa-sliders-h"></i>
+              <h3 class="title pt-0">My Skill</h3>
+              <div class="col-md-10 ml-auto mr-auto">
+                <div class="row collections">
+                  <div class="col-md-6">
+                    <img src="img/bg1.jpg" alt class="img-raised" />
+                    <img src="img/bg3.jpg" alt class="img-raised" />
+                  </div>
+                  <div class="col-md-6">
+                    <img src="img/bg8.jpg" alt class="img-raised" />
+                    <img src="img/bg7.jpg" alt class="img-raised" />
+                  </div>
+                </div>
+              </div>
+            </tab-pane>
+
+            <tab-pane title="Messages">
+              <i slot="label" class="far fa-folder-open"></i>
+              <h3 class="title pt-0">Portfolio</h3>
+              <div class="col-md-10 ml-auto mr-auto">
+                <!-- <div class="row collections">
+                  <div class="col-md-6">
+                    <img src="img/bg1.jpg" alt class="img-raised" />
+                    <img src="img/bg3.jpg" alt class="img-raised" />
+                  </div>
+                  <div class="col-md-6">
+                    <img src="img/bg8.jpg" alt class="img-raised" />
+                    <img src="img/bg7.jpg" alt class="img-raised" />
+                  </div>
+                </div>-->
+                <Userpost :uid="this.pageuid" />
+              </div>
+            </tab-pane>
+          </tabs>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
+import Contactme from "../user/Contactme";
+import Userpost from "../post/Userpost";
+import Resume from "../user/Resume";
+
+export default {
+  name: "profile",
+  bodyClass: "profile-page",
+  components: {
+    Tabs,
+    TabPane,
+    Modal,
+    [Button.name]: Button,
+    [FormGroupInput.name]: FormGroupInput,
+
+    Contactme,
+    Userpost,
+    Resume,
+  },
+  created() {
+    this.pageuid = this.$route.params.uid;
+  },
+  mounted() {
+    this.getdata();
+  },
+  methods: {
+    getdata() {
+      const params = new URL(document.location).searchParams;
+      this.$axios
+        .get(`/account/${this.pageuid}`)
+        .then(({ data }) => {
+          this.uid = data.object.uid;
+          this.email = data.object.email;
+          this.nickname = data.object.nickname;
+          this.password = data.object.password;
+          // if (data.object.profile_img === undefined) {
+          //   this.profile_img = require("../../assets/img/profile_default.png");
+          //   console.log(this.profile_img);
+          // } else {
+          //   this.profile_img = data.object.profile_img;
+          // }
+          if (data.object.bio) {
+            //+ null, undefined, "" 모두 처리할 수 있게 변경
+            this.bio = data.object.bio;
+          }
+          this.user = data.object;
+
+          if (this.$session.get("user").uid === this.user.uid) {
+            this.mine = true;
+          } else {
+            this.mine = false;
+          }
+        })
+        .catch((err) => {
+          console.log("Err!!! :", err.response);
+        });
+    },
+    //닉네임변경관련메서드
+    updateNickname_on() {
+      this.newNick = this.nickname;
+      this.update_nickname = true;
+    },
+    checkNickname() {
+      if (this.newNick == "") {
+        Swal.fire({
+          icon: "info",
+          title: "닉네임을 입력하세요.",
+        });
+        return;
+      } else {
+        this.$axios
+          .get(`/account/nicknameChk/${this.newNick}`)
+          .then((response) => {
+            this.result = response.data;
+            if (
+              this.result.data == "fail" &&
+              this.result.object == "nickname"
+            ) {
+              Swal.fire({
+                icon: "warning",
+                title: "이미 사용중인 닉네임입니다.",
+                text: "새로운 닉네임을 입력하세요.",
+              });
+              document.getElementById("newNick").focus();
+            } else {
+              Swal.fire({
+                icon: "success",
+                title: "사용 가능한 닉네임입니다.",
+              });
+              this.nicknameChk = true;
+              document.getElementById("newNick").setAttribute("readonly", true);
+              document
+                .getElementById("nickDuplChkBtn")
+                .setAttribute("disabled", true);
+              document.getElementById("nickModBtn").removeAttribute("disabled");
+              // console.log(this.nickname);
+            }
+          })
+          .catch((err) => {
+            console.log("Err!!! :", err.response);
+          });
+      }
+    },
+    modifyNickname() {
+      if (this.nicknameChk != true) {
+        Swal.fire({
+          icon: "warning",
+          title: "닉네임 중복체크를 해 주세요.",
+        });
+      } else {
+        this.$axios
+          .put("/account/modify/nickname", {
+            uid: this.uid,
+            nickname: this.newNick,
+          })
+          .then((response) => {
+            this.result = response.data;
+            this.$session.set("user", response.data.object);
+            Swal.fire({
+              icon: "success",
+              title: "회원정보수정 성공",
+            }).then(() => {
+              this.getdata();
+              this.updateNickname_off();
+            });
+          })
+          .catch((err) => {
+            console.log("Err!!! :", err.response);
+          });
+      }
+    },
+    updateNickname_off() {
+      //+
+      this.update_nickname = false;
+      this.nicknameChk = false;
+    },
+    //비밀번호변경관련메서드
+    checkNowPW() {
+      if (this.nowPW == "") {
+        Swal.fire({
+          icon: "info",
+          title: "현재 비밀번호를 입력하세요.",
+        });
+        document.getElementById("nowPW").focus(); //+
+        return;
+      }
+      // console.log(this.email, this.nowPW);
+      this.$axios
+        .post("/account/login", null, {
+          params: {
+            email: this.email,
+            password: this.nowPW,
+          },
+        })
+        .then((response) => {
+          this.nowPWChk = true;
+          Swal.fire({
+            icon: "success",
+            title: "현재 비밀번호가 확인되었습니다.",
+            text: "새로운 비밀번호를 입력해주세요.",
+          });
+          document.getElementById("nowPW").setAttribute("readonly", true);
+          document.getElementById("pwModBtn").removeAttribute("disabled"); //+
+        })
+        .catch((err) => {
+          console.log("ERROR :", err);
+          Swal.fire({
+            icon: "error",
+            title: "비밀번호를 확인해주세요.",
+            text: "비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.",
+          });
+          this.nowPW = ""; //+??
+          document.getElementById("nowPW").focus(); //+
+        });
+    },
+    modifyPW() {
+      if (this.newPW1 == "") {
+        Swal.fire({
+          icon: "info",
+          title: "새로운 비밀번호를 입력하세요.",
+        });
+        document.getElementById("newPW1").focus();
+        return;
+      } else if (this.newPW2 == "") {
+        Swal.fire({
+          icon: "info",
+          title: "새로운 비밀번호를 한번 더 입력하세요.",
+        });
+        document.getElementById("newPW2").focus();
+        return;
+      } else if (this.newPW1 != this.newPW2) {
+        Swal.fire({
+          icon: "error",
+          title: "비밀번호가 일치하지 않습니다.",
+        });
+        document.getElementById("newPW2").focus();
+        return;
+      } else {
+        console.log(this.newPW1);
+        this.$axios
+          .put("/account/modify/password", {
+            uid: this.uid,
+            password: this.newPW1,
+          })
+          .then((response) => {
+            let user = response.data.object;
+            this.result = response.data;
+            this.$session.set("user", user);
+            Swal.fire({
+              icon: "success",
+              title: "비밀번호가 변경되었습니다.",
+            }).then(() => {
+              this.$router.go();
+            });
+          })
+          .catch((err) => {
+            console.log("Err!!! :", err.response);
+          });
+      }
+    },
+    updatePW_off() {
+      //+ && 모달 백드롭 backdrop 확인
+      this.nowPW = "";
+      this.newPW1 = "";
+      this.newPW2 = "";
+      this.nowPWChk = false;
+      document.getElementById("nowPW").removeAttribute("readonly");
+      document.getElementById("pwModBtn").setAttribute("disabled", true);
+    },
+    //자기소개변경관련메서드
+    updateBio_on() {
+      if (this.bio) this.newBio = this.bio;
+      this.update_bio = true;
+    },
+    modifyBio() {
+      this.$axios
+        .put("/account/modify/bio", {
+          uid: this.uid,
+          bio: document.getElementById("newBio").value,
+        })
+        .then((response) => {
+          this.result = response.data;
+          console.log(this.result);
+          Swal.fire({
+            icon: "success",
+            title: "나를 소개하는 글이 변경되었습니다.",
+          }).then(() => {
+            this.getdata();
+            this.updateBio_off();
+          });
+        })
+        .catch((err) => {
+          console.log("Err!!! :", err.response);
+        });
+    },
+    updateBio_off() {
+      this.newBio = "";
+      this.update_bio = false;
+    },
+    //회원탈퇴관련메서드
+    deleteAlert() {
+      Swal.fire({
+        title: "정말 탈퇴하시겠어요?",
+        text:
+          "확인 버튼을 누르면 모든 데이터가 영구적으로 삭제되어 복구할 수 없게 됩니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "탈퇴할래요😥",
+        cancelButtonText: "안할래요😊",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteUser();
+        }
+      });
+    },
+    deleteUser() {
+      this.$axios
+        .delete(`/account/dropout/${this.uid}`)
+        .then((response) => {
+          this.$session.destroy();
+          this.$cookie.delete("auth-token");
+          Swal.fire({
+            title: "탈퇴 완료!",
+            text: "데이터가 영구적으로 삭제되었습니다.",
+            icon: "success",
+            showConfirmButton: true,
+            confirmButtonText: "확인",
+          }).then(() => {
+            this.$router.push("/");
+            this.$router.go();
+          });
+        })
+        .catch((err) => {
+          console.log("Err!!!: ", err.response);
+        });
+    },
+
+    async modifyPimg() {
+      if (this.mine === false) {
+        return;
+      }
+      const { value: file } = await Swal.fire({
+        title: "Select image",
+        input: "file",
+        inputAttributes: {
+          accept: "image/*",
+          "aria-label": "Upload your profile picture",
+        },
+      });
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          Swal.fire({
+            title: "Your uploaded picture",
+            imageUrl: e.target.result,
+            imageAlt: "The uploaded picture",
+          });
+        };
+        reader.readAsDataURL(file);
+        console.log(file);
+
+        const formData = new FormData();
+        formData.append("profileImg", file);
+
+        this.$axios
+          .post(`/file/uploadProfileImg/${this.uid}`, formData, {
+            headers: { "content-Type": "multipart/form-data" },
+          })
+          .then((response) => {
+            this.result = response.data;
+            this.$session.set("user", response.data.object);
+            this.getdata();
+          })
+          .catch((err) => {
+            console.log("Err!!! :", err.response);
+          });
+      }
+    },
+  },
+  watch: {},
+  data: () => {
+    return {
+      modals: {
+        classic: false,
+      },
+      email: "",
+      nickname: "",
+      password: "",
+      profileImg: "",
+      bio: "",
+      passwordType: "password",
+      passwordConfirmType: "password",
+      uid: null,
+
+      update_nickname: false,
+      update_profileimg: false,
+      update_bio: false,
+
+      nicknameChk: false,
+      nowPWChk: false,
+
+      nowPW: "",
+      newPW1: "",
+      newPW2: "",
+
+      newNick: "",
+      newBio: "",
+
+      pageuid: "",
+      boards: [],
+
+      user: null,
+      birthDate: "",
+
+      mine: false,
+    };
+  },
+};
+</script>
+<style>
+#myphoto :hover {
+  filter: grayscale(80%);
+}
+</style>
