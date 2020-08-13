@@ -84,7 +84,7 @@ export default {
         })
       },
       addSkill(){
-        axios
+        this.$axios
         .post(path + "/skill/create",{
           uid : this.$session.get("user").uid
         })
