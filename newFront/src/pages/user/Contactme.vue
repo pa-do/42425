@@ -117,7 +117,7 @@
                   </span>
                 </th>
                 <span v-if="!update_website">
-                  <a :href="`${user.website}`">{{user.website}}</a>
+                  <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
                 </span>
                 <span v-else>
                   <fg-input
@@ -171,7 +171,7 @@
                 <tr>
                   <th scope="row">Github</th>
                   <td>
-                    <a :href="`${user.website}`">{{user.website}}</a>
+                    <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
                   </td>
                 </tr>
               </span>
@@ -223,6 +223,14 @@ export default {
       this.newName = null;
     },
     modifyName() {
+      if (this.name.length > 10) {
+        Swal.fire({
+          icon: "warning",
+          title: "이름이 너무 깁니다.",
+          text: "이름을 10자 이하로 입력하세요.",
+        });
+        return;
+      }
       this.$axios
         .put("/account/modify/name", {
           uid: this.user.uid,
@@ -283,6 +291,14 @@ export default {
       this.newAddress = null;
     },
     modifyAddress() {
+      if (this.address.length > 100) {
+        Swal.fire({
+          icon: "warning",
+          title: "주소가 너무 깁니다.",
+          text: "주소를 100자 미만으로 입력하세요.",
+        });
+        return;
+      }
       this.$axios
         .put("/account/modify/address", {
           uid: this.user.uid,
@@ -323,7 +339,6 @@ export default {
           title: "숫자만 입력해 주세요.",
           text: "한글, 영문, 특수문자 등은 입력하실 수 없습니다.",
         });
-        document.getElementById("newPhone").focus();
         return;
       }
       this.newPhone = this.newPhone.replace(/[^0-9]/g, "");
@@ -333,7 +348,6 @@ export default {
           title: "11자리의 숫자를 입력해 주세요.",
           text: "010을 포함해 11자리의 숫자를 입력하세요.",
         });
-        document.getElementById("newPhone").focus();
         return;
       }
       this.$axios
@@ -366,6 +380,14 @@ export default {
       this.newWeb = null;
     },
     modifyWebsite() {
+      if (this.website.length > 200) {
+        Swal.fire({
+          icon: "warning",
+          title: "깃허브 주소가 너무 깁니다.",
+          text: "깃허브 주소를 200자 미만으로 입력하세요.",
+        });
+        return;
+      }
       this.$axios
         .put("/account/modify/website", {
           uid: this.user.uid,

@@ -28,9 +28,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
-				        @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
-				        @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
-				        @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
+		@ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
+		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
+		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 @RestController
 @RequestMapping("/portfolio")
 @CrossOrigin(origins = { "*" })
@@ -39,158 +39,167 @@ public class PortfolioController {
 	MySkillDao mySkillDao;
 	@Autowired
 	ResumeDao resumeDao;
-	
-	@PostMapping("/skill/create")
-	@ApiOperation(value = "스킬 등록하기", notes = "default 스킬 등록 (uid, '기술명', 0 )")
-	public Object createSkill (@RequestBody User user) {
-		 final BasicResponse result = new BasicResponse();
-  
-		 ResponseEntity response = null;
 
-		 if(mySkillDao.insertDefaultSkill(user.getUid()) != 0) {
-			result.status = true;
-	        result.data = "success";
-	        response = new ResponseEntity<>(result, HttpStatus.OK);
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		}
-		
-		return response;
-	}
-	
-	@GetMapping("/skill/{uid}")
-	@ApiOperation(value = "스킬 가져오기")
-	public Object skill(@PathVariable int uid) {
+	@PostMapping("/skill/create")
+	@ApiOperation(value = "스킬 등록하기")
+	public Object createSkillDefault(@RequestBody Myskill myskill) {
 		final BasicResponse result = new BasicResponse();
-			
+
 		ResponseEntity response = null;
-		
-//		List<Myskill> skills = mySkillDao.select(uid);
-		List<Myskill> skills = mySkillDao.findMyskillByUserUid(uid);
-		for (Myskill myskill : skills) {
-			System.out.println(myskill);
-		}
-		if(skills != null) {
-			result.status = true;
-	        result.data = "success";
-	        result.object = skills;
-	        response = new ResponseEntity<>(result, HttpStatus.OK);
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		}
-		
-		return response;
-	}
-	
-	@PutMapping("/skill/modify")
-	@ApiOperation(value = "스킬 수정하기")
-	public Object modifySkill(@RequestBody List<Myskill> myskills) {
-		final BasicResponse result = new BasicResponse();
-		
-		try {
-			for (Myskill myskill : myskills) {
-				System.out.println(myskill.getSkill());
-				mySkillDao.updateSkills(myskill.getUser().getUid(), 
-										myskill.getSid(), 
-										myskill.getSkill(), 
-										myskill.getValue());
-			}
+
+		if (mySkillDao.insertSkill(myskill.getUser().getUid(), myskill.getSkill(), myskill.getValue()) != 0) {
 			result.status = true;
 			result.data = "success";
-			return new ResponseEntity<>(result, HttpStatus.OK);
-			
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		} 
-	}
-	
-	@DeleteMapping("/skill/delete/{uid}/{skill}")
-	@ApiOperation(value = "스킬 삭제하기")
-	public Object deleteSkill(@PathVariable int uid, @PathVariable String skill) {
-		final BasicResponse result = new BasicResponse();
-		
-		ResponseEntity response = null;
-		if(mySkillDao.deleteSkill(uid, skill) > 0) {
-			result.status = true;
-	        result.data = "success";
-	        response = new ResponseEntity<>(result, HttpStatus.OK);
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return response;
 	}
-	
+
+	@GetMapping("/skill/{uid}")
+	@ApiOperation(value = "uid로 스킬 가져오기")
+	public Object skill(@PathVariable int uid) {
+		final BasicResponse result = new BasicResponse();
+
+		ResponseEntity response = null;
+
+		List<Myskill> skills = mySkillDao.findMyskillByUserUid(uid);
+
+		if (skills != null) {
+			result.status = true;
+			result.data = "success";
+			result.object = skills;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+
+		return response;
+	}
+
+	@GetMapping("/skill/detail/{sid}")
+	@ApiOperation(value = "sid로 스킬  가져오기")
+	public Object skillDetail(@PathVariable int sid) {
+		final BasicResponse result = new BasicResponse();
+
+		ResponseEntity response = null;
+
+		Myskill skill = mySkillDao.findMyskillBySid(sid);
+
+		if (skill != null) {
+			result.status = true;
+			result.data = "success";
+			result.object = skill;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+
+		return response;
+	}
+
+	@PutMapping("/skill/modify")
+	@ApiOperation(value = "스킬 수정하기")
+	public Object modifySkill(@RequestBody Myskill myskill) {
+		final BasicResponse result = new BasicResponse();
+
+		ResponseEntity response = null;
+
+		if (mySkillDao.updateSkill(myskill.getSid(), myskill.getSkill(), myskill.getValue()) > 0) {
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		}
+		return response;
+	}
+
+	@DeleteMapping("/skill/delete/{sid}")
+	@ApiOperation(value = "스킬 삭제하기")
+	public Object deleteSkill(@PathVariable int sid) {
+		final BasicResponse result = new BasicResponse();
+
+		ResponseEntity response = null;
+
+		if (mySkillDao.deleteSkill(sid) > 0) {
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			System.out.println("??");
+		}
+
+		return response;
+	}
+
 	@PostMapping("/resume/create")
 	@ApiOperation(value = "이력 등록하기")
-	public Object createResume (@RequestBody Resume resume) {
-		 final BasicResponse result = new BasicResponse();
-		
-		 ResponseEntity response = null;
-		 
-		 Resume newresume = resumeDao.save(resume);
-		if(newresume != null) {
+	public Object createResume(@RequestBody Resume resume) {
+		final BasicResponse result = new BasicResponse();
+
+		ResponseEntity response = null;
+
+		Resume newresume = resumeDao.save(resume);
+		if (newresume != null) {
 			result.status = true;
-	        result.data = "success";
-	        result.object = newresume;
-	        response = new ResponseEntity<>(result, HttpStatus.OK);
+			result.data = "success";
+			result.object = newresume;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return response;
 	}
-	
+
 	@PutMapping("/resume/modify")
 	@ApiOperation(value = "이력 수정 하기")
 	public Object modifyResume(@RequestBody Resume resume) {
 		final BasicResponse result = new BasicResponse();
-		
-		int temp = resumeDao.update(resume.getUid(), 
-									resume.getRid(), 
-									resume.getStartYear(),
-									resume.getEndYear(),
-									resume.getPlace(),
-									resume.getTitle(),
-									resume.getContent());
-		if(temp != 0) {
+
+		int temp = resumeDao.update(resume.getUid(), resume.getRid(), resume.getStartYear(), resume.getEndYear(),
+				resume.getPlace(), resume.getTitle(), resume.getContent());
+		if (temp != 0) {
 			result.status = true;
 			result.data = "success";
 			return new ResponseEntity<>(result, HttpStatus.OK);
-		}
-		else {
+		} else {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-	} 
-	
+	}
+
 	@GetMapping("/resume/{uid}")
 	@ApiOperation(value = "uid로 이력 가져오기")
 	public Object resume(@PathVariable int uid) {
 		final BasicResponse result = new BasicResponse();
-			
+
 		ResponseEntity response = null;
-		
+
 		List<Resume> resumes = resumeDao.findByUid(uid);
-		if(resumes != null) {
+		if (resumes != null) {
 			result.status = true;
-	        result.data = "success";
-	        result.object = resumes;
-	        response = new ResponseEntity<>(result, HttpStatus.OK);
+			result.data = "success";
+			result.object = resumes;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return response;
-	}  
-	
+	}
+
 	@GetMapping("/resume/detail/{rid}")
 	@ApiOperation(value = "rid로 이력 가져오기")
 	public Object resume2(@PathVariable int rid) {
 		final BasicResponse result = new BasicResponse();
-		
+
 		ResponseEntity response = null;
-		
+
 		Resume resume = resumeDao.findResumeByRid(rid);
-		if(resume != null) {
+		if (resume != null) {
 			result.status = true;
 			result.data = "success";
 			result.object = resume;
@@ -199,22 +208,22 @@ public class PortfolioController {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return response;
-	}  
-	
+	}
+
 	@DeleteMapping("/resume/delete/{uid}/{rid}")
 	@ApiOperation(value = "resume 삭제하기")
 	public Object deleteResume(@PathVariable int uid, @PathVariable int rid) {
 		final BasicResponse result = new BasicResponse();
-		
+
 		ResponseEntity response = null;
-		if(resumeDao.deleteResume(uid, rid) > 0) {
+		if (resumeDao.deleteResume(uid, rid) > 0) {
 			result.status = true;
-	        result.data = "success";
-	        response = new ResponseEntity<>(result, HttpStatus.OK);
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return response;
 	}
 }
