@@ -85,6 +85,7 @@
           </div>
         </div>
         <div class="col-md-5 mx-auto">
+          <p v-if="!user.position">직무를 입력하지 않았습니다.</p>
           <div v-if="!update_position">
             <p class="category">
               {{ user.position }}
@@ -184,7 +185,7 @@
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <a href="#button" class="btn btn-primary btn-round btn-lg">Follow</a>
+          <a v-if="!mine" href="#button" class="btn btn-primary btn-round btn-lg">Follow</a>
           <a
             href="#button"
             class="btn btn-default btn-round btn-lg btn-icon"
@@ -219,11 +220,13 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
-          <n-button
-            class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
-            @click="updateBio_off"
-          >취소</n-button>
+          <div class="text-center pt-3 pb-5">
+            <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+            <n-button
+              class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
+              @click="updateBio_off"
+            >취소</n-button>
+          </div>
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
@@ -261,7 +264,7 @@
         </div>
       </div>
     </div>
-    <div class="section">
+    <div v-if="!mine" class="section">
       <div class="container">
         <h3 class="title pt-0">Send Email</h3>
         <SendEmail :email="user.email" />

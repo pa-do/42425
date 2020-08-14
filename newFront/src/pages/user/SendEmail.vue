@@ -26,7 +26,8 @@
         class="no-border form-control-md my-3"
       ></fg-input>
       <textarea v-model="message" id="message" placeholder="내용" class="form-control" rows="3"></textarea>
-      <div class="text-right">
+      <div>
+        <vue-recaptcha ref="recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
         <n-button @click="sendEmail" class="btn btn-primary btn-round">SEND</n-button>
       </div>
     </div>
@@ -36,18 +37,37 @@
 
 <script>
 import { Button, FormGroupInput } from "@/components";
-
+import VueRecaptcha from "vue-recaptcha";
 export default {
   name: "sendemail",
   components: {
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
+
+    "vue-recaptcha": VueRecaptcha,
   },
   props: ["email"],
   created() {
     this.getdata();
   },
   methods: {
+    onSubmit: function () {
+      this.$refs.invisibleRecaptcha.execute();
+    },
+    onVerify: function (response) {
+      console.log("Verify: " + response);
+      this.reCAPTCHA = true;
+      console.log(this.reCAPTCHA);
+    },
+    onExpired: function () {
+      console.log("Expired");
+      this.reCAPTCHA = false;
+      console.log(this.reCAPTCHA);
+    },
+    resetRecaptcha() {
+      this.$refs.recaptcha.reset(); // Direct call reset method
+      this.reCAPTCHA = false;
+    },
     getdata() {
       if (this.$session.get("user")) {
         let myAccount = this.$session.get("user");
@@ -56,6 +76,13 @@ export default {
       }
     },
     sendEmail() {
+      if (this.reCAPTCHA === false) {
+        Swal.fire({
+          icon: "warning",
+          title: "로봇이 아님을 증명하세요.",
+        });
+        return;
+      }
       if (this.yourName == "") {
         Swal.fire({
           icon: "info",
@@ -96,8 +123,15 @@ export default {
           },
         })
         .then((res) => {
+          if (this.message == "") {
+            Swal.fire({
+              icon: "success",
+              title: "메일이 전송되었습니다.",
+            });
+          }
           this.subject = "";
           this.message = "";
+          resetRecaptcha();
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
@@ -106,10 +140,14 @@ export default {
   },
   data: () => {
     return {
+      sitekey: "6LcFoL4ZAAAAAEeAoTIIdnsejJRIRP4ecyWbxt5e",
+
       yourName: "",
       yourEmail: "",
       subject: "",
       message: "",
+
+      reCAPTCHA: false,
     };
   },
 };
