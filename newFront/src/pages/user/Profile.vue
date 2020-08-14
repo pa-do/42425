@@ -1,5 +1,20 @@
 <template>
   <div>
+    <div class="fixed-bottom my-3 mx-3 text-right">
+      <el-popover
+        ref="popovertrigger"
+        trigger="click"
+        popper-class="popover popover-primary"
+        placement="top"
+      >
+        <!-- <h3 class="popover-header">Popover</h3> -->
+        <div class="popover-body">
+          <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+        </div>
+      </el-popover>
+      <n-button v-popover:popovertrigger type="primary" round>공유</n-button>
+    </div>
+
     <div class="page-header clear-filter" filter-color="orange-">
       <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
@@ -21,7 +36,7 @@
               <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i class="far fa-edit" @click="updateNickname_on"></i>
+                  <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
                 </h3>
               </div>
             </div>
@@ -71,7 +86,7 @@
             <p>Follower</p>
           </div>
         </div>
-        <div class="d-flex justify-content-end">
+        <div v-if="mine" class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
@@ -149,7 +164,7 @@
         </div>
         <h3 class="title">
           About me
-          <i class="far fa-edit" @click="updateBio_on"></i>
+          <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
@@ -171,11 +186,6 @@
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
-          <!-- 
-          <div class="col-md-6 ml-auto mr-auto">
-            <h4 class="title text-center">My Portfolio</h4>
-          </div>
-          -->
           <tabs
             pills
             class="nav-align-center mx-auto"
@@ -196,16 +206,6 @@
               <h3 class="title pt-0">My Skill</h3>
               <div class="col-md-10 mx-auto">
                 <MySkill :uid="this.pageuid" :mine="mine" />
-                <!-- <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />
-                  </div>
-                </div>-->
               </div>
             </tab-pane>
 
@@ -213,31 +213,31 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <!-- <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />
-                  </div>
-                </div>-->
-                <Userpost :uid="this.pageuid" />
+                <Userpost :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
           </tabs>
         </div>
       </div>
     </div>
+
+    <div class="section">
+      <div class="container">
+        <h3 class="title pt-0">Send Email</h3>
+        <SendEmail :email="user.email" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
+import { Popover } from "element-ui";
+
 import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
 import MySkill from "../user/MySkill";
+import SendEmail from "../user/SendEmail";
 
 export default {
   name: "profile",
@@ -248,11 +248,13 @@ export default {
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
+    [Popover.name]: Popover,
 
     Contactme,
     Userpost,
     Resume,
     MySkill,
+    SendEmail,
   },
   created() {
     this.pageuid = this.$route.params.uid;
@@ -262,6 +264,7 @@ export default {
   },
   methods: {
     getdata() {
+      this.link = document.location.href;
       const params = new URL(document.location).searchParams;
       this.$axios
         .get(`/account/${this.pageuid}`)
@@ -598,6 +601,8 @@ export default {
       modals: {
         classic: false,
       },
+      link: "",
+
       email: "",
       nickname: "",
       password: "",
