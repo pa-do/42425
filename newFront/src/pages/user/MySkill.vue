@@ -1,119 +1,116 @@
 <template>
-    <div class="container">
-      <div class="row justify-content-center pb-5">
-        <div class="col-md-12 heading-section text-center ftco-animate">
-          <!-- <h1 class="big big-2">Skills</h1> -->
-          <h2 class="mb-4">My Skills</h2>
-          <!-- <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p> -->
-          <i class="far fa-edit" @click="updateSkills" v-if="!modifyMode"></i>
-          <button class="btn btn-primary" v-if="modifyMode" @click="modifyOk">완료 </button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 animate-box" v-for="(skill,index) in myskill" :key="index" >
-          <!-- 수정 모드 아닐 경우 -->
-          <div class="progress-wrap ftco-animate" v-if="!modifyMode">
-            <h3>{{ skill.sid }}</h3> 
-            <h3>{{ skill.skill }}</h3>
-            <div class="progress">
-              <div class="progress-bar btn-primary" role="progressbar" :aria-valuenow="skill.value"
-                aria-valuemin="0" aria-valuemax="100" :style="'width:' + skill.value + '%'">
-                <span>{{ skill.value }}%</span>
-                </div>
-            </div>
-          </div>
-          <!-- 수정 모드일 경우 -->
-          <div class="progress-wrap ftco-animate" v-if="modifyMode"> 
-            <div class="row">
-              <div class="col-sm-6 col-lg-3">
-                <fg-input :placeholder="skill.skill" v-model="skill.skill"></fg-input>
-              </div>
-              <div class="col-sm-6 col-lg-3">
-                <fg-input :placeholder="skill.value" v-model="skill.value"></fg-input>
-              </div>
-              <button class="btn btn-danger" @click="delSkill(skill.uid, skill.skill)">삭제</button>
-            </div>
-          </div>
-        </div>
-        <div> 
-          <button class="btn btn-info" @click="addSkill" v-if="modifyMode">skill 추가</button>
-        </div>
-      </div>
+  <div class="container">
+    <div v-if="mine" class="text-right">
+      <n-button @click="createSkill" class="btn btn-primary">스킬 추가</n-button>
     </div>
+    <div class="row justify-content-between">
+      <div class="d-block col-md-6 px-5 py-1"></div>
+      <div class="d-block col-md-6 px-5 py-1"></div>
+      <span v-for="skill in myskills" :key="skill.sid" class="col-md-6">
+        <MySkillDetail :sid="skill.sid" :mine="mine" @update="getdata" />
+      </span>
+    </div>
+  </div>
 </template>
 
-
 <script>
-import FormGroupInput from '../../components/Inputs/formGroupInput' 
+import { Button } from "@/components";
+import MySkillDetail from "../user/MySkillDetail";
 
 export default {
-    components:{
-      [FormGroupInput.name]: FormGroupInput
+  name: "myskill",
+  components: {
+    [Button.name]: Button,
+    MySkillDetail,
+  },
+  props: ["uid", "mine"],
+  data: () => {
+    return {
+      myskills: [],
+      modifySkills: false,
+    };
+  },
+  created() {
+    this.getdata();
+  },
+  methods: {
+    getdata() {
+      this.$axios
+        .get(`/portfolio/skill/${this.uid}`)
+        .then((res) => {
+          this.myskills = res.data.object;
+        })
+        .catch((err) => console.error(err));
     },
-    data: () => {
-      return {
-        myskill: [],
-        modifyMode: false,
-      };
-    },
-    created(){
-      this.getSkills();
-    },
-    mounted(){
-      this.getSkills();
-    },
-    methods: {
-      getSkills(){
-        this.$axios
-        .get(`/portfolio/skill/${this.$session.get("user").uid}`)
-        .then((data) => {
-            this.myskill = data.data.object; 
+    createSkill() {
+      Swal.mixin({
+        input: "text",
+        confirmButtonText: "Next &rarr;",
+        showCancelButton: true,
+        progressSteps: ["1", "2"],
+      })
+        .queue([
+          {
+            title: "기술명",
+            text: "기술 이름을 입력하세요.",
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if (value.length <= 15) {
+                  resolve();
+                } else {
+                  resolve("기술 이름을 15자 이하로 입력하세요.");
+                }
+              });
+            },
+          },
+          {
+            title: "숙련도",
+            text: "숙련도를 0 이상 100 이하의 숫자로 입력하세요.",
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if ((0 <= value) & (value <= 100)) {
+                  resolve();
+                } else {
+                  resolve("숙련도를 0 이상 100 이하의 숫자로 입력하세요.");
+                }
+              });
+            },
+          },
+        ])
+        .then((result) => {
+          if (result.value) {
+            const answers = JSON.stringify(result.value);
+            Swal.fire({
+              title: "All done!",
+              html: `Your answers: <pre><code>${answers}</code></pre>`,
+              confirmButtonText: "기술 등록",
+            }).then(() => {
+              this.$axios
+                .post(`/portfolio/skill/create`, {
+                  user: this.$session.get("user"),
+                  skill: result.value[0],
+                  value: result.value[1],
+                })
+                .then((response) => {
+                  this.result = response.data;
+                  if (this.result.data != "fail") {
+                    Swal.fire({
+                      icon: "success",
+                      title: "기술 등록 완료",
+                      text: "새로운 기술을 등록하였습니다..",
+                    });
+                    this.getdata();
+                  }
+                })
+                .catch((err) => {
+                  console.log("Err!!! :", err.response);
+                });
+            });
+          }
         });
-      },
-      updateSkills(){
-        this.modifyMode = true;
-      },
-      delSkill(uid, skill){
-        this.$axios
-        .delete(`/portfolio/skill/delete/${uid}/${skill}`)
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      },
-      addSkill(){
-        this.$axios
-        .post(path + "/skill/create",{
-          uid : this.$session.get("user").uid
-        })
-        .then((data) => {
-          console.log(this.myskill);
-          this.getSkills();
-        })
-        .catch((err) => console.log(err));
-      },
-      modifyOk(){
-        this.$axios
-        .put(`/portfolio/skill/modify`,{
-            myskills : this.myskill,
-        })
-        .then((data) => {
-          console.log("성공 !!!ㄴ");
-          console.log(data);
-        })
-        .catch((error) => {
-          console.log("error");
-          console.log(error);
-        })
-
-
-        this.modifyMode = false;
-
-      }
-    }
-}
+    },
+  },
+};
 </script>
 
 <style>

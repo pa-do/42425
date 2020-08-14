@@ -108,7 +108,6 @@ export default {
             document.getElementById("Memail").setAttribute("readonly", true);
             this.emailChk = true;
           } else {
-            document.getElementById("Memail").focus();
             Swal.fire({
               icon: "success",
               title: "사용 가능한 이메일입니다.",
@@ -143,10 +142,10 @@ export default {
       if (this.authnum === this.input_authnum) {
         this.$axios
           .post(`/account/getuid`, null, {
-          params: {
-            email: this.email,
-          },
-        })
+            params: {
+              email: this.email,
+            },
+          })
           .then((response) => {
             this.uid = response.data.data;
           })
@@ -169,34 +168,36 @@ export default {
           icon: "info",
           title: "이메일 주소를 확인해 주세요.",
         });
-        document.getElementById("Memail").focus();
         return;
       } else if (this.authChk === false) {
         Swal.fire({
           icon: "warning",
           title: "이메일 인증을 진행해 주세요.",
         });
-        document.getElementById("input_authnum").focus();
         return;
       } else if (this.password === "") {
         Swal.fire({
           icon: "info",
           title: "새로운 비밀번호를 확인해 주세요.",
         });
-        document.getElementById("Mpassword").focus();
       } else if (this.passwordConfirm === "") {
         Swal.fire({
           icon: "info",
           title: "새로운 비밀번호를 입력해 주세요",
         });
-        document.getElementById("password-confirm").focus();
       } else if (this.password !== this.passwordConfirm) {
         Swal.fire({
           icon: "warning",
           title: "비밀번호가 일치하지 않습니다.",
           text: "비밀번호를 확인해 주세요.",
         });
-        document.getElementById("passwordConfirm").focus();
+        return;
+      } else if (this.password.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "비밀번호가 너무 깁니다.",
+          text: "비밀번호를 128자 미만으로 입력하세요.",
+        });
         return;
       } else {
         this.$axios
@@ -205,11 +206,12 @@ export default {
             password: this.password,
           })
           .then((response) => {
-            this.$router.push("/login");
-            this.$router.go();
             Swal.fire({
               icon: "success",
               title: "비밀번호가 변경되었습니다.",
+            }).then(() => {
+              this.$router.push("/login");
+              this.$router.go();
             });
           })
           .catch((err) => {

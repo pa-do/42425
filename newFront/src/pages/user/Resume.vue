@@ -6,7 +6,7 @@
     <div class="row justify-content-between">
       <div class="d-block col-md-6 px-5 py-1"></div>
       <div class="d-block col-md-6 px-5 py-1"></div>
-      <span v-for="resume in resumes" :key="resume.rid" class="col-md-6 my-5">
+      <span v-for="resume in resumes" :key="resume.rid" class="col-md-6">
         <ResumeDetail :rid="resume.rid" :mine="mine" @update="getdata" />
       </span>
     </div>
@@ -16,8 +16,6 @@
 <script>
 import { Button } from "@/components";
 import ResumeDetail from "../user/ResumeDetail";
-
-const BASE_URL = "http://localhost:8080";
 
 export default {
   name: "resume",
@@ -81,14 +79,41 @@ export default {
           {
             title: "기업 또는 교육기관명",
             text: "기업 또는 교육기관의 이름을 입력하세요.",
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if (value.length <= 45) {
+                  resolve();
+                } else {
+                  resolve("기업 또는 교육기관명을 45자 이하로 입력하세요.");
+                }
+              });
+            },
           },
           {
             title: "직무",
             text: "직무를 입력하세요.",
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if (value.length <= 45) {
+                  resolve();
+                } else {
+                  resolve("직무를 45자 이하로 입력하세요.");
+                }
+              });
+            },
           },
           {
             title: "업무 및 성과",
             text: "업무 및 성과를 입력하세요.",
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if (value.length <= 100) {
+                  resolve();
+                } else {
+                  resolve("성과를 100자 이하로 입력하세요.");
+                }
+              });
+            },
           },
         ])
         .then((result) => {
@@ -104,8 +129,8 @@ export default {
                   uid: this.uid,
                   startYear: result.value[0],
                   endYear: result.value[1],
-                  title: result.value[2],
-                  place: result.value[3],
+                  place: result.value[2],
+                  title: result.value[3],
                   content: result.value[4],
                 })
                 .then((response) => {
