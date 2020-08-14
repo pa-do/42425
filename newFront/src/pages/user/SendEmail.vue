@@ -1,32 +1,36 @@
 <template>
   <div class="container row">
-    <div class="d-block justify-content-center">
+    <div class="col-1"></div>
+    <div class="col-10">
       <fg-input
         v-model="yourName"
         id="yourName"
-        placeholder="your Name"
+        placeholder="메일 보내기 기능은 회원만 사용가능합니다."
         type="text"
         class="no-border form-control-md my-3"
-        autofocus
+        readonly
       ></fg-input>
       <fg-input
         v-model="yourEmail"
         id="yourEmail"
-        placeholder="your Email"
+        placeholder="메일 보내기 기능은 회원만 사용가능합니다."
         type="text"
         class="no-border form-control-md my-3"
+        readonly
       ></fg-input>
       <fg-input
         v-model="subject"
         id="subject"
-        placeholder="subject"
+        placeholder="제목"
         type="text"
         class="no-border form-control-md my-3"
       ></fg-input>
-      <textarea v-model="message" id="message" placeholder="message" class="form-control"></textarea>
-
-      <n-button @click="sendEmail" class="btn btn-primary btn-round">SEND</n-button>
+      <textarea v-model="message" id="message" placeholder="내용" class="form-control" rows="3"></textarea>
+      <div class="text-right">
+        <n-button @click="sendEmail" class="btn btn-primary btn-round">SEND</n-button>
+      </div>
     </div>
+    <div class="col-1"></div>
   </div>
 </template>
 
@@ -40,19 +44,30 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
   },
   props: ["email"],
+  created() {
+    this.getdata();
+  },
   methods: {
+    getdata() {
+      console.log(this.$session.get("user"));
+      if (this.$session.get("user")) {
+        let myAccount = this.$session.get("user");
+        this.yourName = myAccount.nickname;
+        this.yourEmail = myAccount.email;
+      }
+    },
     sendEmail() {
       if (this.yourName == "") {
         Swal.fire({
           icon: "info",
-          title: "당신의 이름을 입력하세요.",
+          title: "메일 보내기 기능은 회원만 사용가능합니다.",
         });
         return;
       }
       if (this.yourEmail == "") {
         Swal.fire({
           icon: "info",
-          title: "당신의 메일 주소를 입력하세요.",
+          title: "메일 보내기 기능은 회원만 사용가능합니다.",
         });
         return;
       }
@@ -82,7 +97,8 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
+          this.subject = "";
+          this.message = "";
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);

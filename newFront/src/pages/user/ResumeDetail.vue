@@ -6,8 +6,8 @@
       <span>{{resume.place}}</span>
       <p class="mt-4">{{resume.content}}</p>
       <div v-if="mine" class="d-flex justify-content-end">
-        <n-button @click="modifyResume_on" class="btn btn-primary btn-round mr-1">수정</n-button>
-        <n-button @click="deleteResume" class="btn btn-danger btn-round">삭제</n-button>
+        <n-button @click="modifyResume_on" class="btn btn-primary btn-round mr-1" size="sm">수정</n-button>
+        <n-button @click="deleteResume" class="btn btn-danger btn-round" size="sm">삭제</n-button>
       </div>
     </span>
     <span v-else>
@@ -64,8 +64,8 @@
         ></fg-input>
       </div>
       <div class="text-right">
-        <n-button @click="modifyResume_" class="btn btn-primary">수정</n-button>
-        <n-button @click="modifyResume_off" class="btn btn-danger">취소</n-button>
+        <n-button @click="modifyResume_" class="btn btn-primary" size="sm">수정</n-button>
+        <n-button @click="modifyResume_off" class="btn btn-danger" size="sm">취소</n-button>
       </div>
     </span>
   </div>

@@ -21,7 +21,7 @@
               <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i class="far fa-edit" @click="updateNickname_on"></i>
+                  <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
                 </h3>
               </div>
             </div>
@@ -149,7 +149,7 @@
         </div>
         <h3 class="title">
           About me
-          <i class="far fa-edit" @click="updateBio_on"></i>
+          <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
@@ -198,7 +198,7 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <Userpost :uid="this.pageuid" />
+                <Userpost :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
           </tabs>
@@ -208,7 +208,7 @@
 
     <div class="section">
       <div class="container">
-        <h3 class="title pt-0">Send A Email</h3>
+        <h3 class="title pt-0">Send Email</h3>
         <SendEmail :email="user.email" />
       </div>
     </div>
