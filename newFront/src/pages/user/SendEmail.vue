@@ -26,9 +26,11 @@
         class="no-border form-control-md my-3"
       ></fg-input>
       <textarea v-model="message" id="message" placeholder="내용" class="form-control" rows="3"></textarea>
-      <div>
-        <vue-recaptcha ref="recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
-        <n-button @click="sendEmail" class="btn btn-primary btn-round">SEND</n-button>
+      <div class="row text-center" style="width: 100%">
+        <div style="width: 30%; float:none; margin:0 auto">
+          <vue-recaptcha ref="recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
+          <n-button @click="sendEmail" class="btn btn-primary btn-round">SEND</n-button>
+        </div>
       </div>
     </div>
     <div class="col-1"></div>
@@ -67,6 +69,7 @@ export default {
     resetRecaptcha() {
       this.$refs.recaptcha.reset(); // Direct call reset method
       this.reCAPTCHA = false;
+      console.log(this.reCAPTCHA);
     },
     getdata() {
       if (this.$session.get("user")) {
@@ -123,15 +126,16 @@ export default {
           },
         })
         .then((res) => {
-          if (this.message == "") {
-            Swal.fire({
-              icon: "success",
-              title: "메일이 전송되었습니다.",
-            });
-          }
+          console.log("success");
           this.subject = "";
           this.message = "";
-          resetRecaptcha();
+          // resetRecaptcha();
+          Swal.fire({
+            icon: "success",
+            title: "메일이 전송되었습니다.",
+          }).then(() => {
+            this.$router.go();
+          });
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
