@@ -25,7 +25,7 @@
       <div class="d-none d-lg-block mr-3">
         <input
           class="border border-white pl-3 rounded-pill text-white py-2"
-          placeholder="serach"
+          placeholder="search"
           style="background-color:transparent;"
           @keyup.enter="submit"
           v-model="search"
@@ -40,7 +40,7 @@
           <i class="now-ui-icons arrows-1_cloud-download-93"></i>
           <p>Download</p>
         </a>
-      </li> -->
+      </li>-->
       <div v-if="!isLogin" class="row">
         <li class="nav-item">
           <nav-link to="/login" class="nav-link">
@@ -109,7 +109,7 @@
             <i class="now-ui-icons users_single-02"></i> Profile
           </nav-link>
         </div>
-      </drop-down> -->
+      </drop-down>-->
       <!-- <li class="nav-item">
         <a
           class="nav-link btn btn-neutral"
@@ -187,7 +187,7 @@ export default {
       this.show = !this.show;
     },
   },
-  data: function() {
+  data: function () {
     return {
       isLogin: false,
       keyword: null,
