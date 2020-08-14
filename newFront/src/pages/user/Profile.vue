@@ -6,16 +6,33 @@
         style="background-image:url('img/bg5.jpg')"
       ></parallax>
       <div class="container">
-        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
+        <div
+          v-if="mine"
+          class="photo-container"
+          id="myphoto"
+          @click="modifyPimg"
+        >
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
-            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+            <img
+              v-else
+              :src="
+                `http://localhost:8080/img/userProfileImg/${user.profileImg}`
+              "
+              alt
+            />
           </div>
         </div>
         <div v-else class="photo-container" @click="modifyPimg">
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
-            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+            <img
+              v-else
+              :src="
+                `http://localhost:8080/img/userProfileImg/${user.profileImg}`
+              "
+              alt
+            />
           </div>
         </div>
         <div class="container">
@@ -214,58 +231,64 @@
             <tab-pane title="Profile">
               <i slot="label" class="far fa-address-card"></i>
               <h3 class="title pt-0">Resume</h3>
-              <div class="col-md-10 mx-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
+              <transition
+                name="router-anim"
+                enter-active-class="animated fadeInDown"
+                leave-active-class="animated fadeOutDown"
+              >
+                <div class="col-md-10 mx-auto">
+                  <div class="row collections">
+                    <div class="col-md-6">
+                      <div class="my-5">
+                        <span class="text-primary">2014-2015</span>
+                        <h2>Master Degree of Design</h2>
+                        <span>Cambridge University</span>
+                        <p class="mt-4">
+                          A small river named Duden flows by their place and
+                          supplies it with the necessary regelialia. It is a
+                          paradisematic country, in which roasted parts of
+                          sentences fly into your mouth.
+                        </p>
+                      </div>
+                      <div class="my-5">
+                        <span class="text-primary">2014-2015</span>
+                        <h2>Master Degree of Design</h2>
+                        <span>Cambridge University</span>
+                        <p class="mt-4">
+                          A small river named Duden flows by their place and
+                          supplies it with the necessary regelialia. It is a
+                          paradisematic country, in which roasted parts of
+                          sentences fly into your mouth.
+                        </p>
+                      </div>
                     </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
-                    </div>
-                    <div class="my-5">
-                      <span class="text-primary">2014-2015</span>
-                      <h2>Master Degree of Design</h2>
-                      <span>Cambridge University</span>
-                      <p class="mt-4">
-                        A small river named Duden flows by their place and
-                        supplies it with the necessary regelialia. It is a
-                        paradisematic country, in which roasted parts of
-                        sentences fly into your mouth.
-                      </p>
+                    <div class="col-md-6">
+                      <div class="my-5">
+                        <span class="text-primary">2014-2015</span>
+                        <h2>Master Degree of Design</h2>
+                        <span>Cambridge University</span>
+                        <p class="mt-4">
+                          A small river named Duden flows by their place and
+                          supplies it with the necessary regelialia. It is a
+                          paradisematic country, in which roasted parts of
+                          sentences fly into your mouth.
+                        </p>
+                      </div>
+                      <div class="my-5">
+                        <span class="text-primary">2014-2015</span>
+                        <h2>Master Degree of Design</h2>
+                        <span>Cambridge University</span>
+                        <p class="mt-4">
+                          A small river named Duden flows by their place and
+                          supplies it with the necessary regelialia. It is a
+                          paradisematic country, in which roasted parts of
+                          sentences fly into your mouth.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </transition>
             </tab-pane>
 
             <tab-pane title="Home">
@@ -453,12 +476,12 @@ export default {
       }
       // console.log(this.email, this.nowPW);
       this.$axios
-      .post("/account/login", null, {
-        params: {
-          email: this.email,
-          password: this.nowPW,
-        },
-      })
+        .post("/account/login", null, {
+          params: {
+            email: this.email,
+            password: this.nowPW,
+          },
+        })
         .then((response) => {
           this.nowPWChk = true;
           Swal.fire({
@@ -629,13 +652,9 @@ export default {
         formData.append("profileImg", file);
 
         this.$axios
-          .post(
-            `/file/uploadProfileImg/${this.uid}`,
-            formData,
-            {
-              headers: { "content-Type": "multipart/form-data" },
-            }
-          )
+          .post(`/file/uploadProfileImg/${this.uid}`, formData, {
+            headers: { "content-Type": "multipart/form-data" },
+          })
           .then((response) => {
             this.result = response.data;
             this.$session.set("user", response.data.object);
@@ -687,7 +706,9 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
+@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
+
 #myphoto :hover {
   filter: grayscale(80%);
 }
