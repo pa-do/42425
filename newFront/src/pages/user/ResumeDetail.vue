@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div class="shadow p-3 mb-5 bg-white rounded">
     <span v-if="!modifyResume">
       <span class="text-primary">{{resume.startYear}}-{{resume.endYear}}</span>
       <h2>{{resume.title}}</h2>
       <span>{{resume.place}}</span>
       <p class="mt-4">{{resume.content}}</p>
       <div v-if="mine" class="d-flex justify-content-end">
-        <n-button @click="modifyResume_on" class="btn btn-primary btn-round mr-1">수정</n-button>
-        <n-button @click="deleteResume" class="btn btn-danger btn-round">삭제</n-button>
+        <n-button @click="modifyResume_on" class="btn btn-primary btn-round mr-1" size="sm">수정</n-button>
+        <n-button @click="deleteResume" class="btn btn-danger btn-round" size="sm">삭제</n-button>
       </div>
     </span>
     <span v-else>
-      <div class="row my-3 d-flex justify-content-between">
+      <div class="row d-flex justify-content-between">
         <div class="col-5 mr-1">
           <p class="mb-0">입사 년도</p>
           <fg-input
@@ -64,8 +64,8 @@
         ></fg-input>
       </div>
       <div class="text-right">
-        <n-button @click="modifyResume_" class="btn btn-primary">수정</n-button>
-        <n-button @click="modifyResume_off" class="btn btn-danger">취소</n-button>
+        <n-button @click="modifyResume_" class="btn btn-primary" size="sm">수정</n-button>
+        <n-button @click="modifyResume_off" class="btn btn-danger" size="sm">취소</n-button>
       </div>
     </span>
   </div>
@@ -138,6 +138,30 @@ export default {
         });
         return;
       }
+      if (this.newPlace.length > 45) {
+        Swal.fire({
+          icon: "warning",
+          title: "기엽/교육기관 명이 너무 깁니다.",
+          text: "기업/교육기관 명을 45자 미만으로 입력하세요.",
+        });
+        return;
+      }
+      if (this.newTitle.length > 45) {
+        Swal.fire({
+          icon: "warning",
+          title: "직무가 너무 깁니다.",
+          text: "직무를 45자 미만으로 입력하세요.",
+        });
+        return;
+      }
+      if (this.newContent.length > 100) {
+        Swal.fire({
+          icon: "warning",
+          title: "업무 및 성과가 너무 깁니다.",
+          text: "업무 및 성과를 100자 미만으로 입력하세요.",
+        });
+        return;
+      }
 
       this.$axios
         .put(`/portfolio/resume/modify`, {
@@ -164,25 +188,39 @@ export default {
         });
     },
     deleteResume() {
-      this.$axios
-        .delete(
-          `/portfolio/resume/delete/${this.resume.uid}/${this.resume.rid}`
-        )
-        .then((res) => {
-          console.log(res);
-          Swal.fire({
-            title: "삭제 완료!",
-            text: "이력이 영구적으로 삭제되었습니다.",
-            icon: "success",
-            showConfirmButton: true,
-            confirmButtonText: "확인",
-          }).then(() => {
-            this.$emit("update");
-          });
-        })
-        .catch((err) => {
-          console.log("Err!!!: ", err);
-        });
+      Swal.fire({
+        title: "정말 삭제하시겠어요?",
+        text:
+          "확인 버튼을 누르면 모든 데이터가 영구적으로 삭제되어 복구할 수 없게 됩니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "삭제할래요😥",
+        cancelButtonText: "안할래요😊",
+      }).then((result) => {
+        if (result.value) {
+          this.$axios
+            .delete(
+              `/portfolio/resume/delete/${this.resume.uid}/${this.resume.rid}`
+            )
+            .then((res) => {
+              console.log(res);
+              Swal.fire({
+                title: "삭제 완료!",
+                text: "이력이 영구적으로 삭제되었습니다.",
+                icon: "success",
+                showConfirmButton: true,
+                confirmButtonText: "확인",
+              }).then(() => {
+                this.$emit("update");
+              });
+            })
+            .catch((err) => {
+              console.log("Err!!!: ", err);
+            });
+        }
+      });
     },
   },
 };

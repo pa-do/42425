@@ -1,9 +1,32 @@
 <template>
   <div>
+    <div class="fixed-bottom my-3 mx-3 text-right">
+      <el-popover
+        ref="popovertrigger"
+        trigger="click"
+        popper-class="popover popover-primary"
+        placement="top"
+      >
+        <!-- <h3 class="popover-header">Popover</h3> -->
+        <div class="popover-body">
+          <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+        </div>
+      </el-popover>
+      <n-button v-popover:popovertrigger type="primary" round>공유</n-button>
+    </div>
+
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
+      <parallax
+        class="page-header-image"
+        style="background-image:url('img/bg5.jpg')"
+      ></parallax>
       <div class="container">
-        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
+        <div
+          v-if="mine"
+          class="photo-container"
+          id="myphoto"
+          @click="modifyPimg"
+        >
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
             <img
@@ -33,7 +56,11 @@
               <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i class="far fa-edit" @click="updateNickname_on"></i>
+                  <i
+                    v-if="mine"
+                    class="far fa-edit"
+                    @click="updateNickname_on"
+                  ></i>
                 </h3>
               </div>
             </div>
@@ -53,17 +80,20 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                >중복 체크</n-button>
+                  >중복 체크</n-button
+                >
                 <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                >수정</n-button>
+                  >수정</n-button
+                >
                 <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                >취소</n-button>
+                  >취소</n-button
+                >
               </div>
             </div>
           </div>
@@ -83,15 +113,21 @@
             <p>Follower</p>
           </div>
         </div>
-        <div class="d-flex justify-content-end">
+        <div v-if="mine" class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-          >비밀번호 변경</n-button>
+            >비밀번호 변경</n-button
+          >
           <!--  -->
-          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
-            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
+          <modal
+            :show.sync="modals.classic"
+            headerClasses="justify-content-center"
+          >
+            <h4 slot="header" class="title title-up text-dark">
+              비밀번호 변경
+            </h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -101,7 +137,12 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
+            <div
+              class="btn btn-primary btn-round btn-md btn-block"
+              @click="checkNowPW"
+            >
+              확인
+            </div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -123,16 +164,21 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
+                >수정</n-button
+              >
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-              >취소</n-button>
+                >취소</n-button
+              >
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert"
+            >탈퇴 하기</n-button
+          >
         </div>
       </div>
     </div>
@@ -154,17 +200,20 @@
             class="btn btn-default btn-round btn-lg btn-icon"
             rel="tooltip"
             title="Follow me on github"
+            target="_blank"
           >
             <i class="fab fa-github"></i>
           </a>
         </div>
         <h3 class="title">
           About me
-          <i class="far fa-edit" @click="updateBio_on"></i>
+          <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
+          <h5 v-else class="description">
+            아직 자기소개를 입력하지 않았습니다.
+          </h5>
         </div>
         <div v-else>
           <textarea
@@ -174,19 +223,19 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+          <n-button
+            class="m-0 btn btn-primary btn-round btn-md mr-1"
+            @click="modifyBio"
+            >수정</n-button
+          >
           <n-button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-          >취소</n-button>
+            >취소</n-button
+          >
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
-          <!-- 
-          <div class="col-md-6 ml-auto mr-auto">
-            <h4 class="title text-center">My Portfolio</h4>
-          </div>
-          -->
           <tabs
             pills
             class="nav-align-center mx-auto"
@@ -205,17 +254,8 @@
             <tab-pane title="Home">
               <i slot="label" class="fas fa-sliders-h"></i>
               <h3 class="title pt-0">My Skill</h3>
-              <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />
-                  </div>
-                </div>
+              <div class="col-md-10 mx-auto">
+                <MySkill :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
 
@@ -223,30 +263,31 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Blog</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <!-- <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />-->
-                  </div>
-                  <div class="col-md-6">
-                    <!-- <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />-->
-                  </div>
-                </div>
-                <Userpost :uid="this.pageuid" />
+                <Userpost :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
           </tabs>
         </div>
       </div>
     </div>
+
+    <div class="section">
+      <div class="container">
+        <h3 class="title pt-0">Send Email</h3>
+        <SendEmail :email="user.email" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
+import { Popover } from "element-ui";
+
 import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
+import MySkill from "../user/MySkill";
+import SendEmail from "../user/SendEmail";
 
 export default {
   name: "profile",
@@ -257,10 +298,13 @@ export default {
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
+    [Popover.name]: Popover,
 
     Contactme,
     Userpost,
     Resume,
+    MySkill,
+    SendEmail,
   },
   created() {
     this.pageuid = this.$route.params.uid;
@@ -270,6 +314,7 @@ export default {
   },
   methods: {
     getdata() {
+      this.link = document.location.href;
       const params = new URL(document.location).searchParams;
       this.$axios
         .get(`/account/${this.pageuid}`)
@@ -312,6 +357,13 @@ export default {
           title: "닉네임을 입력하세요.",
         });
         return;
+      } else if (this.newNick.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "닉네임이 너무 깁니다.",
+          text: "닉네임을 128자 미만으로 입력하세요.",
+        });
+        return;
       } else {
         this.$axios
           .get(`/account/nicknameChk/${this.newNick}`)
@@ -326,7 +378,6 @@ export default {
                 title: "이미 사용중인 닉네임입니다.",
                 text: "새로운 닉네임을 입력하세요.",
               });
-              document.getElementById("newNick").focus();
             } else {
               Swal.fire({
                 icon: "success",
@@ -386,7 +437,6 @@ export default {
           icon: "info",
           title: "현재 비밀번호를 입력하세요.",
         });
-        document.getElementById("nowPW").focus(); //+
         return;
       }
       // console.log(this.email, this.nowPW);
@@ -415,7 +465,6 @@ export default {
             text: "비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.",
           });
           this.nowPW = ""; //+??
-          document.getElementById("nowPW").focus(); //+
         });
     },
     modifyPW() {
@@ -424,21 +473,25 @@ export default {
           icon: "info",
           title: "새로운 비밀번호를 입력하세요.",
         });
-        document.getElementById("newPW1").focus();
         return;
       } else if (this.newPW2 == "") {
         Swal.fire({
           icon: "info",
           title: "새로운 비밀번호를 한번 더 입력하세요.",
         });
-        document.getElementById("newPW2").focus();
         return;
       } else if (this.newPW1 != this.newPW2) {
         Swal.fire({
           icon: "error",
           title: "비밀번호가 일치하지 않습니다.",
         });
-        document.getElementById("newPW2").focus();
+        return;
+      } else if (this.newPW1.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "비밀번호가 너무 깁니다.",
+          text: "비밀번호를 128자 미만으로 입력하세요.",
+        });
         return;
       } else {
         console.log(this.newPW1);
@@ -478,10 +531,18 @@ export default {
       this.update_bio = true;
     },
     modifyBio() {
+      if (this.newBio.length > 200) {
+        Swal.fire({
+          icon: "warning",
+          title: "자기소개가 너무 깁니다.",
+          text: "자기소개를 200자 이하로 입력하세요.",
+        });
+        return;
+      }
       this.$axios
         .put("/account/modify/bio", {
           uid: this.uid,
-          bio: document.getElementById("newBio").value,
+          bio: this.newBio,
         })
         .then((response) => {
           this.result = response.data;
@@ -551,14 +612,14 @@ export default {
         input: "file",
         inputAttributes: {
           accept: "image/*",
-          "aria-label": "Upload your profile picture",
+          "aria-label": "프로필 이미지를 업로드하세요.",
         },
       });
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
           Swal.fire({
-            title: "Your uploaded picture",
+            title: "프로필 사진 변경",
             imageUrl: e.target.result,
             imageAlt: "The uploaded picture",
           });
@@ -590,6 +651,8 @@ export default {
       modals: {
         classic: false,
       },
+      link: "",
+
       email: "",
       nickname: "",
       password: "",

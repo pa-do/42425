@@ -15,37 +15,29 @@ import com.web.blog.model.user.User;
 
 @Transactional
 public interface MySkillDao extends JpaRepository<Myskill, Integer> {
-	
+
 	@Modifying
-	@Query(value = "SELECT * "
-				 + "  FROM myskill"
-				 + " WHERE uid = ?1"
-				 , nativeQuery = true)
-	List<Myskill> select(@Param(value="uid") int uid);
-	
+	@Query(value = "SELECT *       " + "  FROM myskill   " + " WHERE uid = ?1   ", nativeQuery = true)
+	List<Myskill> select(@Param(value = "uid") int uid);
+
 	@Modifying
-	@Query(value = "UPDATE myskill    "
-				 + "   SET skill = ?3, "
-				 + "	   value = ?4 "
-				 + " WHERE uid = ?1   "
-				 + "   AND sid = ?2 "
-				 , nativeQuery = true)
-	void updateSkills(@Param(value = "uid") int uid, @Param(value = "sid") int sid, @Param(value = "skill") String skill, @Param(value = "value") int value);
-	
+	@Query(value = "UPDATE myskill       " + "   SET skill = ?2,   " + "      value = ?3   "
+			+ " WHERE sid = ?1    ", nativeQuery = true)
+	int updateSkill(@Param(value = "sid") int sid, @Param(value = "skill") String skill,
+			@Param(value = "value") int value);
+
 	@Modifying
-	@Query(value = "DELETE 			"
-				 + "  FROM myskill	"
-				 + " WHERE uid=?1 	"
-				 + "   AND skill=?2	"
-				 , nativeQuery = true)
-	int deleteSkill(@Param(value = "uid") int uid, @Param(value = "skill") String skill);
-	
+	@Query(value = "DELETE          " + "  FROM myskill   " + " WHERE sid=?1    ", nativeQuery = true)
+	int deleteSkill(@Param(value = "sid") int sid);
+
 	@Modifying
-	@Query(value = "INSERT 								"
-				 + "  INTO myskill (uid, skill, value)	"
-				 + "VALUES (?1, '기술명', 0)				" 
-				 , nativeQuery = true)
-	int insertDefaultSkill(@Param(value = "uid") int uid);
-	
+	@Query(value = "INSERT                         " + "  INTO myskill (uid, skill, value)   "
+			+ "VALUES (?1, ?2, ?3)               ", nativeQuery = true)
+	int insertSkill(@Param(value = "uid") int uid, @Param(value = "skill") String skill,
+			@Param(value = "value") int value);
+
 	List<Myskill> findMyskillByUserUid(int uid);
+
+	Myskill findMyskillBySid(int sid);
+
 }
