@@ -44,15 +44,13 @@ public class FollowController {
 
 	@ApiOperation(value = "팔로우 버튼을 누를 때 동작하는 API. 호출할 때마다 팔로우/언팔로우 전환됨")
 	@PostMapping(value = "/toggleFollow")
-	public ResponseEntity<Boolean> toggleFollow(@ApiParam(value = "팔로우 하는 유저 uid") int followerUid,
-			@ApiParam(value = "팔로우 받는 유저 uid") int followeeUid) {
+	public ResponseEntity<Boolean> toggleFollow(int followerUid, int followeeUid) {
 		return new ResponseEntity<>(followService.toggleFollow(followerUid, followeeUid), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "팔로우 상태 확인 true/false")
 	@PostMapping(value = "/checkFollow")
-	public ResponseEntity<Boolean> checkFollow(@ApiParam(value = "팔로우 하는 유저 uid") int followerUid,
-			@ApiParam(value = "팔로우 받는 유저 uid") int followeeUid) {
+	public ResponseEntity<Boolean> checkFollow(int followerUid, int followeeUid) {
 		return new ResponseEntity<>(followService.checkFollow(followerUid, followeeUid), HttpStatus.OK);
 	}
 }
