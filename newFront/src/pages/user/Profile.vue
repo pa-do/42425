@@ -171,11 +171,6 @@
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
-          <!-- 
-          <div class="col-md-6 ml-auto mr-auto">
-            <h4 class="title text-center">My Portfolio</h4>
-          </div>
-          -->
           <tabs
             pills
             class="nav-align-center mx-auto"
@@ -196,16 +191,6 @@
               <h3 class="title pt-0">My Skill</h3>
               <div class="col-md-10 mx-auto">
                 <MySkill :uid="this.pageuid" :mine="mine" />
-                <!-- <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />
-                  </div>
-                </div>-->
               </div>
             </tab-pane>
 
@@ -213,21 +198,18 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Portfolio</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <!-- <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />
-                  </div>
-                </div>-->
                 <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
           </tabs>
         </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container">
+        <h3 class="title pt-0">Send A Email</h3>
+        <SendEmail :email="user.email" />
       </div>
     </div>
   </div>
@@ -238,6 +220,7 @@ import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
 import MySkill from "../user/MySkill";
+import SendEmail from "../user/SendEmail";
 
 export default {
   name: "profile",
@@ -253,6 +236,7 @@ export default {
     Userpost,
     Resume,
     MySkill,
+    SendEmail,
   },
   created() {
     this.pageuid = this.$route.params.uid;
