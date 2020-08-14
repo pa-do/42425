@@ -10,6 +10,7 @@
         <!-- <h3 class="popover-header">Popover</h3> -->
         <div class="popover-body">
           <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+          <p class="my-1">{{ this.link }}</p>
         </div>
       </el-popover>
       <n-button v-popover:popovertrigger type="primary" round>공유</n-button>
@@ -224,7 +225,9 @@
             @click="updateBio_off"
           >취소</n-button>
         </div>
-        <Contactme :user="user" :mine="mine" @update="getdata" />
+        <div class="col-md-12 justify-content-between mx-0">
+          <Contactme :user="user" :mine="mine" @update="getdata" />
+        </div>
         <div class="row">
           <tabs
             pills
@@ -236,7 +239,7 @@
             <tab-pane title="Profile">
               <i slot="label" class="far fa-address-card"></i>
               <h3 class="title pt-0">Resume</h3>
-              <div class="col-md-10 mx-auto">
+              <div class="col-md-12 justify-content-between mx-0">
                 <Resume :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
@@ -244,7 +247,7 @@
             <tab-pane title="Home">
               <i slot="label" class="fas fa-sliders-h"></i>
               <h3 class="title pt-0">My Skill</h3>
-              <div class="col-md-10 mx-auto">
+              <div class="col-md-12 justify-content-between mx-0">
                 <MySkill :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
@@ -252,7 +255,7 @@
             <tab-pane title="Messages">
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Blog</h3>
-              <div class="col-md-10 ml-auto mr-auto">
+              <div class="col-md-12 justify-content-between mx-0">
                 <Userpost :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
@@ -675,6 +678,7 @@ export default {
           });
       }
     },
+    copyClipboard(element) {},
   },
   watch: {},
   data: () => {

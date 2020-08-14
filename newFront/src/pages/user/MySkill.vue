@@ -1,13 +1,9 @@
 <template>
   <div class="container">
-    <div v-if="mine" class="text-right">
-      <n-button @click="createSkill" class="btn btn-primary"
-        >스킬 추가</n-button
-      >
+    <div v-if="mine" class="d-block">
+      <n-button @click="createSkill" class="btn btn-primary">스킬 추가</n-button>
     </div>
     <div class="row justify-content-between">
-      <div class="d-block col-md-6 px-5 py-1"></div>
-      <div class="d-block col-md-6 px-5 py-1"></div>
       <span v-for="skill in myskills" :key="skill.sid" class="col-md-6">
         <MySkillDetail :sid="skill.sid" :mine="mine" @update="getdata" />
       </span>
@@ -81,12 +77,6 @@ export default {
         ])
         .then((result) => {
           if (result.value) {
-            const answers = JSON.stringify(result.value);
-            // Swal.fire({
-            //   title: "All done!",
-            //   html: `Your answers: <pre><code>${answers}</code></pre>`,
-            //   confirmButtonText: "기술 등록",
-            // }).then(() => {
             this.$axios
               .post(`/portfolio/skill/create`, {
                 user: this.$session.get("user"),
