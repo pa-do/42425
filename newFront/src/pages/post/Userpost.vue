@@ -5,11 +5,7 @@
       <n-button class="btn btn-danger" @click="gowrite">글쓰기</n-button>
     </div>
     <div class="row">
-      <div
-        v-for="board in boards"
-        :key="`${board.bid}`"
-        class="col-md-6 col-lg-4 my-3"
-      >
+      <div v-for="board in boards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
         <div class="d-flex justify-content-center mt-4">
           <div @click="goboard(`${board.bid}`)" class="card">
             <img
@@ -27,10 +23,7 @@
             <div class="container">
               <h4 class="card-title">{{ board.title }}</h4>
               <p class="card-text">{{ board.content | truncate(20, "...") }}</p>
-              <span class="date"
-                >{{ board.writeDate.split("T").join(" ") }}ㆍ</span
-              >
-              <span>댓글 0개ㆍ</span>
+              <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
               <span class="text-danger">❤ {{ board.likes_count }}</span>
             </div>
           </div>
@@ -95,7 +88,7 @@ export default {
     },
   },
   filters: {
-    truncate: function(text, length, suffix) {
+    truncate: function (text, length, suffix) {
       if (text.length > length) {
         return text.substring(0, length) + suffix;
       } else {

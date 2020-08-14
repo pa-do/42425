@@ -9,7 +9,7 @@
             <img
               v-else
               :src="
-                `http://localhost:8080/img/userProfileImg/${user.profileImg}`
+                `http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`
               "
               alt
             />
@@ -21,7 +21,7 @@
             <img
               v-else
               :src="
-                `http://localhost:8080/img/userProfileImg/${user.profileImg}`
+                `http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`
               "
               alt
             />
@@ -221,18 +221,18 @@
 
             <tab-pane title="Messages">
               <i slot="label" class="far fa-folder-open"></i>
-              <h3 class="title pt-0">Portfolio</h3>
+              <h3 class="title pt-0">Blog</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <!-- <div class="row collections">
+                <div class="row collections">
                   <div class="col-md-6">
-                    <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />
+                    <!-- <img src="img/bg1.jpg" alt class="img-raised" />
+                    <img src="img/bg3.jpg" alt class="img-raised" />-->
                   </div>
                   <div class="col-md-6">
-                    <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />
+                    <!-- <img src="img/bg8.jpg" alt class="img-raised" />
+                    <img src="img/bg7.jpg" alt class="img-raised" />-->
                   </div>
-                </div>-->
+                </div>
                 <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
@@ -625,8 +625,6 @@ export default {
 };
 </script>
 <style scoped>
-@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
-
 #myphoto :hover {
   filter: grayscale(80%);
 }
