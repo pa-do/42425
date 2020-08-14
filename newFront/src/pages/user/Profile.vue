@@ -235,7 +235,7 @@
                     <img src="img/bg7.jpg" alt class="img-raised" />-->
                   </div>
                 </div>
-                <Userpost :uid="this.pageuid" />
+                <Userpost :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
           </tabs>
