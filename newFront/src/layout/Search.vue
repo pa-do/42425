@@ -4,12 +4,8 @@
       <div class="modal-wrapper">
         <div class="modal-container text-dark">
           <div class="d-flex modal-header">
-            <div class="align-self-center">
-              " {{ this.keyword }} " 의 검색 결과
-            </div>
-            <n-button type="danger" round @click="$emit('close')"
-              >닫기</n-button
-            >
+            <div class="align-self-center">" {{ this.keyword }} " 의 검색 결과</div>
+            <n-button type="danger" round @click="$emit('close')">닫기</n-button>
           </div>
 
           <tabs
@@ -26,17 +22,10 @@
               </span>
               <div class="modal-body">
                 <div v-for="board in boards" :key="`${board.bid}`">
-                  <blockquote
-                    class="blockquote text-center card"
-                    @click="goboard(`${board.bid}`)"
-                  >
+                  <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
                     <div class="row">
-                      <p class="mb-0">
-                        {{ board.title | truncate(20, "...") }}
-                      </p>
-                      <footer class="blockquote-footer">
-                        {{ board.nickname | truncate(10, "...") }}
-                      </footer>
+                      <p class="mb-0">{{ board.title | truncate(20, "...") }}</p>
+                      <footer class="blockquote-footer">{{ board.nickname | truncate(10, "...") }}</footer>
                     </div>
                   </blockquote>
                 </div>
@@ -49,17 +38,10 @@
               </span>
               <div class="modal-body">
                 <div v-for="board in Cboards" :key="`${board.bid}`">
-                  <blockquote
-                    class="blockquote text-center card"
-                    @click="goboard(`${board.bid}`)"
-                  >
+                  <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
                     <div class="row">
-                      <p class="mb-0">
-                        {{ board.content | truncate(20, "...") }}
-                      </p>
-                      <footer class="blockquote-footer">
-                        {{ board.nickname | truncate(10, "...") }}
-                      </footer>
+                      <p class="mb-0">{{ board.content | truncate(20, "...") }}</p>
+                      <footer class="blockquote-footer">{{ board.nickname | truncate(10, "...") }}</footer>
                     </div>
                   </blockquote>
                 </div>
@@ -72,14 +54,33 @@
               </span>
               <div class="modal-body">
                 <div v-for="board in Nboards" :key="`${board.uid}`">
+                  <blockquote class="blockquote text-center card" @click="goNick(`${board.uid}`)">
+                    <div class="row">
+                      <p class="mb-0">{{ board.nickname | truncate(20, "...") }}</p>
+                    </div>
+                  </blockquote>
+                </div>
+              </div>
+            </tab-pane>
+
+            <tab-pane>
+              <span slot="label" class="text-dark">
+                <i class="now-ui-icons ui-2_settings-90"></i>기술
+              </span>
+              <div class="modal-body">
+                <div v-for="board in Sboards" :key="`${board.sid}`">
                   <blockquote
                     class="blockquote text-center card"
-                    @click="goNick(`${board.uid}`)"
+                    @click="goNick(`${board.user.uid}`)"
                   >
-                    <div class="row">
-                      <p class="mb-0">
-                        {{ board.nickname | truncate(20, "...") }}
-                      </p>
+                    <div class="row ml-3">
+                      <p
+                        class="mb-0 font-weight-bold"
+                      >{{ board.user.nickname | truncate(20, "...") }}</p>
+                    </div>
+                    <div class="row ml-3">
+                      <p class="mb-0">{{ board.skill }}</p>
+                      <p class="mb-0">({{ board.value }})</p>
                     </div>
                   </blockquote>
                 </div>
@@ -112,11 +113,12 @@ export default {
     Tabs,
     TabPane,
   },
-  data: function() {
+  data: function () {
     return {
       boards: [],
       Cboards: [],
       Nboards: [],
+      Sboards: [],
     };
   },
   methods: {
@@ -138,6 +140,12 @@ export default {
         .then((res) => (this.Nboards = res.data))
         .catch((err) => console.error(err));
     },
+    searchSkill() {
+      this.$axios
+        .get(`/portfolio/skill/search/${this.keyword}`)
+        .then((res) => (this.Sboards = res.data.object))
+        .catch((err) => console.error(err));
+    },
     goboard(item) {
       this.$emit("close");
       this.$router.push({
@@ -157,9 +165,10 @@ export default {
     this.searchTitle();
     this.searchContent();
     this.searchNickname();
+    this.searchSkill();
   },
   filters: {
-    truncate: function(text, length, suffix) {
+    truncate: function (text, length, suffix) {
       if (text.length > length) {
         return text.substring(0, length) + suffix;
       } else {
