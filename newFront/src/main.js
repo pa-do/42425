@@ -44,5 +44,9 @@ new Vue({
 import VueSession from "vue-session";
 var sessionOptions = {
   persist: true,
-};
-Vue.use(VueSession, sessionOptions);
+}
+Vue.use(VueSession, sessionOptions)
+
+// qrcode
+import VueQRCodeComponent from "vue-qrcode-component"
+Vue.component("qr-code", VueQRCodeComponent)

@@ -2,7 +2,7 @@
   <div>
     <!-- <h2>전체글</h2> -->
     <div class="text-right">
-      <n-button class="btn btn-danger" @click="gowrite">글쓰기</n-button>
+      <n-button v-if="mine" class="btn btn-danger" @click="gowrite">글쓰기</n-button>
     </div>
     <div class="row">
       <div v-for="board in boards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
@@ -46,7 +46,7 @@ export default {
       limit: 0,
     };
   },
-  props: ["uid"],
+  props: ["uid", "mine"],
   components: {
     [Button.name]: Button,
     // InfiniteLoading,
