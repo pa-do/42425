@@ -29,6 +29,7 @@ Vue.use(VueCookie);
 
 Vue.prototype.$axios = axios;
 axios.defaults.baseURL = "http://i3d205.p.ssafy.io:8080";
+// axios.defaults.baseURL = "http://localhost:8080"
 
 Vue.config.productionTip = false;
 
