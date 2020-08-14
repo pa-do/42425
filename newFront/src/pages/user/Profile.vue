@@ -16,17 +16,9 @@
     </div>
 
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax
-        class="page-header-image"
-        style="background-image:url('img/bg5.jpg')"
-      ></parallax>
+      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
-        <div
-          v-if="mine"
-          class="photo-container"
-          id="myphoto"
-          @click="modifyPimg"
-        >
+        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
             <img
@@ -56,11 +48,7 @@
               <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i
-                    v-if="mine"
-                    class="far fa-edit"
-                    @click="updateNickname_on"
-                  ></i>
+                  <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
                 </h3>
               </div>
             </div>
@@ -80,25 +68,50 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                  >중복 체크</n-button
-                >
+                >중복 체크</n-button>
                 <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                  >수정</n-button
-                >
+                >수정</n-button>
                 <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                  >취소</n-button
-                >
+                >취소</n-button>
               </div>
             </div>
           </div>
         </div>
-        <p class="category">Programmer</p>
+        <div class="col-md-5 mx-auto">
+          <div v-if="!update_position">
+            <p class="category">
+              {{ user.position }}
+              <i v-if="mine" class="far fa-edit" @click="updatePosition_on"></i>
+            </p>
+          </div>
+          <div v-else>
+            <fg-input
+              v-model="newPos"
+              id="newPos"
+              placeholder="직무를 입력해주세요"
+              type="text"
+              class="no-border form-control-md my-3"
+              autofocus
+            ></fg-input>
+            <div class="d-flex">
+              <n-button
+                id="posModBtn"
+                class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
+                @click="updatePosition"
+              >수정</n-button>
+              <n-button
+                class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
+                @click="updatePosition_off"
+              >취소</n-button>
+            </div>
+          </div>
+        </div>
         <div class="content">
           <div class="social-description">
             <h2>26</h2>
@@ -118,16 +131,10 @@
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-            >비밀번호 변경</n-button
-          >
+          >비밀번호 변경</n-button>
           <!--  -->
-          <modal
-            :show.sync="modals.classic"
-            headerClasses="justify-content-center"
-          >
-            <h4 slot="header" class="title title-up text-dark">
-              비밀번호 변경
-            </h4>
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -137,12 +144,7 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div
-              class="btn btn-primary btn-round btn-md btn-block"
-              @click="checkNowPW"
-            >
-              확인
-            </div>
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -164,21 +166,16 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
-                >수정</n-button
-              >
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert"
-            >탈퇴 하기</n-button
-          >
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
         </div>
       </div>
     </div>
@@ -211,9 +208,7 @@
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">
-            아직 자기소개를 입력하지 않았습니다.
-          </h5>
+          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
         </div>
         <div v-else>
           <textarea
@@ -223,16 +218,11 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <n-button
-            class="m-0 btn btn-primary btn-round btn-md mr-1"
-            @click="modifyBio"
-            >수정</n-button
-          >
+          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
           <n-button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-            >취소</n-button
-          >
+          >취소</n-button>
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
@@ -524,6 +514,48 @@ export default {
       document.getElementById("nowPW").removeAttribute("readonly");
       document.getElementById("pwModBtn").setAttribute("disabled", true);
     },
+    // 직무 변경 관련 메서드
+    updatePosition_on() {
+      if (this.user.position) {
+        this.newPos = this.user.position;
+      }
+      this.update_position = true;
+    },
+    updatePosition() {
+      if (this.newPos.length > 100) {
+        Swal.fire({
+          icon: "warning",
+          title: "직무가 너무 깁니다.",
+          text: "직무를 100자 이하로 입력하세요.",
+        });
+        return;
+      }
+      this.$axios
+        .put("/account/modify/position", {
+          uid: this.uid,
+          position: this.newPos,
+        })
+        .then((response) => {
+          console.log(response);
+          console.log(response.data);
+          this.result = response.data;
+          this.$session.set("user", response.data.object);
+          Swal.fire({
+            icon: "success",
+            title: "회원정보수정 성공",
+          }).then(() => {
+            this.getdata();
+            this.updatePosition_off();
+          });
+        })
+        .catch((err) => {
+          console.log("Err!!! :", err.response);
+        });
+    },
+    updatePosition_off() {
+      this.update_position = false;
+      this.newPos = "";
+    },
     //자기소개변경관련메서드
     updateBio_on() {
       if (this.bio) this.newBio = this.bio;
@@ -663,6 +695,7 @@ export default {
 
       update_nickname: false,
       update_profileimg: false,
+      update_position: false,
       update_bio: false,
 
       nicknameChk: false,
@@ -673,6 +706,7 @@ export default {
       newPW2: "",
 
       newNick: "",
+      newPos: "",
       newBio: "",
 
       pageuid: "",
