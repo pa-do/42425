@@ -1,5 +1,20 @@
 <template>
   <div>
+    <div class="fixed-bottom my-3 mx-3 text-right">
+      <el-popover
+        ref="popovertrigger"
+        trigger="click"
+        popper-class="popover popover-primary"
+        placement="top"
+      >
+        <!-- <h3 class="popover-header">Popover</h3> -->
+        <div class="popover-body">
+          <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+        </div>
+      </el-popover>
+      <n-button v-popover:popovertrigger type="primary" round>공유</n-button>
+    </div>
+
     <div class="page-header clear-filter" filter-color="orange-">
       <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
       <div class="container">
@@ -71,7 +86,7 @@
             <p>Follower</p>
           </div>
         </div>
-        <div class="d-flex justify-content-end">
+        <div v-if="mine" class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
@@ -216,6 +231,8 @@
 </template>
 <script>
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
+import { Popover } from "element-ui";
+
 import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
@@ -231,6 +248,7 @@ export default {
     Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
+    [Popover.name]: Popover,
 
     Contactme,
     Userpost,
@@ -246,6 +264,7 @@ export default {
   },
   methods: {
     getdata() {
+      this.link = document.location.href;
       const params = new URL(document.location).searchParams;
       this.$axios
         .get(`/account/${this.pageuid}`)
@@ -582,6 +601,8 @@ export default {
       modals: {
         classic: false,
       },
+      link: "",
+
       email: "",
       nickname: "",
       password: "",

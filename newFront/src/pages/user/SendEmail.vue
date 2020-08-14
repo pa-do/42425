@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     getdata() {
-      console.log(this.$session.get("user"));
       if (this.$session.get("user")) {
         let myAccount = this.$session.get("user");
         this.yourName = myAccount.nickname;
