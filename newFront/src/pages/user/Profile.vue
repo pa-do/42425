@@ -21,13 +21,25 @@
         <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
-            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+            <img
+              v-else
+              :src="
+                `http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`
+              "
+              alt
+            />
           </div>
         </div>
         <div v-else class="photo-container" @click="modifyPimg">
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
-            <img v-else :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`" alt />
+            <img
+              v-else
+              :src="
+                `http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`
+              "
+              alt
+            />
           </div>
         </div>
         <div class="container">
@@ -211,9 +223,19 @@
 
             <tab-pane title="Messages">
               <i slot="label" class="far fa-folder-open"></i>
-              <h3 class="title pt-0">Portfolio</h3>
+              <h3 class="title pt-0">Blog</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <Userpost :uid="this.pageuid" :mine="mine" />
+                <div class="row collections">
+                  <div class="col-md-6">
+                    <!-- <img src="img/bg1.jpg" alt class="img-raised" />
+                    <img src="img/bg3.jpg" alt class="img-raised" />-->
+                  </div>
+                  <div class="col-md-6">
+                    <!-- <img src="img/bg8.jpg" alt class="img-raised" />
+                    <img src="img/bg7.jpg" alt class="img-raised" />-->
+                  </div>
+                </div>
+                <Userpost :uid="this.pageuid" />
               </div>
             </tab-pane>
           </tabs>
@@ -637,7 +659,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 #myphoto :hover {
   filter: grayscale(80%);
 }

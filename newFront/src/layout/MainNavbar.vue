@@ -20,7 +20,18 @@
         <div class="popover-body">포 투 포 이 오</div>
       </el-popover>
     </template>
+
     <template slot="navbar-menu">
+      <div class="d-none d-lg-block mt-2">
+        <input
+          class="border border-white pl-3 rounded-pill text-white py-1"
+          placeholder="serach"
+          style="background-color:transparent;"
+          @keyup.enter="submit"
+          v-model="search"
+        />
+        <Search v-if="show" @close="show = false" :keyword="search" />
+      </div>
       <!-- <li class="nav-item">
         <a
           class="nav-link"
@@ -31,7 +42,10 @@
           <p>Download</p>
         </a>
       </li>-->
-      <drop-down tag="li" title="Components" icon="now-ui-icons design_app" class="nav-item">
+
+      <!-- <fg-input class="border border-white mt-1" placeholder="검색해보세요"></fg-input> -->
+
+      <!-- <drop-down tag="li" title="Components" icon="now-ui-icons design_app" class="nav-item">
         <nav-link to="/">
           <i class="now-ui-icons business_chart-pie-36"></i> All components
         </nav-link>
@@ -42,8 +56,8 @@
         >
           <i class="now-ui-icons design_bullet-list-67"></i> Documentation
         </a>
-      </drop-down>
-      <drop-down tag="li" title="Examples" icon="now-ui-icons design_image" class="nav-item">
+      </drop-down>-->
+      <drop-down tag="li" title="Examples" icon="now-ui-icons design_image" class="nav-item mt-1">
         <nav-link to="/landing">
           <i class="now-ui-icons education_paper"></i> Landing
         </nav-link>
@@ -119,8 +133,10 @@
 </template>
 
 <script>
-import { DropDown, Navbar, NavLink } from "@/components";
+import { DropDown, Navbar, NavLink, FormGroupInput } from "@/components";
 import { Popover } from "element-ui";
+import Search from "./Search";
+
 export default {
   name: "main-navbar",
   props: {
@@ -132,17 +148,24 @@ export default {
     Navbar,
     NavLink,
     [Popover.name]: Popover,
+    [FormGroupInput.name]: FormGroupInput,
+    Search,
   },
-  methods: {},
+  methods: {
+    submit() {
+      this.show = !this.show;
+    },
+  },
   data: function () {
     return {
       isLogin: false,
       keyword: null,
       uid: "",
+      search: "",
+      show: false,
     };
   },
   mounted() {
-    console.log(this.$cookie.get("auth-token"));
     if (this.$cookie.get("auth-token") != null) {
       this.isLogin = true;
       this.uid = this.$cookie.get("auth-token");
@@ -153,4 +176,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+input::placeholder {
+  color: white;
+}
+</style>

@@ -24,7 +24,6 @@
               <h4 class="card-title">{{ board.title }}</h4>
               <p class="card-text">{{ board.content | truncate(20, "...") }}</p>
               <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
-              <span>댓글 0개ㆍ</span>
               <span class="text-danger">❤ {{ board.likes_count }}</span>
             </div>
           </div>
