@@ -1,6 +1,7 @@
 package com.web.blog.controller.account;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ import com.web.blog.model.BasicResponse;
 import com.web.blog.model.user.ModifyPwdRequest;
 import com.web.blog.model.user.SignupRequest;
 import com.web.blog.model.user.User;
+import com.web.blog.model.user.UserNicknameMapping;
 import com.web.blog.util.Encryption;
 
 import io.swagger.annotations.ApiOperation;
@@ -90,16 +92,16 @@ public class AccountController {
     @ApiOperation(value = "닉네임 중복 체크")
     public Object nicknameChk(@PathVariable String nickname) {
         final BasicResponse result = new BasicResponse();
-        
+
         ResponseEntity response = null;
-        
+
         if (userDao.countByNickname(nickname) > 0) {
             result.status = true;
             result.data = "fail";
             result.object = "nickname";
             response = new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-        	response = new ResponseEntity<>(null, HttpStatus.OK);
+            response = new ResponseEntity<>(null, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -146,19 +148,19 @@ public class AccountController {
     @PostMapping("/getuid")
     @ApiOperation(value = "회원 uid 정보")
     public Object getUserIdByEmail(@RequestParam String email) {
-    	final BasicResponse result = new BasicResponse();
-    	
-    	ResponseEntity response = null;
-    	
-    	User user = userDao.findUserByEmail(email);
-    	if (user != null) {
-    		result.status = true;
-    		result.data = String.valueOf(user.getUid());
-    		response = new ResponseEntity<>(result, HttpStatus.OK);
-    	} else {
-    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    	}
-    	return response;
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        User user = userDao.findUserByEmail(email);
+        if (user != null) {
+            result.status = true;
+            result.data = String.valueOf(user.getUid());
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 
     @PutMapping("/modify/nickname")
@@ -169,7 +171,7 @@ public class AccountController {
         ResponseEntity response = null;
 
         if (userDao.updateNickname(user.getUid(), user.getNickname()) > 0) {
-        	User modifiedUser = userDao.findUserByUid(user.getUid());
+            User modifiedUser = userDao.findUserByUid(user.getUid());
             result.status = true;
             result.data = "success";
             result.object = modifiedUser;
@@ -188,7 +190,7 @@ public class AccountController {
         ResponseEntity response = null;
 
         if (userDao.updateBio(user.getUid(), user.getBio()) > 0) {
-        	User modifiedUser = userDao.findUserByUid(user.getUid());
+            User modifiedUser = userDao.findUserByUid(user.getUid());
             result.status = true;
             result.data = "success";
             result.object = modifiedUser;
@@ -201,24 +203,21 @@ public class AccountController {
 
     @PutMapping("/modify/password")
     @ApiOperation(value = "회원정보수정 - 비밀번호 변경")
-    public Object modifyPassword(@Valid @RequestBody ModifyPwdRequest request) throws NoSuchAlgorithmException  {
+    public Object modifyPassword(@Valid @RequestBody ModifyPwdRequest request) throws NoSuchAlgorithmException {
         final BasicResponse result = new BasicResponse();
 
-        User user = User.builder()
-        			    .uid(request.getUid())
-                		.password(request.getPassword())
-                		.build();
-        
+        User user = User.builder().uid(request.getUid()).password(request.getPassword()).build();
+
         ResponseEntity response = null;
         if (userDao.updatePassword(user.getUid(), enc.sha256(user.getPassword())) > 0) {
-        	User modifiedUser = userDao.findUserByUid(user.getUid());
+            User modifiedUser = userDao.findUserByUid(user.getUid());
             result.status = true;
             result.data = "success";
             result.object = modifiedUser;
             response = new ResponseEntity<>(result, HttpStatus.OK);
         } else {
             response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }  
+        }
         return response;
     }
 
@@ -230,7 +229,7 @@ public class AccountController {
         ResponseEntity response = null;
 
         if (userDao.updateProfileImg(user.getUid(), user.getProfileImg()) > 0) {
-        	User modifiedUser = userDao.findUserByUid(user.getUid());
+            User modifiedUser = userDao.findUserByUid(user.getUid());
             result.status = true;
             result.data = "success";
             result.object = modifiedUser;
@@ -241,7 +240,6 @@ public class AccountController {
         return response;
     }
 
-    
     @PutMapping("/modify/phone")
     @ApiOperation(value = "회원정보수정 - 연락처 변경")
     public Object modifyPhone(@RequestBody User user) {
@@ -250,7 +248,7 @@ public class AccountController {
         ResponseEntity response = null;
 
         if (userDao.updatePhone(user.getUid(), user.getPhone()) > 0) {
-        	User modifiedUser = userDao.findUserByUid(user.getUid());
+            User modifiedUser = userDao.findUserByUid(user.getUid());
             result.status = true;
             result.data = "success";
             result.object = modifiedUser;
@@ -264,77 +262,96 @@ public class AccountController {
     @PutMapping("/modify/website")
     @ApiOperation(value = "회원정보수정 - 웹사이트 변경")
     public Object modifyWebsite(@RequestBody User user) {
-    	final BasicResponse result = new BasicResponse();
-    	
-    	ResponseEntity response = null;
-    	
-    	if (userDao.updateWebsite(user.getUid(), user.getWebsite()) > 0) {
-    		User modifiedUser = userDao.findUserByUid(user.getUid());
-    		result.status = true;
-    		result.data = "success";
-    		result.object = modifiedUser;
-    		response = new ResponseEntity<>(result, HttpStatus.OK);
-    	} else {
-    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    	}
-    	return response;
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        if (userDao.updateWebsite(user.getUid(), user.getWebsite()) > 0) {
+            User modifiedUser = userDao.findUserByUid(user.getUid());
+            result.status = true;
+            result.data = "success";
+            result.object = modifiedUser;
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
-    
+
     @PutMapping("/modify/name")
     @ApiOperation(value = "회원정보수정 - 이름 변경")
     public Object modifyName(@RequestBody User user) {
-    	final BasicResponse result = new BasicResponse();
-    	
-    	ResponseEntity response = null;
-    	
-    	if (userDao.updateName(user.getUid(), user.getName()) > 0) {
-    		User modifiedUser = userDao.findUserByUid(user.getUid());
-    		result.status = true;
-    		result.data = "success";
-    		result.object = modifiedUser;
-    		response = new ResponseEntity<>(result, HttpStatus.OK);
-    	} else {
-    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    	}
-    	return response;
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        if (userDao.updateName(user.getUid(), user.getName()) > 0) {
+            User modifiedUser = userDao.findUserByUid(user.getUid());
+            result.status = true;
+            result.data = "success";
+            result.object = modifiedUser;
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 
     @PutMapping("/modify/birthdate")
     @ApiOperation(value = "회원정보수정 - 생일 변경")
     public Object modifyBirthDate(@RequestBody User user) {
-    	final BasicResponse result = new BasicResponse();
-    	
-    	ResponseEntity response = null;
-    	
-    	if (userDao.updateBirthDate(user.getUid(), user.getBirthDate()) > 0) {
-    		User modifiedUser = userDao.findUserByUid(user.getUid());
-    		result.status = true;
-    		result.data = "success";
-    		result.object = modifiedUser;
-    		response = new ResponseEntity<>(result, HttpStatus.OK);
-    	} else {
-    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    	}
-    	return response;
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        if (userDao.updateBirthDate(user.getUid(), user.getBirthDate()) > 0) {
+            User modifiedUser = userDao.findUserByUid(user.getUid());
+            result.status = true;
+            result.data = "success";
+            result.object = modifiedUser;
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
-    
+
     @PutMapping("/modify/address")
     @ApiOperation(value = "회원정보수정 - 주소 변경")
     public Object modifyAddress(@RequestBody User user) {
-    	final BasicResponse result = new BasicResponse();
-    	
-    	ResponseEntity response = null;
-    	
-    	if (userDao.updateAddress(user.getUid(), user.getAddress()) > 0) {
-    		User modifiedUser = userDao.findUserByUid(user.getUid());
-    		result.status = true;
-    		result.data = "success";
-    		result.object = modifiedUser;
-    		response = new ResponseEntity<>(result, HttpStatus.OK);
-    	} else {
-    		response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    	}
-    	return response;
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        if (userDao.updateAddress(user.getUid(), user.getAddress()) > 0) {
+            User modifiedUser = userDao.findUserByUid(user.getUid());
+            result.status = true;
+            result.data = "success";
+            result.object = modifiedUser;
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @PutMapping("/modify/position")
+    @ApiOperation(value = "회원정보수정 - 직책 변경")
+    public Object modifyPosition(@RequestBody User user) {
+        final BasicResponse result = new BasicResponse();
+
+        ResponseEntity response = null;
+
+        if (userDao.updatePosition(user.getUid(), user.getPosition()) > 0) {
+            User modifiedUser = userDao.findUserByUid(user.getUid());
+            result.status = true;
+            result.data = "success";
+            result.object = modifiedUser;
+            response = new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 
     @DeleteMapping("/dropout/{uid}")
@@ -354,5 +371,10 @@ public class AccountController {
         return response;
     }
 
-    
+    @GetMapping("/searchNickname/{keyword}")
+    @ApiOperation(value = "닉네임 검색")
+    public Object searchNickname(@PathVariable String keyword) {
+        List<UserNicknameMapping> nicknames = userDao.findAllByNicknameContaining(keyword);
+        return new ResponseEntity<List<UserNicknameMapping>>(nicknames, HttpStatus.OK);
+    }
 }
