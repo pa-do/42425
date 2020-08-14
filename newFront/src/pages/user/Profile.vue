@@ -16,9 +16,17 @@
     </div>
 
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
+      <parallax
+        class="page-header-image"
+        style="background-image:url('img/bg5.jpg')"
+      ></parallax>
       <div class="container">
-        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
+        <div
+          v-if="mine"
+          class="photo-container"
+          id="myphoto"
+          @click="modifyPimg"
+        >
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
             <img
@@ -48,7 +56,11 @@
               <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
+                  <i
+                    v-if="mine"
+                    class="far fa-edit"
+                    @click="updateNickname_on"
+                  ></i>
                 </h3>
               </div>
             </div>
@@ -68,17 +80,20 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                >중복 체크</n-button>
+                  >중복 체크</n-button
+                >
                 <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                >수정</n-button>
+                  >수정</n-button
+                >
                 <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                >취소</n-button>
+                  >취소</n-button
+                >
               </div>
             </div>
           </div>
@@ -103,10 +118,16 @@
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-          >비밀번호 변경</n-button>
+            >비밀번호 변경</n-button
+          >
           <!--  -->
-          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
-            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
+          <modal
+            :show.sync="modals.classic"
+            headerClasses="justify-content-center"
+          >
+            <h4 slot="header" class="title title-up text-dark">
+              비밀번호 변경
+            </h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -116,7 +137,12 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
+            <div
+              class="btn btn-primary btn-round btn-md btn-block"
+              @click="checkNowPW"
+            >
+              확인
+            </div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -138,16 +164,21 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
+                >수정</n-button
+              >
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-              >취소</n-button>
+                >취소</n-button
+              >
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert"
+            >탈퇴 하기</n-button
+          >
         </div>
       </div>
     </div>
@@ -180,7 +211,9 @@
         </h3>
         <div v-if="!update_bio">
           <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
+          <h5 v-else class="description">
+            아직 자기소개를 입력하지 않았습니다.
+          </h5>
         </div>
         <div v-else>
           <textarea
@@ -190,11 +223,16 @@
             placeholder="나를 소개하는 글을 입력해주세요"
             type="text"
           />
-          <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+          <n-button
+            class="m-0 btn btn-primary btn-round btn-md mr-1"
+            @click="modifyBio"
+            >수정</n-button
+          >
           <n-button
             class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
             @click="updateBio_off"
-          >취소</n-button>
+            >취소</n-button
+          >
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
         <div class="row">
@@ -205,13 +243,22 @@
             tab-nav-classes="nav-pills-just-icons"
             type="primary"
           >
-            <tab-pane title="Profile">
+            <tab-pane title="Profile" v-popover:popover2>
               <i slot="label" class="far fa-address-card"></i>
               <h3 class="title pt-0">Resume</h3>
               <div class="col-md-10 mx-auto">
                 <Resume :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
+            <el-popover
+              ref="popover2"
+              popper-class="popover"
+              placement="bottom"
+              width="200"
+              trigger="hover"
+            >
+              <div class="popover-body">이력서</div>
+            </el-popover>
 
             <tab-pane title="Home">
               <i slot="label" class="fas fa-sliders-h"></i>
@@ -225,17 +272,7 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Blog</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <!-- <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />-->
-                  </div>
-                  <div class="col-md-6">
-                    <!-- <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />-->
-                  </div>
-                </div>
-                <Userpost :uid="this.pageuid" />
+                <Userpost :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
           </tabs>
