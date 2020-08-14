@@ -4,12 +4,13 @@
       <el-popover
         ref="popovertrigger"
         trigger="click"
-        popper-class="popover popover-primary"
+        popper-class="popover popover-default"
         placement="top"
       >
         <!-- <h3 class="popover-header">Popover</h3> -->
         <div class="popover-body">
           <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+          <n-button @click="doCopy" class="btn btn-primary btn-round" size="sm">링크 복사</n-button>
         </div>
       </el-popover>
       <n-button v-popover:popovertrigger type="primary" round>공유</n-button>
@@ -302,6 +303,26 @@ export default {
     this.getdata();
   },
   methods: {
+    doCopy: function () {
+      this.$copyText(this.link).then(
+        function (e) {
+          Swal.fire({
+            icon: "success",
+            title: "링크가 복사되었습니다!",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+        function (e) {
+          Swal.fire({
+            icon: "error",
+            title: "링크 복사에 실패했습니다.",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
+      );
+    },
     getdata() {
       this.link = document.location.href;
       const params = new URL(document.location).searchParams;
