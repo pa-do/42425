@@ -117,7 +117,9 @@
                   </span>
                 </th>
                 <span v-if="!update_website">
-                  <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
+                  <td>
+                    <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
+                  </td>
                 </span>
                 <span v-else>
                   <fg-input
@@ -161,6 +163,7 @@
                   <td>{{user.email}}</td>
                 </tr>
               </span>
+
               <span v-if="user.phone">
                 <tr>
                   <th scope="row">Phone</th>
