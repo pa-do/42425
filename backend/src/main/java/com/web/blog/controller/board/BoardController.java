@@ -89,12 +89,12 @@ public class BoardController {
 		List<Board> board = boardService.searchBoardContent(keyword);
 		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
 	}
-	
-	@GetMapping("/searchNickname/{keyword}")
-	public Object searchNickname(@PathVariable String keyword) {
-		List<Board> board = boardService.searchBoardNickname(keyword);
-		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
-	}
+
+	// @GetMapping("/searchNickname/{keyword}")
+	// public Object searchNickname(@PathVariable String keyword) {
+	// List<Board> board = boardService.searchBoardNickname(keyword);
+	// return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
+	// }
 
 	// 전체 게시글 중 특정 유저(uid)가 작성한 글 목록 조회
 	@ApiOperation(value = "전체 게시글 중 특정 유저(uid)가 작성한 글만 조회")
