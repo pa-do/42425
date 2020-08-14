@@ -23,14 +23,9 @@
         type="text"
         class="no-border form-control-md my-3"
       ></fg-input>
-      <fg-input
-        v-model="message"
-        id="message"
-        placeholder="message"
-        type="text"
-        class="no-border form-control-md my-3"
-      ></fg-input>
-      <n-button class="btn btn-primary btn-round">SEND</n-button>
+      <textarea v-model="message" id="message" placeholder="message" class="form-control"></textarea>
+
+      <n-button @click="sendEmail" class="btn btn-primary btn-round">SEND</n-button>
     </div>
   </div>
 </template>
@@ -77,17 +72,17 @@ export default {
       }
 
       this.$axios
-        .post(`/email/sendme`, {
-          email: email,
-          name: this.yourName,
-          myEmail: this.yourEmail,
-          subject: this.subject,
-          message: this.message,
+        .post(`/email/sendme`, null, {
+          params: {
+            email: this.yourEmail,
+            message: this.message,
+            myEmail: this.email,
+            name: this.yourName,
+            subject: this.subject,
+          },
         })
-        .then((response) => {
-          this.result = response.data;
-          this.$session.set("user", response.data.object);
-          this.getdata();
+        .then((res) => {
+          console.log(res);
         })
         .catch((err) => {
           console.log("Err!!! :", err.response);
