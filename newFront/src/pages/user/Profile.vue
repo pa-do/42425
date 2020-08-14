@@ -142,6 +142,7 @@
             class="btn btn-default btn-round btn-lg btn-icon"
             rel="tooltip"
             title="Follow me on github"
+            target="_blank"
           >
             <i class="fab fa-github"></i>
           </a>
@@ -193,8 +194,9 @@
             <tab-pane title="Home">
               <i slot="label" class="fas fa-sliders-h"></i>
               <h3 class="title pt-0">My Skill</h3>
-              <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
+              <div class="col-md-10 mx-auto">
+                <MySkill :uid="this.pageuid" :mine="mine" />
+                <!-- <div class="row collections">
                   <div class="col-md-6">
                     <img src="img/bg1.jpg" alt class="img-raised" />
                     <img src="img/bg3.jpg" alt class="img-raised" />
@@ -203,7 +205,7 @@
                     <img src="img/bg8.jpg" alt class="img-raised" />
                     <img src="img/bg7.jpg" alt class="img-raised" />
                   </div>
-                </div>
+                </div>-->
               </div>
             </tab-pane>
 
@@ -235,6 +237,7 @@ import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components";
 import Contactme from "../user/Contactme";
 import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
+import MySkill from "../user/MySkill";
 
 export default {
   name: "profile",
@@ -249,6 +252,7 @@ export default {
     Contactme,
     Userpost,
     Resume,
+    MySkill,
   },
   created() {
     this.pageuid = this.$route.params.uid;
@@ -300,6 +304,13 @@ export default {
           title: "닉네임을 입력하세요.",
         });
         return;
+      } else if (this.newNick.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "닉네임이 너무 깁니다.",
+          text: "닉네임을 128자 미만으로 입력하세요.",
+        });
+        return;
       } else {
         this.$axios
           .get(`/account/nicknameChk/${this.newNick}`)
@@ -314,7 +325,6 @@ export default {
                 title: "이미 사용중인 닉네임입니다.",
                 text: "새로운 닉네임을 입력하세요.",
               });
-              document.getElementById("newNick").focus();
             } else {
               Swal.fire({
                 icon: "success",
@@ -374,7 +384,6 @@ export default {
           icon: "info",
           title: "현재 비밀번호를 입력하세요.",
         });
-        document.getElementById("nowPW").focus(); //+
         return;
       }
       // console.log(this.email, this.nowPW);
@@ -403,7 +412,6 @@ export default {
             text: "비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.",
           });
           this.nowPW = ""; //+??
-          document.getElementById("nowPW").focus(); //+
         });
     },
     modifyPW() {
@@ -412,21 +420,25 @@ export default {
           icon: "info",
           title: "새로운 비밀번호를 입력하세요.",
         });
-        document.getElementById("newPW1").focus();
         return;
       } else if (this.newPW2 == "") {
         Swal.fire({
           icon: "info",
           title: "새로운 비밀번호를 한번 더 입력하세요.",
         });
-        document.getElementById("newPW2").focus();
         return;
       } else if (this.newPW1 != this.newPW2) {
         Swal.fire({
           icon: "error",
           title: "비밀번호가 일치하지 않습니다.",
         });
-        document.getElementById("newPW2").focus();
+        return;
+      } else if (this.newPW1.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "비밀번호가 너무 깁니다.",
+          text: "비밀번호를 128자 미만으로 입력하세요.",
+        });
         return;
       } else {
         console.log(this.newPW1);
@@ -466,10 +478,18 @@ export default {
       this.update_bio = true;
     },
     modifyBio() {
+      if (this.newBio.length > 200) {
+        Swal.fire({
+          icon: "warning",
+          title: "자기소개가 너무 깁니다.",
+          text: "자기소개를 200자 이하로 입력하세요.",
+        });
+        return;
+      }
       this.$axios
         .put("/account/modify/bio", {
           uid: this.uid,
-          bio: document.getElementById("newBio").value,
+          bio: this.newBio,
         })
         .then((response) => {
           this.result = response.data;
@@ -539,14 +559,14 @@ export default {
         input: "file",
         inputAttributes: {
           accept: "image/*",
-          "aria-label": "Upload your profile picture",
+          "aria-label": "프로필 이미지를 업로드하세요.",
         },
       });
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
           Swal.fire({
-            title: "Your uploaded picture",
+            title: "프로필 사진 변경",
             imageUrl: e.target.result,
             imageAlt: "The uploaded picture",
           });
