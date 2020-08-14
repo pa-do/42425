@@ -205,13 +205,22 @@
             tab-nav-classes="nav-pills-just-icons"
             type="primary"
           >
-            <tab-pane title="Profile">
+            <tab-pane title="Profile" v-popover:popover2>
               <i slot="label" class="far fa-address-card"></i>
               <h3 class="title pt-0">Resume</h3>
               <div class="col-md-10 mx-auto">
                 <Resume :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
+            <el-popover
+              ref="popover2"
+              popper-class="popover"
+              placement="bottom"
+              width="200"
+              trigger="hover"
+            >
+              <div class="popover-body">이력서</div>
+            </el-popover>
 
             <tab-pane title="Home">
               <i slot="label" class="fas fa-sliders-h"></i>
@@ -225,16 +234,6 @@
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Blog</h3>
               <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <!-- <img src="img/bg1.jpg" alt class="img-raised" />
-                    <img src="img/bg3.jpg" alt class="img-raised" />-->
-                  </div>
-                  <div class="col-md-6">
-                    <!-- <img src="img/bg8.jpg" alt class="img-raised" />
-                    <img src="img/bg7.jpg" alt class="img-raised" />-->
-                  </div>
-                </div>
                 <Userpost :uid="this.pageuid" :mine="mine" />
               </div>
             </tab-pane>
