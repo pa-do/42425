@@ -22,9 +22,9 @@
     </template>
 
     <template slot="navbar-menu">
-      <div class="d-none d-lg-block mt-2">
+      <div class="d-none d-lg-block mr-3">
         <input
-          class="border border-white pl-3 rounded-pill text-white py-1"
+          class="border border-white pl-3 rounded-pill text-white py-2"
           placeholder="serach"
           style="background-color:transparent;"
           @keyup.enter="submit"
@@ -36,12 +36,39 @@
         <a
           class="nav-link"
           href="https://www.creative-tim.com/product/vue-now-ui-kit"
-          target="_blank"
         >
           <i class="now-ui-icons arrows-1_cloud-download-93"></i>
           <p>Download</p>
         </a>
-      </li>-->
+      </li> -->
+      <div v-if="!isLogin" class="row">
+        <li class="nav-item">
+          <nav-link to="/login" class="nav-link">
+            <i class="now-ui-icons users_circle-08 text-white"></i>
+            <p class="text-white">Login</p>
+          </nav-link>
+        </li>
+        <li class="nav-item">
+          <nav-link to="/join" class="nav-link">
+            <i class="now-ui-icons users_single-02 text-white"></i>
+            <p class="text-white">Join Us</p>
+          </nav-link>
+        </li>
+      </div>
+      <div v-else class="row">
+        <li class="nav-item">
+          <nav-link to="/logout" class="nav-link">
+            <i class="now-ui-icons users_circle-08 text-white"></i>
+            <p class="text-white">Logout</p>
+          </nav-link>
+        </li>
+        <li class="nav-item">
+          <nav-link :to="`/profile/${this.uid}`" class="nav-link">
+            <i class="now-ui-icons users_single-02 text-white"></i>
+            <p class="text-white">Profile</p>
+          </nav-link>
+        </li>
+      </div>
 
       <!-- <fg-input class="border border-white mt-1" placeholder="검색해보세요"></fg-input> -->
 
@@ -57,7 +84,12 @@
           <i class="now-ui-icons design_bullet-list-67"></i> Documentation
         </a>
       </drop-down>-->
-      <drop-down tag="li" title="Examples" icon="now-ui-icons design_image" class="nav-item mt-1">
+      <!-- <drop-down
+        tag="li"
+        title="Examples"
+        icon="now-ui-icons design_image"
+        class="nav-item mt-1"
+      >
         <nav-link to="/landing">
           <i class="now-ui-icons education_paper"></i> Landing
         </nav-link>
@@ -77,7 +109,7 @@
             <i class="now-ui-icons users_single-02"></i> Profile
           </nav-link>
         </div>
-      </drop-down>
+      </drop-down> -->
       <!-- <li class="nav-item">
         <a
           class="nav-link btn btn-neutral"
@@ -133,7 +165,7 @@
 </template>
 
 <script>
-import { DropDown, Navbar, NavLink, FormGroupInput } from "@/components";
+import { Navbar, NavLink, FormGroupInput } from "@/components";
 import { Popover } from "element-ui";
 import Search from "./Search";
 
@@ -144,7 +176,6 @@ export default {
     colorOnScroll: Number,
   },
   components: {
-    DropDown,
     Navbar,
     NavLink,
     [Popover.name]: Popover,
@@ -156,7 +187,7 @@ export default {
       this.show = !this.show;
     },
   },
-  data: function () {
+  data: function() {
     return {
       isLogin: false,
       keyword: null,
@@ -179,5 +210,8 @@ export default {
 <style scoped>
 input::placeholder {
   color: white;
+}
+.dropdown-item.active {
+  background-color: rgba(0, 0, 0, 0);
 }
 </style>
