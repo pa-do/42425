@@ -62,15 +62,13 @@
             <p class="text-white">Logout</p>
           </nav-link>
         </li>
-        <li class="nav-item">
-          <nav-link :to="`/profile/${this.uid}`" class="nav-link">
+        <li class="nav-item" @click="go">
+          <div class="nav-link">
             <i class="now-ui-icons users_single-02 text-white"></i>
             <p class="text-white">Profile</p>
-          </nav-link>
+          </div>
         </li>
       </div>
-
-      <!-- <fg-input class="border border-white mt-1" placeholder="검색해보세요"></fg-input> -->
 
       <!-- <drop-down tag="li" title="Components" icon="now-ui-icons design_app" class="nav-item">
         <nav-link to="/">
@@ -186,6 +184,12 @@ export default {
     submit() {
       this.show = !this.show;
     },
+    go() {
+      this.$router.push({
+        path: `/profile/${this.uid}`,
+      });
+      this.$router.go();
+    },
   },
   data: function () {
     return {
@@ -213,5 +217,8 @@ input::placeholder {
 }
 .dropdown-item.active {
   background-color: rgba(0, 0, 0, 0);
+}
+li {
+  cursor: pointer;
 }
 </style>

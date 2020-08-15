@@ -1,32 +1,23 @@
 <template>
-  <div>
-    <div class="row">
-      <div v-for="board in boards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
-        <div class="d-flex justify-content-center mt-4">
-          <div @click="goboard(`${board.bid}`)" class="card">
-            <img
-              slot="image"
-              class="card-img-top"
-              src="https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png"
-              alt="Card image cap"
-            />
-            <!-- <img
-              slot="image"
-              class="card-img-top"
-              src="https://picsum.photos/200/300"
-              alt="Card image cap"
-            />-->
-            <div class="container">
-              <h4 class="card-title">{{ board.title | truncate(20, "...") }}</h4>
-              <p class="card-text">{{ board.content | truncate(20, "...") }}</p>
-              <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
-              <span class="text-danger">❤ {{ board.likes_count }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- <infinite-loading @infinite="infiniteHandler"></infinite-loading> -->
+  <div class="mt-5">
+    <table class="table text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">제목</th>
+          <th scope="col" class="d-none d-md-block">작성시간</th>
+          <th scope="col">좋아요</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="board in boards" :key="`${board.bid}`" @click="goboard(`${board.bid}`)">
+          <th scope="row">{{board.bid}}</th>
+          <td>{{ board.title | truncate(20, "...") }}</td>
+          <td class="d-none d-md-block">{{ board.writeDate.split("T").join(" ") }}</td>
+          <td>{{ board.likes_count}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -35,7 +26,6 @@ import { Button } from "@/components";
 // import InfiniteLoading from "vue-infinite-loading";
 
 export default {
-  name: "Post",
   data: () => {
     return {
       boards: [],
@@ -97,8 +87,10 @@ export default {
   },
 };
 </script>
+
+
 <style>
-.card {
+tr {
   cursor: pointer;
 }
 </style>

@@ -1,19 +1,8 @@
 <template>
   <div class="container text-left">
-    <transition
-      name="alert-in"
-      enter-active-class="animated flipInX"
-      leave-active-class="animated flipOutX"
-    >
-      <h1 class="text-center">글 쓰기</h1>
-    </transition>
     <div class="form-group">
       <label for="exampleFormControlInput1" class="mb-3">글 제목</label>
-      <fg-input
-        type="text"
-        v-model="writeData.title"
-        id="exampleFormControlInput1"
-      ></fg-input>
+      <fg-input type="text" v-model="writeData.title" id="exampleFormControlInput1"></fg-input>
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1" class="mb-3">글 내용</label>
@@ -59,7 +48,7 @@ export default {
           },
         })
         .then(() => {
-          this.$router.push(`/profile/${this.writeData.uid}`);
+          this.$emit("postWrite");
         })
         .catch((err) => {
           console.log("!!!!!!");
@@ -70,6 +59,5 @@ export default {
 };
 </script>
 
-<style scoped>
-@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
+<style>
 </style>
