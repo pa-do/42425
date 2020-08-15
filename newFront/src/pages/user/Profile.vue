@@ -256,6 +256,15 @@
             <tab-pane title="Messages">
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Blog</h3>
+              <div
+                class="btn-group d-flex justify-content-end"
+                role="group"
+                aria-label="Basic example"
+              >
+                <button type="button" class="btn btn-secondary">Left</button>
+                <button type="button" class="btn btn-secondary">Middle</button>
+                <button type="button" class="btn btn-secondary">Right</button>
+              </div>
               <div class="col-md-10 ml-auto mr-auto">
                 <Userpost :uid="this.pageuid" :mine="mine" />
               </div>

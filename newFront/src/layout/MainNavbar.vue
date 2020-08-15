@@ -62,11 +62,11 @@
             <p class="text-white">Logout</p>
           </nav-link>
         </li>
-        <li class="nav-item">
-          <nav-link :to="`/profile/${this.uid}`" class="nav-link">
+        <li class="nav-item" @click="go">
+          <div class="nav-link">
             <i class="now-ui-icons users_single-02 text-white"></i>
             <p class="text-white">Profile</p>
-          </nav-link>
+          </div>
         </li>
       </div>
 
@@ -185,6 +185,12 @@ export default {
   methods: {
     submit() {
       this.show = !this.show;
+    },
+    go() {
+      this.$router.push({
+        path: `/profile/${this.uid}`,
+      });
+      this.$router.go();
     },
   },
   data: function () {
