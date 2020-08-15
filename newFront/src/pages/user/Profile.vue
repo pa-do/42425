@@ -104,11 +104,15 @@
             <div class="d-flex">
               <n-button
                 id="posModBtn"
-                class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
+                type="primary"
+                round
+                class="m-0 btn-md btn-block mr-1"
                 @click="updatePosition"
               >수정</n-button>
               <n-button
-                class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
+                type="danger"
+                round
+                class="m-0 btn-md btn-block mr-1 btn-danger"
                 @click="updatePosition_off"
               >취소</n-button>
             </div>
@@ -229,7 +233,7 @@
           </div>
         </div>
         <Contactme :user="user" :mine="mine" @update="getdata" />
-        <div class="row">
+        <div class="container">
           <tabs
             pills
             class="nav-align-center mx-auto"
@@ -245,7 +249,7 @@
               </div>
             </tab-pane>
 
-            <tab-pane title="Home">
+            <tab-pane title="Skill">
               <i slot="label" class="fas fa-sliders-h"></i>
               <h3 class="title pt-0">My Skill</h3>
               <div class="col-md-10 mx-auto">
@@ -253,20 +257,32 @@
               </div>
             </tab-pane>
 
-            <tab-pane title="Messages">
+            <tab-pane>
               <i slot="label" class="far fa-folder-open"></i>
               <h3 class="title pt-0">Blog</h3>
               <div class="col-md-11 d-flex justify-content-end">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-secondary">카드</button>
-                  <button type="button" class="btn btn-secondary">
-                    <i class="now-ui-icons design_bullet-list-67"></i>
-                  </button>
-                  <button type="button" class="btn btn-secondary">Right</button>
+                  <n-button type="info" round class @click="cardMode">
+                    <i class="fas fa-th-large fa-2x"></i>
+                  </n-button>
+                  <n-button type="info" round class="mx-1" @click="postMode">
+                    <i class="fas fa-list-ul fa-2x"></i>
+                  </n-button>
+                  <n-button v-if="mine" type="info" round class @click="writeMode">
+                    <i class="far fa-edit fa-2x"></i>
+                  </n-button>
                 </div>
               </div>
               <div class="col-md-10 ml-auto mr-auto">
-                <Userpost :uid="this.pageuid" :mine="mine" />
+                <transition enter-active-class="animated fadeInLeft">
+                  <Userpost v-if="show1" :uid="this.pageuid" />
+                </transition>
+                <transition enter-active-class="animated fadeInRight">
+                  <Listview v-if="show2" :uid="this.pageuid" />
+                </transition>
+                <transition enter-active-class="animated fadeIn">
+                  <Write v-if="show3" @postWrite="cardMode" />
+                </transition>
               </div>
             </tab-pane>
           </tabs>
@@ -290,6 +306,8 @@ import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
 import MySkill from "../user/MySkill";
 import SendEmail from "../user/SendEmail";
+import Write from "../post/Write";
+import Listview from "../post/Listview";
 
 export default {
   name: "profile",
@@ -307,6 +325,8 @@ export default {
     Resume,
     MySkill,
     SendEmail,
+    Write,
+    Listview,
   },
   created() {
     this.pageuid = this.$route.params.uid;
@@ -708,6 +728,21 @@ export default {
           });
       }
     },
+    writeMode() {
+      this.show1 = false;
+      this.show2 = false;
+      this.show3 = true;
+    },
+    cardMode() {
+      this.show1 = true;
+      this.show2 = false;
+      this.show3 = false;
+    },
+    postMode() {
+      this.show1 = false;
+      this.show2 = true;
+      this.show3 = false;
+    },
   },
   watch: {},
   data: () => {
@@ -752,11 +787,14 @@ export default {
 
       show1: true,
       show2: false,
+      show3: false,
     };
   },
 };
 </script>
 <style scoped>
+@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
+
 #myphoto :hover {
   filter: grayscale(80%);
 }

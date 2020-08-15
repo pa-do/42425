@@ -218,4 +218,7 @@ input::placeholder {
 .dropdown-item.active {
   background-color: rgba(0, 0, 0, 0);
 }
+li {
+  cursor: pointer;
+}
 </style>

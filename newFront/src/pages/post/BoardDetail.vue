@@ -2,7 +2,7 @@
   <div class="container">
     <div class="mt-5"></div>
     <div class="card mt-5">
-      <h1 class="card-header text-center">{{ board.title }}</h1>
+      <h1 class="card-header text-center mt-3">{{ board.title }}</h1>
       <div class="card-body">
         <blockquote class="blockquote mb-0 text-right">
           <p class="text-left">{{ board.content }}</p>
