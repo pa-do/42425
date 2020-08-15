@@ -70,8 +70,6 @@
         </li>
       </div>
 
-      <!-- <fg-input class="border border-white mt-1" placeholder="검색해보세요"></fg-input> -->
-
       <!-- <drop-down tag="li" title="Components" icon="now-ui-icons design_app" class="nav-item">
         <nav-link to="/">
           <i class="now-ui-icons business_chart-pie-36"></i> All components
