@@ -4,7 +4,13 @@
       <div class="modal-wrapper">
         <div class="modal-container text-dark">
           <div class="d-flex modal-header">
-            <div class="align-self-center">" {{ this.keyword }} " 의 검색 결과</div>
+            <div class="align-self-center">
+              <h3 class="mb-0">
+                <i class="fas fa-quote-left mr-1"></i>
+                {{ this.keyword }}
+                <i class="fas fa-quote-right ml-1"></i> 의 검색 결과
+              </h3>
+            </div>
             <n-button type="danger" round @click="$emit('close')">닫기</n-button>
           </div>
 
@@ -17,9 +23,9 @@
             class="row"
           >
             <tab-pane>
-              <span slot="label" class="text-dark">
+              <h4 slot="label" class="text-dark m-0">
                 <i class="now-ui-icons design_bullet-list-67"></i>제목
-              </span>
+              </h4>
               <div class="modal-body">
                 <div v-for="board in boards" :key="`${board.bid}`">
                   <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
@@ -33,9 +39,9 @@
             </tab-pane>
 
             <tab-pane>
-              <span slot="label" class="text-dark">
+              <h4 slot="label" class="text-dark m-0">
                 <i class="now-ui-icons files_single-copy-04"></i>내용
-              </span>
+              </h4>
               <div class="modal-body">
                 <div v-for="board in Cboards" :key="`${board.bid}`">
                   <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
@@ -49,9 +55,9 @@
             </tab-pane>
 
             <tab-pane>
-              <span slot="label" class="text-dark">
+              <h4 slot="label" class="text-dark m-0">
                 <i class="now-ui-icons users_single-02"></i>닉네임
-              </span>
+              </h4>
               <div class="modal-body">
                 <div v-for="board in Nboards" :key="`${board.uid}`">
                   <blockquote class="blockquote text-center card" @click="goNick(`${board.uid}`)">
@@ -64,9 +70,9 @@
             </tab-pane>
 
             <tab-pane>
-              <span slot="label" class="text-dark">
+              <h4 slot="label" class="text-dark m-0">
                 <i class="now-ui-icons ui-2_settings-90"></i>기술
-              </span>
+              </h4>
               <div class="modal-body">
                 <div v-for="board in Sboards" :key="`${board.sid}`">
                   <blockquote
