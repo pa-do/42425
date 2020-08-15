@@ -26,11 +26,25 @@
         class="no-border form-control-md my-3"
       ></fg-input>
       <textarea v-model="message" id="message" placeholder="내용" class="form-control" rows="3"></textarea>
-      <div class="row text-center" style="width: 100%">
-        <div style="width: 30%; float:none; margin:0 auto">
-          <vue-recaptcha ref="recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
-          <n-button @click="sendEmail" class="btn btn-primary btn-round">SEND</n-button>
+      <div class="row">
+        <div class="col-4" style="margin: 0 auto;"></div>
+        <div class="col-4 text-center">
+          <div
+            class="g-recaptchak"
+            data-theme="light"
+            :data-sitekey="sitekey"
+            style="transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;"
+          >
+            <vue-recaptcha
+              ref="recaptcha"
+              @verify="onVerify"
+              @expired="onExpired"
+              :sitekey="sitekey"
+            ></vue-recaptcha>
+            <n-button @click="sendEmail" class="btn btn-primary btn-round text-center">SEND</n-button>
+          </div>
         </div>
+        <div class="col-4" style="margin: 0 auto;"></div>
       </div>
     </div>
     <div class="col-1"></div>
@@ -158,4 +172,13 @@ export default {
 </script>
 
 <style>
+@media screen and (max-height: 575px) {
+  #rc-imageselect,
+  .g-recaptcha {
+    transform: scale(0.77);
+    -webkit-transform: scale(0.77);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+}
 </style>
