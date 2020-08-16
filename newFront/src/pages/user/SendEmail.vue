@@ -71,19 +71,14 @@ export default {
       this.$refs.invisibleRecaptcha.execute();
     },
     onVerify: function (response) {
-      console.log("Verify: " + response);
       this.reCAPTCHA = true;
-      console.log(this.reCAPTCHA);
     },
     onExpired: function () {
-      console.log("Expired");
       this.reCAPTCHA = false;
-      console.log(this.reCAPTCHA);
     },
     resetRecaptcha() {
       this.$refs.recaptcha.reset(); // Direct call reset method
       this.reCAPTCHA = false;
-      console.log(this.reCAPTCHA);
     },
     getdata() {
       if (this.$session.get("user")) {
@@ -140,15 +135,13 @@ export default {
           },
         })
         .then((res) => {
-          console.log("success");
           this.subject = "";
           this.message = "";
-          // resetRecaptcha();
           Swal.fire({
             icon: "success",
             title: "메일이 전송되었습니다.",
           }).then(() => {
-            this.$router.go();
+            this.resetRecaptcha();
           });
         })
         .catch((err) => {
