@@ -15,56 +15,69 @@
 </template>
 
 <script>
-import { Button } from "@/components";
+import { Button } from "@/components"
 
 export default {
   components: {
     [Button.name]: Button,
   },
-  data: function () {
+  data: function() {
     return {
       title: "",
       content: "",
       board: Object,
-    };
+    }
   },
   methods: {
     fetchBoard() {
       this.$axios
         .get(`/board/${this.$route.params.mid}`)
         .then((res) => {
-          this.board = res.data;
-          this.title = this.board.title;
-          this.content = this.board.content;
-          console.log(this.board);
+          this.board = res.data
+          this.title = this.board.title
+          this.content = this.board.content
+          console.log(this.board)
         })
 
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     writeBoard() {
-      this.board.uid = this.$cookie.get("auth-token");
-      this.$axios
-        .put("/board/modify", null, {
-          params: {
-            bid: this.board.bid,
-            content: this.content,
-            title: this.title,
-            uid: this.board.uid,
-          },
+      this.title = this.title.trim()
+      this.content = this.content.trim()
+      if (!this.title || !this.content) {
+        Swal.fire({
+          icon: "warning",
+          title: "제목 또는 내용이 입력되지<br>않았습니다.",
         })
-        .then(() => {
-          this.$router.push(`/profile/${this.board.uid}`);
-        })
-        .catch((err) => {
-          console.log("!!!!!!");
-          console.log(err.response);
-        });
+      } else {
+        this.board.uid = this.$cookie.get("auth-token")
+        this.$axios
+          .put("/board/modify", null, {
+            params: {
+              bid: this.board.bid,
+              content: this.content,
+              title: this.title,
+              uid: this.board.uid,
+            },
+          })
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "글이 수정되었습니다.",
+            })
+            this.$router.push(`/profile/${this.board.uid}`)
+          })
+          .catch((err) => {
+            console.log("!!!!!!")
+            console.log(err.response)
+          })
+      }
     },
   },
   created() {
-    this.fetchBoard();
+    this.fetchBoard()
   },
-};
+}
 </script>
 
 <style></style>

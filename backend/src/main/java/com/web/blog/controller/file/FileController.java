@@ -37,7 +37,6 @@ public class FileController {
     @PostMapping("/uploadProfileImg/{uid}")
     public Object uploadProfileImg(@PathVariable int uid, @RequestParam("profileImg") MultipartFile file,
             HttpServletRequest request) {
-        System.out.println("테스트");
         ResponseEntity response = null;
         String retPath;
         // for (MultipartFile file : files) {

@@ -99,8 +99,8 @@ public class PortfolioController {
 
 		return response;
 	}
-	
-	//skill keyword로 검색
+
+	// skill keyword로 검색
 	@GetMapping("/skill/search/{keyword}")
 	@ApiOperation(value = "keyword로 검색")
 	public Object SearchSkill(@PathVariable String keyword) {
@@ -152,7 +152,6 @@ public class PortfolioController {
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-			System.out.println("??");
 		}
 
 		return response;

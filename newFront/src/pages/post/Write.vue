@@ -6,12 +6,7 @@
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1" class="mb-3">글 내용</label>
-      <textarea
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        v-model="writeData.content"
-        rows="3"
-      ></textarea>
+      <textarea class="form-control" id="exampleFormControlTextarea1" v-model="writeData.content" rows="3"></textarea>
     </div>
     <br />
     <n-button @click="writeBoard" class="right btn btn-primary">확인</n-button>
@@ -19,18 +14,18 @@
 </template>
 
 <script>
-import { Button, FormGroupInput as FgInput } from "@/components";
+import { Button, FormGroupInput as FgInput } from "@/components"
 
 export default {
   name: "Write",
   data() {
     return {
       writeData: {
-        content: null,
-        title: null,
+        content: "",
+        title: "",
         uid: null,
       },
-    };
+    }
   },
   components: {
     [Button.name]: Button,
@@ -38,26 +33,38 @@ export default {
   },
   methods: {
     writeBoard() {
-      this.writeData.uid = this.$cookie.get("auth-token");
-      this.$axios
-        .post("/board/write", null, {
-          params: {
-            content: this.writeData.content,
-            title: this.writeData.title,
-            uid: this.writeData.uid,
-          },
+      this.writeData.uid = this.$cookie.get("auth-token")
+      this.writeData.title = this.writeData.title.trim()
+      this.writeData.content = this.writeData.content.trim()
+      if (!this.writeData.title || !this.writeData.content) {
+        Swal.fire({
+          icon: "warning",
+          title: "제목 또는 내용이 입력되지<br>않았습니다.",
         })
-        .then(() => {
-          this.$emit("postWrite");
-        })
-        .catch((err) => {
-          console.log("!!!!!!");
-          console.log(err.response);
-        });
+      } else {
+        this.$axios
+          .post("/board/write", null, {
+            params: {
+              content: this.writeData.content,
+              title: this.writeData.title,
+              uid: this.writeData.uid,
+            },
+          })
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "글이 작성되었습니다.",
+            })
+            this.$emit("postWrite")
+          })
+          .catch((err) => {
+            console.log("!!!!!!")
+            console.log(err.response)
+          })
+      }
     },
   },
-};
+}
 </script>
 
-<style>
-</style>
+<style></style>
