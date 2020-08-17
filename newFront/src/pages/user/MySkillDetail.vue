@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="my-4">
     <span v-if="!modifySkill">
-      <h2 class="my-0">{{ skill.skill }}</h2>
+      <h3 class="my-0">{{ skill.skill }}</h3>
       <div class="progress mt-0 mb-3">
         <div
           class="progress-bar btn-primary"
