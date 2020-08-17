@@ -3,91 +3,75 @@
     <div class="fixed-bottom my-3 mx-3 text-right">
       <el-popover ref="popovertrigger" trigger="click" popper-class="popover popover-default" placement="top">
         <!-- <h3 class="popover-header">Popover</h3> -->
-        <div class="popover-body text-center ">
-          <qr-code :text="link" style="width: 100%; height: 100%" id="qr"></qr-code>
-          <!-- <n-button @click="doDownloadQr" class="btn btn-primary btn-round" size="sm">QR CODE 다운로드</n-button> -->
+        <div class="popover-body text-center">
+          <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
           <n-button @click="doCopy" class="btn btn-primary btn-round" size="sm">클립보드로 URL 복사</n-button>
         </div>
       </el-popover>
-      <div v-if="mine == isEditMode">
-        <n-button type="primary" round v-if="isEditMode" @click="toggleEditView">뷰어 모드</n-button>
-        <n-button type="primary" round v-else @click="toggleEditView">편집 모드</n-button>
+      <div v-if="isEditMode != null">
+        <n-button type="primary" round v-if="isEditMode == 'enable'" @click="toggleEditView">뷰어 모드로 보기</n-button>
+        <n-button type="primary" round v-else @click="toggleEditView">편집 모드로 보기</n-button>
       </div>
       <n-button v-popover:popovertrigger type="primary" round>외부로 공유</n-button>
     </div>
-    <div style="">
-      <div class="page-header clear-filter" filter-color="orange-">
-        <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
+
+    <div class="page-header clear-filter" filter-color="orange-">
+      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
+      <div class="container">
+        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
+          <div id="pimg">
+            <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+            <img v-else :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`" alt />
+          </div>
+        </div>
+        <div v-else class="photo-container" @click="modifyPimg">
+          <div id="pimg">
+            <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+            <img v-else :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`" alt />
+          </div>
+        </div>
         <div class="container">
-          <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
-            <div id="pimg">
-              <img v-if="!user.profileImg" src="img/julie.jpg" alt />
-              <img v-else :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`" alt />
-            </div>
-          </div>
-          <div v-else class="photo-container" @click="modifyPimg">
-            <div id="pimg">
-              <img v-if="!user.profileImg" src="img/julie.jpg" alt />
-              <img v-else :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`" alt />
-            </div>
-          </div>
-          <div class="container">
-            <div class="col-md-5 mx-auto">
-              <div v-if="!update_nickname">
-                <div>
-                  <h3 class="title">
-                    {{ nickname }}
-                    <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
-                  </h3>
-                </div>
-              </div>
-              <div v-else>
-                <p>새로운 닉네임을 입력하고 중복 체크해주세요.</p>
-                <fg-input
-                  v-model="newNick"
-                  id="newNick"
-                  placeholder="닉네임을 입력해주세요"
-                  type="text"
-                  class="no-border form-control-md my-3"
-                  addon-left-icon="now-ui-icons users_circle-08"
-                  autofocus
-                ></fg-input>
-                <div class="d-flex">
-                  <n-button id="nickDuplChkBtn" class="m-0 btn btn-primary btn-round btn-md btn-block mr-1" @click="checkNickname">중복 체크</n-button>
-                  <n-button id="nickModBtn" class="m-0 btn btn-primary btn-round btn-md btn-block mr-1" @click="modifyNickname" disabled>수정</n-button>
-                  <n-button class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger" @click="updateNickname_off">취소</n-button>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="col-md-5 mx-auto">
-            <p v-if="!user.position">직무를 입력하지 않았습니다.</p>
-            <div v-if="!update_position">
-              <p class="category">
-                {{ user.position }}
-                <i v-if="mine" class="far fa-edit" @click="updatePosition_on"></i>
-              </p>
+            <div v-if="!update_nickname">
+              <div>
+                <h3 class="title">
+                  {{ nickname }}
+                  <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
+                </h3>
+              </div>
             </div>
             <div v-else>
-              <fg-input v-model="newPos" id="newPos" placeholder="직무를 입력해주세요" type="text" class="no-border form-control-md my-3" autofocus></fg-input>
+              <p>새로운 닉네임을 입력하고 중복 체크해주세요.</p>
+              <fg-input
+                v-model="newNick"
+                id="newNick"
+                placeholder="닉네임을 입력해주세요"
+                type="text"
+                class="no-border form-control-md my-3"
+                addon-left-icon="now-ui-icons users_circle-08"
+                autofocus
+              ></fg-input>
               <div class="d-flex">
-                <n-button id="posModBtn" type="primary" round class="m-0 btn-md btn-block mr-1" @click="updatePosition">수정</n-button>
-                <n-button type="danger" round class="m-0 btn-md btn-block mr-1 btn-danger" @click="updatePosition_off">취소</n-button>
+                <n-button id="nickDuplChkBtn" class="m-0 btn btn-primary btn-round btn-md btn-block mr-1" @click="checkNickname">중복 체크</n-button>
+                <n-button id="nickModBtn" class="m-0 btn btn-primary btn-round btn-md btn-block mr-1" @click="modifyNickname" disabled>수정</n-button>
+                <n-button class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger" @click="updateNickname_off">취소</n-button>
               </div>
             </div>
           </div>
-          <div class="content">
-            <div class="social-description">
-              <h2>26</h2>
-              <p>Project</p>
-            </div>
-            <div class="social-description">
-              <h2>26</h2>
-              <p>Post</p>
-            </div>
-            <div class="social-description">
-              <h2>48</h2>
-              <p>Follower</p>
+        </div>
+        <div class="col-md-5 mx-auto">
+          <p v-if="!user.position">직무를 입력하지 않았습니다.</p>
+          <div v-if="!update_position">
+            <p class="category">
+              {{ user.position }}
+              <i v-if="mine" class="far fa-edit" @click="updatePosition_on"></i>
+            </p>
+          </div>
+          <div v-else>
+            <fg-input v-model="newPos" id="newPos" placeholder="직무를 입력해주세요" type="text" class="no-border form-control-md my-3" autofocus></fg-input>
+            <div class="d-flex">
+              <n-button id="posModBtn" type="primary" round class="m-0 btn-md btn-block mr-1" @click="updatePosition">수정</n-button>
+              <n-button type="danger" round class="m-0 btn-md btn-block mr-1 btn-danger" @click="updatePosition_off">취소</n-button>
             </div>
           </div>
         </div>
@@ -109,11 +93,7 @@
         </div>-->
         <!-- couter.vue -->
         <div v-if="mine" class="d-flex justify-content-end">
-          <n-button
-            class="btn btn-primary btn-round btn-md mr-1"
-            type="primary"
-            @click.native="modals.classic = true"
-          >비밀번호 변경</n-button>
+          <n-button class="btn btn-primary btn-round btn-md mr-1" type="primary" @click.native="modals.classic = true">비밀번호 변경</n-button>
           <!--  -->
           <modal :show.sync="modals.classic" headerClasses="justify-content-center">
             <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
@@ -138,18 +118,30 @@
                 addon-left-icon="now-ui-icons ui-1_lock-circle-open"
               ></fg-input>
               <fg-input
-                v-model="nowPW"
-                id="nowPW"
-                placeholder="현재 비밀번호를 입력하세요."
+                v-model="newPW2"
+                id="newPW2"
+                placeholder="새로운 비밀번호를 입력하세요."
                 type="password"
+                @keyup.enter="modifyPW"
                 class="no-border form-control-md my-3"
                 addon-left-icon="now-ui-icons ui-1_lock-circle-open"
               ></fg-input>
+            </div>
+            <template slot="footer">
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
+              <n-button type="danger" @click.native="modals.classic = false" @click="updatePW_off">취소</n-button>
+            </template>
+          </modal>
+          <!--  -->
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
+        </div>
+      </div>
+    </div>
 
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <div v-if="!mine" @click="toggleFollow">
+          <div v-if="!mine && !isEditMode" @click="toggleFollow">
             <a v-if="!followChk" class="btn btn-primary btn-round btn-lg">Follow</a>
             <a v-else class="btn btn-default btn-round btn-lg">UnFollow</a>
           </div>
@@ -180,105 +172,67 @@
           <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
         </div>
         <div v-else>
-          <textarea
-            class="form-control"
-            v-model="newBio"
-            id="newBio"
-            placeholder="나를 소개하는 글을 입력해주세요"
-            type="text"
-          />
+          <textarea class="form-control" v-model="newBio" id="newBio" placeholder="나를 소개하는 글을 입력해주세요" type="text" />
           <div class="text-center pt-3 pb-5">
             <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
-            <n-button
-              class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
-              @click="updateBio_off"
-            >취소</n-button>
+            <n-button class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger" @click="updateBio_off">취소</n-button>
           </div>
+        </div>
+        <Contactme :user="user" :mine="mine" @update="getdata" />
+        <div class="container">
+          <tabs pills class="nav-align-center mx-auto" tab-content-classes="gallery" tab-nav-classes="nav-pills-just-icons" type="primary">
+            <tab-pane title="Profile">
+              <i slot="label" class="far fa-address-card"></i>
+              <h3 class="title pt-0">Resume</h3>
+              <div class="col-md-10 mx-auto">
+                <Resume :uid="this.pageuid" :mine="mine" />
+              </div>
+            </tab-pane>
+
+            <tab-pane title="Skill">
+              <i slot="label" class="fas fa-sliders-h"></i>
+              <h3 class="title pt-0">My Skill</h3>
+              <div class="col-md-10 mx-auto">
+                <MySkill :uid="this.pageuid" :mine="mine" />
+              </div>
+            </tab-pane>
+
+            <tab-pane>
+              <i slot="label" class="far fa-folder-open"></i>
+              <h3 class="title pt-0">Blog</h3>
+              <div class="col-md-11 d-flex justify-content-end">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <n-button type="primary" round class @click="cardMode">
+                    <i class="fas fa-th-large fa-2x"></i>
+                  </n-button>
+                  <n-button type="primary" round class="mx-1" @click="postMode">
+                    <i class="fas fa-list-ul fa-2x"></i>
+                  </n-button>
+                  <n-button v-if="mine" type="primary" round class @click="writeMode">
+                    <i class="far fa-edit fa-2x"></i>
+                  </n-button>
+                </div>
+              </div>
+              <div class="col-md-10 ml-auto mr-auto">
+                <transition enter-active-class="animated fadeInLeft">
+                  <Userpost v-if="show1" :uid="this.pageuid" />
+                </transition>
+                <transition enter-active-class="animated fadeInRight">
+                  <Listview v-if="show2" :uid="this.pageuid" />
+                </transition>
+                <transition enter-active-class="animated fadeIn">
+                  <Write v-if="show3" @postWrite="cardMode" />
+                </transition>
+              </div>
+            </tab-pane>
+          </tabs>
         </div>
       </div>
-
-      <div class="section">
-        <div class="container">
-          <div class="button-container">
-            <a v-if="!mine" href="#button" class="btn btn-primary btn-round btn-lg">Follow</a>
-            <a href="#button" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on Twitter">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a :href="`${user.website}`" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on github" target="_blank">
-              <i class="fab fa-github"></i>
-            </a>
-          </div>
-          <h3 class="title">
-            About me
-            <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
-          </h3>
-          <div v-if="!update_bio">
-            <h5 v-if="bio" class="description">{{ bio }}</h5>
-            <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
-          </div>
-          <div v-else>
-            <textarea class="form-control" v-model="newBio" id="newBio" placeholder="나를 소개하는 글을 입력해주세요" type="text" />
-            <div class="text-center pt-3 pb-5">
-              <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
-              <n-button class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger" @click="updateBio_off">취소</n-button>
-            </div>
-          </div>
-          <Contactme :user="user" :mine="mine" @update="getdata" />
-          <div class="container">
-            <tabs pills class="nav-align-center mx-auto" tab-content-classes="gallery" tab-nav-classes="nav-pills-just-icons" type="primary">
-              <tab-pane title="Profile">
-                <i slot="label" class="far fa-address-card"></i>
-                <h3 class="title pt-0">Resume</h3>
-                <div class="col-md-10 mx-auto">
-                  <Resume :uid="this.pageuid" :mine="mine" />
-                </div>
-              </tab-pane>
-
-              <tab-pane title="Skill">
-                <i slot="label" class="fas fa-sliders-h"></i>
-                <h3 class="title pt-0">My Skill</h3>
-                <div class="col-md-10 mx-auto">
-                  <MySkill :uid="this.pageuid" :mine="mine" />
-                </div>
-              </tab-pane>
-
-              <tab-pane>
-                <i slot="label" class="far fa-folder-open"></i>
-                <h3 class="title pt-0">Blog</h3>
-                <div class="col-md-11 d-flex justify-content-end">
-                  <div class="btn-group" role="group" aria-label="Basic example">
-                    <n-button type="primary" round class @click="cardMode">
-                      <i class="fas fa-th-large fa-2x"></i>
-                    </n-button>
-                    <n-button type="primary" round class="mx-1" @click="postMode">
-                      <i class="fas fa-list-ul fa-2x"></i>
-                    </n-button>
-                    <n-button v-if="mine" type="primary" round class @click="writeMode">
-                      <i class="far fa-edit fa-2x"></i>
-                    </n-button>
-                  </div>
-                </div>
-                <div class="col-md-10 ml-auto mr-auto">
-                  <transition enter-active-class="animated fadeInLeft">
-                    <Userpost v-if="show1" :uid="this.pageuid" />
-                  </transition>
-                  <transition enter-active-class="animated fadeInRight">
-                    <Listview v-if="show2" :uid="this.pageuid" />
-                  </transition>
-                  <transition enter-active-class="animated fadeIn">
-                    <Write v-if="show3" @postWrite="cardMode" />
-                  </transition>
-                </div>
-              </tab-pane>
-            </tabs>
-          </div>
-        </div>
-      </div>
-      <div v-if="!mine" class="section">
-        <div class="container">
-          <h3 class="title pt-0">Send Email</h3>
-          <SendEmail :email="user.email" />
-        </div>
+    </div>
+    <div v-if="!mine && !isEditMode" class="section">
+      <div class="container">
+        <h3 class="title pt-0">Send Email</h3>
+        <SendEmail :email="user.email" />
       </div>
     </div>
   </div>
@@ -287,14 +241,14 @@
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components"
 import { Popover } from "element-ui"
 
-import Contactme from "../user/Contactme";
-import Userpost from "../post/Userpost";
-import Resume from "../user/Resume";
-import MySkill from "../user/MySkill";
-import SendEmail from "../user/SendEmail";
-import Write from "../post/Write";
-import Listview from "../post/Listview";
-import Counter from "../user/Counter";
+import Contactme from "../user/Contactme"
+import Userpost from "../post/Userpost"
+import Resume from "../user/Resume"
+import MySkill from "../user/MySkill"
+import SendEmail from "../user/SendEmail"
+import Write from "../post/Write"
+import Listview from "../post/Listview"
+import Counter from "../user/Counter"
 
 export default {
   name: "profile",
@@ -320,8 +274,8 @@ export default {
     this.pageuid = this.$route.params.uid
   },
   mounted() {
-    this.getdata();
-    this.checkFollow();
+    this.getdata()
+    this.checkFollow()
   },
   methods: {
     doCopy: function() {
@@ -368,6 +322,7 @@ export default {
 
           if (this.$session.get("user").uid === this.user.uid) {
             this.mine = true
+            this.isEditMode = "enable"
           } else {
             this.mine = false
           }
@@ -386,9 +341,9 @@ export default {
           },
         })
         .then((res) => {
-          this.followChk = res.data;
+          this.followChk = res.data
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     toggleFollow() {
       this.$axios
@@ -399,21 +354,21 @@ export default {
           },
         })
         .then((res) => {
-          this.checkFollow();
-          console.log(res.data);
+          this.checkFollow()
+          console.log(res.data)
           if (res.data) {
             Swal.fire({
               icon: "success",
               title: this.user.nickname + "님을 팔로우합니다.",
-            });
+            })
           } else {
             Swal.fire({
               icon: "success",
               title: this.user.nickname + "님의 팔로우를 취소합니다.",
-            });
+            })
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     //닉네임변경관련메서드
     updateNickname_on() {
@@ -522,7 +477,7 @@ export default {
           document.getElementById("pwModBtn").removeAttribute("disabled") //+
         })
         .catch((err) => {
-          console.err("ERROR :", err);
+          console.err("ERROR :", err)
           Swal.fire({
             icon: "error",
             title: "비밀번호를 확인해주세요.",
@@ -766,7 +721,8 @@ export default {
     },
     toggleEditView() {
       this.mine = !this.mine
-      this.isEditMode = !this.isEditMode
+      if (this.isEditMode == "enable") this.isEditMode = "disable"
+      else this.isEditMode = "enable"
     },
     goOtherProfile(targetUid) {
       this.$router.push({
@@ -816,7 +772,7 @@ export default {
       birthDate: "",
 
       mine: false,
-      isEditMode: true,
+      isEditMode: null,
 
       show1: true,
       show2: false,
@@ -830,14 +786,5 @@ export default {
 
 #myphoto :hover {
   filter: grayscale(80%);
-}
-
-#isNotEditable {
-  pointer-events: none;
-  -ms-user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  user-select: none;
 }
 </style>
