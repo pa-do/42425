@@ -1,25 +1,69 @@
 <template>
   <div class="content">
-    <div class="social-description">
-      <h2>{{post}}</h2>
+    <n-button class="btn-link social-description my-0" type="neutral" style="cursor: default">
+      <h1>{{post}}</h1>
       <p>Post</p>
-    </div>
-    <div class="social-description">
-      <h2>{{follower}}</h2>
+    </n-button>
+
+    <n-button
+      class="btn-link social-description my-0"
+      type="neutral"
+      @click.native="modals.follower = true"
+    >
+      <h1>{{follower}}</h1>
       <p>Follower</p>
-    </div>
-    <div class="social-description">
-      <h2>{{followee}}</h2>
+    </n-button>
+    <!-- Modal -->
+    <modal :show.sync="modals.follower" headerClasses="justify-content-center">
+      <h4 slot="header" class="text-dark">{{nick}}님을 팔로우하는 사람들</h4>
+      <div class="list-group">
+        <div v-for="user in followers" :key="user.fid">
+          <div @click="goUser(user.follower.uid)" class="list-group-item list-group-item-action">
+            <h5 class="my-0">{{user.follower.nickname}}</h5>
+          </div>
+        </div>
+      </div>
+      <template slot="footer">
+        <n-button class="ml-auto" type="danger" @click.native="modals.follower = false">Close</n-button>
+      </template>
+    </modal>
+    <!-- modal end -->
+
+    <n-button
+      class="btn-link social-description my-0"
+      type="neutral"
+      @click.native="modals.followee = true"
+    >
+      <h1>{{followee}}</h1>
       <p>Following</p>
-    </div>
+    </n-button>
+    <modal :show.sync="modals.followee" headerClasses="justify-content-center">
+      <h4 slot="header" class="text-dark">{{nick}}님이 팔로우하는 사람들</h4>
+      <div class="list-group">
+        <div v-for="user in followees" :key="user.fid">
+          <div @click="goUser(user.followee.uid)" class="list-group-item list-group-item-action">
+            <h5 class="my-0">{{user.followee.nickname}}</h5>
+          </div>
+        </div>
+      </div>
+      <template slot="footer">
+        <n-button class="ml-auto" type="danger" @click.native="modals.followee = false">Close</n-button>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
+import { Modal, Button } from "@/components";
+
 export default {
   name: "counter",
-  props: ["uid"],
-  created() {
+  props: ["uid", "nick"],
+  components: {
+    Modal,
+    [Button.name]: Button,
+  },
+  mounted() {
     this.getPost();
     this.getFollower();
     this.getFollowee();
@@ -37,6 +81,7 @@ export default {
       this.$axios
         .get(`/follow/getFollowerList/${this.uid}`)
         .then((res) => {
+          this.followers = res.data;
           this.follower = res.data.length;
         })
         .catch((err) => console.error(err));
@@ -45,16 +90,30 @@ export default {
       this.$axios
         .get(`/follow/getFolloweeList/${this.uid}`)
         .then((res) => {
+          this.followees = res.data;
           this.followee = res.data.length;
         })
         .catch((err) => console.error(err));
     },
+    goUser(item) {
+      this.$router.push({
+        path: `/profile/${item}`,
+      });
+      this.$router.go();
+    },
   },
   data: () => {
     return {
+      modals: {
+        follower: false,
+        followee: false,
+      },
       post: 0,
       follower: 0,
       followee: 0,
+
+      followers: [],
+      followees: [],
     };
   },
 };

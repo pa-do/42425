@@ -118,23 +118,7 @@
             </div>
           </div>
         </div>
-        <!-- couter.vue -->
-        <Counter :uid="this.pageuid" />
-        <!-- <div class="content">
-          <div class="social-description">
-            <h2>26</h2>
-            <p>Project</p>
-          </div>
-          <div class="social-description">
-            <h2>26</h2>
-            <p>Post</p>
-          </div>
-          <div class="social-description">
-            <h2>48</h2>
-            <p>Follower</p>
-          </div>
-        </div>-->
-        <!-- couter.vue -->
+        <Counter :uid="this.pageuid" :nick="this.user.nickname" />
         <div v-if="mine" class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary btn-round btn-md mr-1"
@@ -214,84 +198,86 @@
             <i class="fab fa-github"></i>
           </a>-->
         </div>
-        <h3 class="title">
-          About me
-          <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
-        </h3>
-        <div v-if="!update_bio">
-          <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
-        </div>
-        <div v-else>
-          <textarea
-            class="form-control"
-            v-model="newBio"
-            id="newBio"
-            placeholder="나를 소개하는 글을 입력해주세요"
-            type="text"
-          />
-          <div class="text-center pt-3 pb-5">
-            <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
-            <n-button
-              class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
-              @click="updateBio_off"
-            >취소</n-button>
+        <div>
+          <h3 class="title">
+            About me
+            <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
+          </h3>
+          <div v-if="!update_bio">
+            <h5 v-if="bio" class="description">{{ bio }}</h5>
+            <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
           </div>
-        </div>
-        <Contactme :user="user" :mine="mine" @update="getdata" />
-        <div class="container">
-          <tabs
-            pills
-            class="nav-align-center mx-auto"
-            tab-content-classes="gallery"
-            tab-nav-classes="nav-pills-just-icons"
-            type="primary"
-          >
-            <tab-pane title="Profile">
-              <i slot="label" class="far fa-address-card"></i>
-              <h3 class="title pt-0">Resume</h3>
-              <div class="col-md-10 mx-auto">
-                <Resume :uid="this.pageuid" :mine="mine" />
-              </div>
-            </tab-pane>
-
-            <tab-pane title="Skill">
-              <i slot="label" class="fas fa-sliders-h"></i>
-              <h3 class="title pt-0">My Skill</h3>
-              <div class="col-md-10 mx-auto">
-                <MySkill :uid="this.pageuid" :mine="mine" />
-              </div>
-            </tab-pane>
-
-            <tab-pane>
-              <i slot="label" class="far fa-folder-open"></i>
-              <h3 class="title pt-0">Blog</h3>
-              <div class="col-md-11 d-flex justify-content-end">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                  <n-button type="info" round class @click="cardMode">
-                    <i class="fas fa-th-large fa-2x"></i>
-                  </n-button>
-                  <n-button type="info" round class="mx-1" @click="postMode">
-                    <i class="fas fa-list-ul fa-2x"></i>
-                  </n-button>
-                  <n-button v-if="mine" type="info" round class @click="writeMode">
-                    <i class="far fa-edit fa-2x"></i>
-                  </n-button>
+          <div v-else>
+            <textarea
+              class="form-control"
+              v-model="newBio"
+              id="newBio"
+              placeholder="나를 소개하는 글을 입력해주세요"
+              type="text"
+            />
+            <div class="text-center pt-3 pb-5">
+              <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+              <n-button
+                class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
+                @click="updateBio_off"
+              >취소</n-button>
+            </div>
+          </div>
+          <Contactme :user="user" :mine="mine" @update="getdata" />
+          <div class="container">
+            <tabs
+              pills
+              class="nav-align-center mx-auto"
+              tab-content-classes="gallery"
+              tab-nav-classes="nav-pills-just-icons"
+              type="primary"
+            >
+              <tab-pane title="Profile">
+                <i slot="label" class="far fa-address-card"></i>
+                <h3 class="title pt-0">Resume</h3>
+                <div class="col-md-10 mx-auto">
+                  <Resume :uid="this.pageuid" :mine="mine" />
                 </div>
-              </div>
-              <div class="col-md-10 ml-auto mr-auto">
-                <transition enter-active-class="animated fadeInLeft">
-                  <Userpost v-if="show1" :uid="this.pageuid" />
-                </transition>
-                <transition enter-active-class="animated fadeInRight">
-                  <Listview v-if="show2" :uid="this.pageuid" />
-                </transition>
-                <transition enter-active-class="animated fadeIn">
-                  <Write v-if="show3" @postWrite="cardMode" />
-                </transition>
-              </div>
-            </tab-pane>
-          </tabs>
+              </tab-pane>
+
+              <tab-pane title="Skill">
+                <i slot="label" class="fas fa-sliders-h"></i>
+                <h3 class="title pt-0">My Skill</h3>
+                <div class="col-md-10 mx-auto">
+                  <MySkill :uid="this.pageuid" :mine="mine" />
+                </div>
+              </tab-pane>
+
+              <tab-pane>
+                <i slot="label" class="far fa-folder-open"></i>
+                <h3 class="title pt-0">Blog</h3>
+                <div class="col-md-11 d-flex justify-content-end">
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <n-button type="info" round class @click="cardMode">
+                      <i class="fas fa-th-large fa-2x"></i>
+                    </n-button>
+                    <n-button type="info" round class="mx-1" @click="postMode">
+                      <i class="fas fa-list-ul fa-2x"></i>
+                    </n-button>
+                    <n-button v-if="mine" type="info" round class @click="writeMode">
+                      <i class="far fa-edit fa-2x"></i>
+                    </n-button>
+                  </div>
+                </div>
+                <div class="col-md-10 ml-auto mr-auto">
+                  <transition enter-active-class="animated fadeInLeft">
+                    <Userpost v-if="show1" :uid="this.pageuid" />
+                  </transition>
+                  <transition enter-active-class="animated fadeInRight">
+                    <Listview v-if="show2" :uid="this.pageuid" />
+                  </transition>
+                  <transition enter-active-class="animated fadeIn">
+                    <Write v-if="show3" @postWrite="cardMode" />
+                  </transition>
+                </div>
+              </tab-pane>
+            </tabs>
+          </div>
         </div>
       </div>
     </div>
@@ -340,6 +326,10 @@ export default {
     this.pageuid = this.$route.params.uid;
   },
   mounted() {
+    this.getdata();
+    this.checkFollow();
+  },
+  computed() {
     this.getdata();
     this.checkFollow();
   },
@@ -393,7 +383,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log("Err!!! :", err.response);
+          console.err("Err!!! :", err.response);
         });
     },
     // follow
@@ -419,17 +409,21 @@ export default {
           },
         })
         .then((res) => {
+          this.getdata();
           this.checkFollow();
-          console.log(res.data);
           if (res.data) {
             Swal.fire({
               icon: "success",
               title: this.user.nickname + "님을 팔로우합니다.",
+            }).then(() => {
+              this.$router.go();
             });
           } else {
             Swal.fire({
               icon: "success",
               title: this.user.nickname + "님의 팔로우를 취소합니다.",
+            }).then(() => {
+              this.$router.go();
             });
           }
         })
@@ -479,11 +473,10 @@ export default {
                 .getElementById("nickDuplChkBtn")
                 .setAttribute("disabled", true);
               document.getElementById("nickModBtn").removeAttribute("disabled");
-              // console.log(this.nickname);
             }
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
     },
@@ -511,7 +504,7 @@ export default {
             });
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
     },
@@ -583,7 +576,6 @@ export default {
         });
         return;
       } else {
-        console.log(this.newPW1);
         this.$axios
           .put("/account/modify/password", {
             uid: this.uid,
@@ -601,7 +593,7 @@ export default {
             });
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
     },
@@ -636,8 +628,6 @@ export default {
           position: this.newPos,
         })
         .then((response) => {
-          console.log(response);
-          console.log(response.data);
           this.result = response.data;
           this.$session.set("user", response.data.object);
           Swal.fire({
@@ -649,7 +639,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log("Err!!! :", err.response);
+          console.err("Err!!! :", err.response);
         });
     },
     updatePosition_off() {
@@ -677,7 +667,6 @@ export default {
         })
         .then((response) => {
           this.result = response.data;
-          console.log(this.result);
           Swal.fire({
             icon: "success",
             title: "나를 소개하는 글이 변경되었습니다.",
@@ -687,7 +676,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log("Err!!! :", err.response);
+          console.err("Err!!! :", err.response);
         });
     },
     updateBio_off() {
@@ -730,7 +719,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log("Err!!!: ", err.response);
+          console.err("Err!!!: ", err.response);
         });
     },
 
@@ -756,7 +745,6 @@ export default {
           });
         };
         reader.readAsDataURL(file);
-        console.log(file);
 
         const formData = new FormData();
         formData.append("profileImg", file);
@@ -771,7 +759,7 @@ export default {
             this.getdata();
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
     },
@@ -812,6 +800,7 @@ export default {
       update_profileimg: false,
       update_position: false,
       update_bio: false,
+      update_follow: false,
 
       nicknameChk: false,
       nowPWChk: false,
