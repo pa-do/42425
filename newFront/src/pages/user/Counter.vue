@@ -1,12 +1,12 @@
 <template>
   <div class="content">
-    <n-button class="btn-link social-description my-0" type="neutral" style="cursor: default">
+    <n-button class="btn-link social-description my-0 mx-0" type="neutral" style="cursor: default">
       <h1>{{post}}</h1>
       <p>Post</p>
     </n-button>
 
     <n-button
-      class="btn-link social-description my-0"
+      class="btn-link social-description my-0 mx-0"
       type="neutral"
       @click.native="modals.follower = true"
     >
@@ -30,7 +30,7 @@
     <!-- modal end -->
 
     <n-button
-      class="btn-link social-description my-0"
+      class="btn-link social-description my-0 mx-0"
       type="neutral"
       @click.native="modals.followee = true"
     >
