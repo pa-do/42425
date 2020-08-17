@@ -16,7 +16,7 @@
     <!-- Modal -->
     <modal :show.sync="modals.follower" headerClasses="justify-content-center">
       <h4 slot="header" class="text-dark">{{nick}}님을 팔로우하는 사람들</h4>
-      <div class="list-group">
+      <div class="list-group" style="max-height: 40vh">
         <div v-for="user in followers" :key="user.fid">
           <div @click="goUser(user.follower.uid)" class="list-group-item list-group-item-action">
             <h5 class="my-0">{{user.follower.nickname}}</h5>
@@ -58,10 +58,15 @@ import { Modal, Button } from "@/components";
 
 export default {
   name: "counter",
-  props: ["uid", "nick"],
+  props: ["uid", "nick", "followChk"],
   components: {
     Modal,
     [Button.name]: Button,
+  },
+  watch: {
+    followChk() {
+      this.getFollower();
+    },
   },
   mounted() {
     this.getPost();
