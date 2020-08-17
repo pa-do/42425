@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.web.blog.model.board.Board;
 import com.web.blog.model.portfolio.MySkillKey;
 import com.web.blog.model.portfolio.Myskill;
 import com.web.blog.model.user.User;
@@ -39,5 +40,11 @@ public interface MySkillDao extends JpaRepository<Myskill, Integer> {
 	List<Myskill> findMyskillByUserUid(int uid);
 
 	Myskill findMyskillBySid(int sid);
+	
+	//skill로 검색
+	@Query(value = "SELECT user.nickname, myskill.* FROM myskill, user WHERE myskill.uid=user.uid and myskill.skill like %?1%", nativeQuery = true)
+	public List<Myskill> searchSkill(@Param("keyword") String keyword);
+	
+	
 
 }

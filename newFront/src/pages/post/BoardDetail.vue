@@ -2,12 +2,12 @@
   <div class="container">
     <div class="mt-5"></div>
     <div class="card mt-5">
-      <h1 class="card-header text-center">{{ board.title }}</h1>
+      <h1 class="card-header text-center mt-3">{{ board.title }}</h1>
       <div class="card-body">
         <blockquote class="blockquote mb-0 text-right">
           <p class="text-left">{{ board.content }}</p>
           <footer class="blockquote-footer">
-            {{ board.nickname }}
+            <router-link :to="`/profile/${this.board.uid}`">{{ board.nickname }}</router-link>
             <p>{{ board.writeDate.split("T").join(" ") }}</p>
             <h3 class="mb-0">
               <i v-if="!likechk" class="far fa-heart" @click="likes"></i>
@@ -35,7 +35,7 @@ export default {
     [Button.name]: Button,
     Comment,
   },
-  data: function() {
+  data: function () {
     return {
       board: Object,
       bid: "",

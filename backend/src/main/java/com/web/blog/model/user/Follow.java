@@ -1,15 +1,15 @@
-// 하단 DB 설정 부분은 Sub PJT II에서 데이터베이스를 구성한 이후에 주석을 해제하여 사용.
-
 package com.web.blog.model.user;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+// import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -24,26 +24,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-public class User {
+public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uid;
+    private int fid;
 
-    // @JsonIgnore
-    private String password;
+    @ManyToOne
+    @JoinColumn(name = "follower_uid")
+    private User follower;
 
-    private String email;
-    private String nickname;
+    @ManyToOne
+    @JoinColumn(name = "followee_uid")
+    private User followee;
 
     @Column(insertable = false, updatable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime followDate;
 
-    private String profileImg;
-    private String bio;
-    private String phone;
-    private String website;
-    private String name;
-    private Date birthDate;
-    private String address;
-    private String position;
 }

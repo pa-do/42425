@@ -49,31 +49,4 @@ public class CommentService {
 	public void modify(Comment comment) {
 		commentDao.updateComment(comment.getCid(), comment.getContent());
 	}
-	//
-	//
-	// public List<Board> searchBoardTitle(String keyword) {
-	// List<Board> board = boardDao.searchTitle(keyword);
-	//
-	//// System.out.println(boards.isEmpty() + "z");
-	//// for (Board board : boards) {
-	//// System.out.println( board.toString());
-	//// }
-	//
-	// if (board.isEmpty()) {
-	// return null;
-	// }
-	//
-	// return board;
-	// }
-	//
-	// public List<Board> searchBoardContent(String keyword) {
-	// List<Board> board = boardDao.searchContent(keyword);
-	//
-	// if (board.isEmpty()) {
-	// return null;
-	// }
-	//
-	// return board;
-	// }
-
 }

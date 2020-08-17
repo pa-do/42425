@@ -100,6 +100,28 @@ public class PortfolioController {
 		return response;
 	}
 
+	// skill keyword로 검색
+	@GetMapping("/skill/search/{keyword}")
+	@ApiOperation(value = "keyword로 검색")
+	public Object SearchSkill(@PathVariable String keyword) {
+		final BasicResponse result = new BasicResponse();
+
+		ResponseEntity response = null;
+
+		List<Myskill> skills = mySkillDao.searchSkill(keyword);
+
+		if (skills != null) {
+			result.status = true;
+			result.data = "success";
+			result.object = skills;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+
+		return response;
+	}
+
 	@PutMapping("/skill/modify")
 	@ApiOperation(value = "스킬 수정하기")
 	public Object modifySkill(@RequestBody Myskill myskill) {
@@ -130,7 +152,6 @@ public class PortfolioController {
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-			System.out.println("??");
 		}
 
 		return response;

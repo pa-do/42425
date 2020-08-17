@@ -1,28 +1,25 @@
-import Vue from "vue"
-import Router from "vue-router"
-import Index from "./pages/Index.vue"
-import Landing from "./pages/Landing.vue"
-import MainNavbar from "./layout/MainNavbar.vue"
-import MainFooter from "./layout/MainFooter.vue"
+import Vue from "vue";
+import Router from "vue-router";
+import Index from "./pages/Index.vue";
+import Landing from "./pages/Landing.vue";
+import MainNavbar from "./layout/MainNavbar.vue";
+import MainFooter from "./layout/MainFooter.vue";
 
 // 유저
-import Login from "./pages/user/Login.vue"
-import Logout from "./pages/user/Logout.vue"
-import Join from "./pages/user/Join.vue"
-import Modifypw from "./pages/user/Modifypw.vue"
-import Profile from "./pages/user/Profile.vue"
-import MySkill from "./pages/user/MySkill.vue"
-import MySkillDetail from "./pages/user/MySkillDetail.vue"
+import Login from "./pages/user/Login.vue";
+import Logout from "./pages/user/Logout.vue";
+import Join from "./pages/user/Join.vue";
+import Modifypw from "./pages/user/Modifypw.vue";
+import Profile from "./pages/user/Profile.vue";
 
 // 포스트
-import BoardDetail from "./pages/post/BoardDetail.vue"
-import Write from "./pages/post/Write.vue"
-import BoardModify from "./pages/post/BoardModify.vue"
+import BoardDetail from "./pages/post/BoardDetail.vue";
+import BoardModify from "./pages/post/BoardModify.vue";
 
 // 에러페이지
-import NotFound from "./pages/404.vue"
+import NotFound from "./pages/404.vue";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   linkExactActiveClass: "active",
@@ -90,30 +87,7 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
-    {
-      path: "/myskill",
-      name: "myskill",
-      components: { default: MySkill, header: MainNavbar },
-      props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
-      },
-    },
-    {
-      path: "/myskilldetail",
-      name: "myskilldetail",
-      components: { default: MySkillDetail, header: MainNavbar },
-      props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
-      },
-    },
     // post 관련
-    {
-      path: "/board/write",
-      name: "write",
-      component: Write,
-    },
     {
       path: "/boardmodify/:mid",
       name: "BoardModify",
@@ -144,9 +118,9 @@ export default new Router({
   ],
   scrollBehavior: (to) => {
     if (to.hash) {
-      return { selector: to.hash }
+      return { selector: to.hash };
     } else {
-      return { x: 0, y: 0 }
+      return { x: 0, y: 0 };
     }
   },
-})
+});

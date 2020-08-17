@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="my-4">
     <span v-if="!modifySkill">
-      <h2 class="my-0">{{ skill.skill }}</h2>
+      <h3 class="my-0">{{ skill.skill }}</h3>
       <div class="progress mt-0 mb-3">
         <div
           class="progress-bar btn-primary"
@@ -16,8 +16,8 @@
       </div>
 
       <div v-if="mine" class="d-flex justify-content-end">
-        <n-button @click="modifySkill_on" class="btn btn-primary btn-round mr-1">수정</n-button>
-        <n-button @click="deleteSkill" class="btn btn-danger btn-round">삭제</n-button>
+        <n-button @click="modifySkill_on" class="btn btn-primary btn-round mr-1 mt-0" size="sm">수정</n-button>
+        <n-button @click="deleteSkill" class="btn btn-danger btn-round mt-0" size="sm">삭제</n-button>
       </div>
     </span>
     <span v-else>

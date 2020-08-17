@@ -28,7 +28,7 @@ import axios from "axios"
 Vue.use(VueCookie)
 
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = "http://i3d205.p.ssafy.io:8080"
+axios.defaults.baseURL = "http://i3d205.p.ssafy.io:8080";
 // axios.defaults.baseURL = "http://localhost:8080"
 
 Vue.config.productionTip = false
@@ -46,3 +46,12 @@ var sessionOptions = {
   persist: true,
 }
 Vue.use(VueSession, sessionOptions)
+
+// qrcode
+import VueQRCodeComponent from "vue-qrcode-component"
+Vue.component("qr-code", VueQRCodeComponent)
+
+// clipboard
+import VueClipboard from "vue-clipboard2"
+VueClipboard.config.autoSetContainer = true // add this line
+Vue.use(VueClipboard)

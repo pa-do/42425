@@ -117,7 +117,9 @@
                   </span>
                 </th>
                 <span v-if="!update_website">
-                  <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
+                  <td>
+                    <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
+                  </td>
                 </span>
                 <span v-else>
                   <fg-input
@@ -161,6 +163,7 @@
                   <td>{{user.email}}</td>
                 </tr>
               </span>
+
               <span v-if="user.phone">
                 <tr>
                   <th scope="row">Phone</th>
@@ -223,7 +226,7 @@ export default {
       this.newName = null;
     },
     modifyName() {
-      if (this.name.length > 10) {
+      if (this.newName.length > 10) {
         Swal.fire({
           icon: "warning",
           title: "이름이 너무 깁니다.",
@@ -291,7 +294,7 @@ export default {
       this.newAddress = null;
     },
     modifyAddress() {
-      if (this.address.length > 100) {
+      if (this.newAddress.length > 100) {
         Swal.fire({
           icon: "warning",
           title: "주소가 너무 깁니다.",
@@ -380,7 +383,7 @@ export default {
       this.newWeb = null;
     },
     modifyWebsite() {
-      if (this.website.length > 200) {
+      if (this.newWeb.length > 200) {
         Swal.fire({
           icon: "warning",
           title: "깃허브 주소가 너무 깁니다.",

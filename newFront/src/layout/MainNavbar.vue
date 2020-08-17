@@ -20,18 +20,57 @@
         <div class="popover-body">포 투 포 이 오</div>
       </el-popover>
     </template>
+
     <template slot="navbar-menu">
+      <div class="d-none d-lg-block mr-3">
+        <input
+          class="border border-white pl-3 rounded-pill text-white py-2"
+          placeholder="search"
+          style="background-color:transparent;"
+          @keyup.enter="submit"
+          v-model="search"
+        />
+        <Search v-if="show" @close="show = false" :keyword="search" />
+      </div>
       <!-- <li class="nav-item">
         <a
           class="nav-link"
           href="https://www.creative-tim.com/product/vue-now-ui-kit"
-          target="_blank"
         >
           <i class="now-ui-icons arrows-1_cloud-download-93"></i>
           <p>Download</p>
         </a>
       </li>-->
-      <drop-down tag="li" title="Components" icon="now-ui-icons design_app" class="nav-item">
+      <div v-if="!isLogin" class="row">
+        <li class="nav-item">
+          <nav-link to="/login" class="nav-link">
+            <i class="now-ui-icons users_circle-08 text-white"></i>
+            <p class="text-white">Login</p>
+          </nav-link>
+        </li>
+        <li class="nav-item">
+          <nav-link to="/join" class="nav-link">
+            <i class="now-ui-icons users_single-02 text-white"></i>
+            <p class="text-white">Join Us</p>
+          </nav-link>
+        </li>
+      </div>
+      <div v-else class="row">
+        <li class="nav-item">
+          <nav-link to="/logout" class="nav-link">
+            <i class="now-ui-icons users_circle-08 text-white"></i>
+            <p class="text-white">Logout</p>
+          </nav-link>
+        </li>
+        <li class="nav-item" @click="go">
+          <div class="nav-link">
+            <i class="now-ui-icons users_single-02 text-white"></i>
+            <p class="text-white">Profile</p>
+          </div>
+        </li>
+      </div>
+
+      <!-- <drop-down tag="li" title="Components" icon="now-ui-icons design_app" class="nav-item">
         <nav-link to="/">
           <i class="now-ui-icons business_chart-pie-36"></i> All components
         </nav-link>
@@ -42,8 +81,13 @@
         >
           <i class="now-ui-icons design_bullet-list-67"></i> Documentation
         </a>
-      </drop-down>
-      <drop-down tag="li" title="Examples" icon="now-ui-icons design_image" class="nav-item">
+      </drop-down>-->
+      <!-- <drop-down
+        tag="li"
+        title="Examples"
+        icon="now-ui-icons design_image"
+        class="nav-item mt-1"
+      >
         <nav-link to="/landing">
           <i class="now-ui-icons education_paper"></i> Landing
         </nav-link>
@@ -63,7 +107,7 @@
             <i class="now-ui-icons users_single-02"></i> Profile
           </nav-link>
         </div>
-      </drop-down>
+      </drop-down>-->
       <!-- <li class="nav-item">
         <a
           class="nav-link btn btn-neutral"
@@ -119,8 +163,10 @@
 </template>
 
 <script>
-import { DropDown, Navbar, NavLink } from "@/components";
+import { Navbar, NavLink, FormGroupInput } from "@/components";
 import { Popover } from "element-ui";
+import Search from "./Search";
+
 export default {
   name: "main-navbar",
   props: {
@@ -128,21 +174,33 @@ export default {
     colorOnScroll: Number,
   },
   components: {
-    DropDown,
     Navbar,
     NavLink,
     [Popover.name]: Popover,
+    [FormGroupInput.name]: FormGroupInput,
+    Search,
   },
-  methods: {},
+  methods: {
+    submit() {
+      this.show = !this.show;
+    },
+    go() {
+      this.$router.push({
+        path: `/profile/${this.uid}`,
+      });
+      this.$router.go();
+    },
+  },
   data: function () {
     return {
       isLogin: false,
       keyword: null,
       uid: "",
+      search: "",
+      show: false,
     };
   },
   mounted() {
-    console.log(this.$cookie.get("auth-token"));
     if (this.$cookie.get("auth-token") != null) {
       this.isLogin = true;
       this.uid = this.$cookie.get("auth-token");
@@ -153,4 +211,14 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+input::placeholder {
+  color: white;
+}
+.dropdown-item.active {
+  background-color: rgba(0, 0, 0, 0);
+}
+li {
+  cursor: pointer;
+}
+</style>

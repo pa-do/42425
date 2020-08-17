@@ -30,11 +30,19 @@
       name="viewport"
     />
 
+    <script src="vue.min.js"></script>
+    <!-- must place this line after vue.js -->
+    <script src="dist/vue-clipboard.min.js"></script>
+
     <title>42425 - the portfolio</title>
 
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
   </head>
   <body class="sidebar-collapse">
     <noscript>
@@ -46,5 +54,13 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://unpkg.com/vue@latest/dist/vue.js" defer></script>
+    <script
+      src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit"
+      async
+      defer
+    ></script>
+    <script src="../dist/vue-recaptcha.js" defer></script>
+    <script src="main.js" defer></script>
   </body>
 </html>
