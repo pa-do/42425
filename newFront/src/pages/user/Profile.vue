@@ -118,7 +118,9 @@
             </div>
           </div>
         </div>
-        <div class="content">
+        <!-- couter.vue -->
+        <Counter :uid="this.pageuid" />
+        <!-- <div class="content">
           <div class="social-description">
             <h2>26</h2>
             <p>Project</p>
@@ -131,7 +133,8 @@
             <h2>48</h2>
             <p>Follower</p>
           </div>
-        </div>
+        </div>-->
+        <!-- couter.vue -->
         <div v-if="mine" class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary btn-round btn-md mr-1"
@@ -189,8 +192,11 @@
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <a v-if="!mine" href="#button" class="btn btn-primary btn-round btn-lg">Follow</a>
-          <a
+          <div v-if="!mine" @click="toggleFollow">
+            <a v-if="!followChk" class="btn btn-primary btn-round btn-lg">Follow</a>
+            <a v-else class="btn btn-default btn-round btn-lg">UnFollow</a>
+          </div>
+          <!-- <a
             href="#button"
             class="btn btn-default btn-round btn-lg btn-icon"
             rel="tooltip"
@@ -206,7 +212,7 @@
             target="_blank"
           >
             <i class="fab fa-github"></i>
-          </a>
+          </a>-->
         </div>
         <h3 class="title">
           About me
@@ -308,6 +314,7 @@ import MySkill from "../user/MySkill";
 import SendEmail from "../user/SendEmail";
 import Write from "../post/Write";
 import Listview from "../post/Listview";
+import Counter from "../user/Counter";
 
 export default {
   name: "profile",
@@ -327,12 +334,14 @@ export default {
     SendEmail,
     Write,
     Listview,
+    Counter,
   },
   created() {
     this.pageuid = this.$route.params.uid;
   },
   mounted() {
     this.getdata();
+    this.checkFollow();
   },
   methods: {
     doCopy: function () {
@@ -386,6 +395,45 @@ export default {
         .catch((err) => {
           console.log("Err!!! :", err.response);
         });
+    },
+    // follow
+    checkFollow() {
+      this.$axios
+        .post("/follow/checkFollow", null, {
+          params: {
+            followeeUid: this.pageuid,
+            followerUid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          this.followChk = res.data;
+        })
+        .catch((err) => console.error(err));
+    },
+    toggleFollow() {
+      this.$axios
+        .post("/follow/toggleFollow", null, {
+          params: {
+            followeeUid: this.pageuid,
+            followerUid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          this.checkFollow();
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              icon: "success",
+              title: this.user.nickname + "님을 팔로우합니다.",
+            });
+          } else {
+            Swal.fire({
+              icon: "success",
+              title: this.user.nickname + "님의 팔로우를 취소합니다.",
+            });
+          }
+        })
+        .catch((err) => console.error(err));
     },
     //닉네임변경관련메서드
     updateNickname_on() {
@@ -481,7 +529,6 @@ export default {
         });
         return;
       }
-      // console.log(this.email, this.nowPW);
       this.$axios
         .post("/account/login", null, {
           params: {
@@ -500,7 +547,7 @@ export default {
           document.getElementById("pwModBtn").removeAttribute("disabled"); //+
         })
         .catch((err) => {
-          console.log("ERROR :", err);
+          console.err("ERROR :", err);
           Swal.fire({
             icon: "error",
             title: "비밀번호를 확인해주세요.",
@@ -768,6 +815,7 @@ export default {
 
       nicknameChk: false,
       nowPWChk: false,
+      followChk: null,
 
       nowPW: "",
       newPW1: "",

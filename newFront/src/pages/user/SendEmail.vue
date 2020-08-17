@@ -41,8 +41,8 @@
               @expired="onExpired"
               :sitekey="sitekey"
             ></vue-recaptcha>
-            <n-button @click="sendEmail" class="btn btn-primary btn-round text-center">SEND</n-button>
           </div>
+          <n-button @click="sendEmail" class="btn btn-primary btn-round text-center">SEND</n-button>
         </div>
         <div class="col-4" style="margin: 0 auto;"></div>
       </div>
