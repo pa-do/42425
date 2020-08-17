@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div v-if="mine" class="text-right">
-      <n-button @click="createSkill" class="btn btn-primary">스킬 추가</n-button>
+      <n-button @click="createSkill" round class="btn btn-primary">
+        <i class="fas fa-plus fa-2x"></i>
+      </n-button>
     </div>
     <div class="row justify-content-between">
       <div class="d-block col-md-6 px-5 py-1"></div>

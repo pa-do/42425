@@ -90,11 +90,53 @@
               <p>Follower</p>
             </div>
           </div>
-          <div v-if="mine" class="d-flex justify-content-end">
-            <n-button class="btn btn-primary btn-round btn-md mr-1" type="primary" @click.native="modals.classic = true">비밀번호 변경</n-button>
-            <!--  -->
-            <modal :show.sync="modals.classic" headerClasses="justify-content-center">
-              <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
+        </div>
+        <!-- couter.vue -->
+        <Counter :uid="this.pageuid" />
+        <!-- <div class="content">
+          <div class="social-description">
+            <h2>26</h2>
+            <p>Project</p>
+          </div>
+          <div class="social-description">
+            <h2>26</h2>
+            <p>Post</p>
+          </div>
+          <div class="social-description">
+            <h2>48</h2>
+            <p>Follower</p>
+          </div>
+        </div>-->
+        <!-- couter.vue -->
+        <div v-if="mine" class="d-flex justify-content-end">
+          <n-button
+            class="btn btn-primary btn-round btn-md mr-1"
+            type="primary"
+            @click.native="modals.classic = true"
+          >비밀번호 변경</n-button>
+          <!--  -->
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
+            <fg-input
+              v-model="nowPW"
+              id="nowPW"
+              placeholder="현재 비밀번호를 입력하세요."
+              type="password"
+              class="no-border form-control-md my-3"
+              addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+            ></fg-input>
+
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
+            <div v-if="nowPWChk">
+              <fg-input
+                v-model="newPW1"
+                id="newPW1"
+                placeholder="새로운 비밀번호를 입력하세요."
+                type="password"
+                class="no-border form-control-md my-3"
+                @keyup.enter="modifyPW"
+                addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+              ></fg-input>
               <fg-input
                 v-model="nowPW"
                 id="nowPW"
@@ -104,34 +146,53 @@
                 addon-left-icon="now-ui-icons ui-1_lock-circle-open"
               ></fg-input>
 
-              <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
-              <div v-if="nowPWChk">
-                <fg-input
-                  v-model="newPW1"
-                  id="newPW1"
-                  placeholder="새로운 비밀번호를 입력하세요."
-                  type="password"
-                  class="no-border form-control-md my-3"
-                  @keyup.enter="modifyPW"
-                  addon-left-icon="now-ui-icons ui-1_lock-circle-open"
-                ></fg-input>
-                <fg-input
-                  v-model="newPW2"
-                  id="newPW2"
-                  placeholder="새로운 비밀번호를 입력하세요."
-                  type="password"
-                  @keyup.enter="modifyPW"
-                  class="no-border form-control-md my-3"
-                  addon-left-icon="now-ui-icons ui-1_lock-circle-open"
-                ></fg-input>
-              </div>
-              <template slot="footer">
-                <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
-                <n-button type="danger" @click.native="modals.classic = false" @click="updatePW_off">취소</n-button>
-              </template>
-            </modal>
-            <!--  -->
-            <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
+    <div class="section">
+      <div class="container">
+        <div class="button-container">
+          <div v-if="!mine" @click="toggleFollow">
+            <a v-if="!followChk" class="btn btn-primary btn-round btn-lg">Follow</a>
+            <a v-else class="btn btn-default btn-round btn-lg">UnFollow</a>
+          </div>
+          <!-- <a
+            href="#button"
+            class="btn btn-default btn-round btn-lg btn-icon"
+            rel="tooltip"
+            title="Follow me on Twitter"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            :href="`${user.website}`"
+            class="btn btn-default btn-round btn-lg btn-icon"
+            rel="tooltip"
+            title="Follow me on github"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i>
+          </a>-->
+        </div>
+        <h3 class="title">
+          About me
+          <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
+        </h3>
+        <div v-if="!update_bio">
+          <h5 v-if="bio" class="description">{{ bio }}</h5>
+          <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
+        </div>
+        <div v-else>
+          <textarea
+            class="form-control"
+            v-model="newBio"
+            id="newBio"
+            placeholder="나를 소개하는 글을 입력해주세요"
+            type="text"
+          />
+          <div class="text-center pt-3 pb-5">
+            <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+            <n-button
+              class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
+              @click="updateBio_off"
+            >취소</n-button>
           </div>
         </div>
       </div>
@@ -226,13 +287,14 @@
 import { Tabs, TabPane, Modal, Button, FormGroupInput } from "@/components"
 import { Popover } from "element-ui"
 
-import Contactme from "../user/Contactme"
-import Userpost from "../post/Userpost"
-import Resume from "../user/Resume"
-import MySkill from "../user/MySkill"
-import SendEmail from "../user/SendEmail"
-import Write from "../post/Write"
-import Listview from "../post/Listview"
+import Contactme from "../user/Contactme";
+import Userpost from "../post/Userpost";
+import Resume from "../user/Resume";
+import MySkill from "../user/MySkill";
+import SendEmail from "../user/SendEmail";
+import Write from "../post/Write";
+import Listview from "../post/Listview";
+import Counter from "../user/Counter";
 
 export default {
   name: "profile",
@@ -252,12 +314,14 @@ export default {
     SendEmail,
     Write,
     Listview,
+    Counter,
   },
   created() {
     this.pageuid = this.$route.params.uid
   },
   mounted() {
-    this.getdata()
+    this.getdata();
+    this.checkFollow();
   },
   methods: {
     doCopy: function() {
@@ -311,6 +375,45 @@ export default {
         .catch((err) => {
           console.log("Err!!! :", err.response)
         })
+    },
+    // follow
+    checkFollow() {
+      this.$axios
+        .post("/follow/checkFollow", null, {
+          params: {
+            followeeUid: this.pageuid,
+            followerUid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          this.followChk = res.data;
+        })
+        .catch((err) => console.error(err));
+    },
+    toggleFollow() {
+      this.$axios
+        .post("/follow/toggleFollow", null, {
+          params: {
+            followeeUid: this.pageuid,
+            followerUid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          this.checkFollow();
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              icon: "success",
+              title: this.user.nickname + "님을 팔로우합니다.",
+            });
+          } else {
+            Swal.fire({
+              icon: "success",
+              title: this.user.nickname + "님의 팔로우를 취소합니다.",
+            });
+          }
+        })
+        .catch((err) => console.error(err));
     },
     //닉네임변경관련메서드
     updateNickname_on() {
@@ -401,7 +504,6 @@ export default {
         })
         return
       }
-      // console.log(this.email, this.nowPW);
       this.$axios
         .post("/account/login", null, {
           params: {
@@ -420,7 +522,7 @@ export default {
           document.getElementById("pwModBtn").removeAttribute("disabled") //+
         })
         .catch((err) => {
-          console.log("ERROR :", err)
+          console.err("ERROR :", err);
           Swal.fire({
             icon: "error",
             title: "비밀번호를 확인해주세요.",
@@ -697,6 +799,7 @@ export default {
 
       nicknameChk: false,
       nowPWChk: false,
+      followChk: null,
 
       nowPW: "",
       newPW1: "",
