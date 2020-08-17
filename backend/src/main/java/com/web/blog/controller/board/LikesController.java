@@ -59,15 +59,13 @@ public class LikesController {
 
 	@PostMapping(value = "/checkLikes")
 	public ResponseEntity<Boolean> check(Likes likes) {
-		System.out.println("오나");
 		return new ResponseEntity<>(likesService.checkLikes(likes.getUid(), likes.getBid()), HttpStatus.OK);
 	}
-	
-	@PostMapping(value="/likesCheck")
-	public boolean checkLikes(int uid,int bid) {
+
+	@PostMapping(value = "/likesCheck")
+	public boolean checkLikes(int uid, int bid) {
 		return likesService.likesCheck(uid, bid);
 	}
-	
 
 	/*
 	 * (bid uid로 좋아요 여부 확인)=>lid if(좋아요no) save(new Likes(bid uid))
