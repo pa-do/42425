@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
+import com.web.blog.model.BasicResponse;
 import com.web.blog.model.user.Follow;
 import com.web.blog.service.user.FollowService;
 
@@ -44,7 +44,14 @@ public class FollowController {
 
 	@ApiOperation(value = "팔로우 버튼을 누를 때 동작하는 API. 호출할 때마다 팔로우/언팔로우 전환됨")
 	@PostMapping(value = "/toggleFollow")
-	public ResponseEntity<Boolean> toggleFollow(int followerUid, int followeeUid) {
+	public ResponseEntity<Object> toggleFollow(int followerUid, int followeeUid) {
+		if (followerUid == followeeUid) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "error";
+			result.object = "not allow self follow";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
 		return new ResponseEntity<>(followService.toggleFollow(followerUid, followeeUid), HttpStatus.OK);
 	}
 
