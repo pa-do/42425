@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div v-for="board in boards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
+      <div v-for="board in iboards" :key="`${board.bid}`" class="col-md-6 col-lg-4 my-3">
         <div class="d-flex justify-content-center mt-4">
           <div @click="goboard(`${board.bid}`)" class="card">
             <img
@@ -10,12 +10,6 @@
               src="https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png"
               alt="Card image cap"
             />
-            <!-- <img
-              slot="image"
-              class="card-img-top"
-              src="https://picsum.photos/200/300"
-              alt="Card image cap"
-            />-->
             <div class="container">
               <h4 class="card-title">{{ board.title | truncate(20, "...") }}</h4>
               <p class="card-text">{{ board.content | truncate(20, "...") }}</p>
@@ -26,26 +20,27 @@
         </div>
       </div>
     </div>
-    <!-- <infinite-loading @infinite="infiniteHandler"></infinite-loading> -->
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 
 <script>
 import { Button } from "@/components";
-// import InfiniteLoading from "vue-infinite-loading";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "Post",
   data: () => {
     return {
       boards: [],
-      limit: 0,
+      iboards: [],
+      limit: -6,
     };
   },
   props: ["uid"],
   components: {
     [Button.name]: Button,
-    // InfiniteLoading,
+    InfiniteLoading,
   },
   watch: {},
   methods: {
@@ -61,23 +56,20 @@ export default {
       });
     },
     infiniteHandler($state) {
-      this.$axios
-        .get("/board" + (this.limit + 10))
-        .then((response) => {
-          setTimeout(() => {
-            if (response.data.length) {
-              this.boards = concat(response.data);
-              $state.loaded();
-              this.limit += 10;
-              if (this.boards.length / 10 == 0) {
-                $state.complete();
-              }
-            } else {
-              $state.complete();
-            }
-          }, 1000);
-        })
-        .catch((err) => console.error(err));
+      setTimeout(() => {
+        this.getboard();
+        if (this.boards.length > this.limit) {
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      }, 1500);
+    },
+    getboard() {
+      this.iboards = this.iboards.concat(
+        this.boards.slice(this.limit, this.limit + 6)
+      );
+      this.limit = this.limit + 6;
     },
   },
   filters: {
@@ -91,9 +83,7 @@ export default {
   },
   created() {
     this.fetchBoards();
-    // this.$axios.get("/board" + this.limit).then((response) => {
-    //   this.boards = response.data;
-    // });
+    this.getboard();
   },
 };
 </script>
