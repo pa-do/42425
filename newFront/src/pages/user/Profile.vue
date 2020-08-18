@@ -262,8 +262,16 @@
                 </div>
               </tab-pane>
 
-              <tab-pane>
+              <tab-pane title="portfolio">
                 <i slot="label" class="far fa-folder-open"></i>
+                <h3 class="title pt-0">Portfolio</h3>
+                <div class="col-md-10 mx-auto">
+                  <p>portfolio here!!</p>
+                </div>
+              </tab-pane>
+
+              <tab-pane>
+                <i slot="label" class="far fa-clipboard"></i>
                 <h3 class="title pt-0">Blog</h3>
                 <div class="col-md-11 d-flex justify-content-end">
                   <div class="btn-group" role="group" aria-label="Basic example">
@@ -290,15 +298,15 @@
                   </transition>
                 </div>
               </tab-pane>
+
+              <tab-pane title>
+                <i slot="label" class="far fa-envelope"></i>
+                <h3 class="title pt-0">Send Email</h3>
+                <SendEmail :email="user.email" />
+              </tab-pane>
             </tabs>
           </div>
         </div>
-      </div>
-    </div>
-    <div v-if="!mine && !isEditMode" class="section">
-      <div class="container">
-        <h3 class="title pt-0">Send Email</h3>
-        <SendEmail :email="user.email" />
       </div>
     </div>
   </div>

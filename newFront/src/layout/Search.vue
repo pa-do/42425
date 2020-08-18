@@ -27,9 +27,6 @@
               <h4 slot="label" class="text-dark m-0">
                 <i class="now-ui-icons design_bullet-list-67"></i>
                 제목
-                <badge class="align-middle" type="primary">
-                  <p>{{Tcount}}</p>
-                </badge>
               </h4>
               <div class="modal-body">
                 <h4 class="text-dark my-3">
