@@ -6,15 +6,21 @@
           <th scope="col">#</th>
           <th scope="col">제목</th>
           <th scope="col" class="d-none d-md-block">작성시간</th>
-          <th scope="col">좋아요</th>
+          <th scope="col"><i class="far fa-heart"></i></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="board in boards" :key="`${board.bid}`" @click="goboard(`${board.bid}`)">
-          <th scope="row">{{board.bid}}</th>
+        <tr
+          v-for="board in boards"
+          :key="`${board.bid}`"
+          @click="goboard(`${board.bid}`)"
+        >
+          <th scope="row">{{ board.bid }}</th>
           <td>{{ board.title | truncate(20, "...") }}</td>
-          <td class="d-none d-md-block">{{ board.writeDate.split("T").join(" ") }}</td>
-          <td>{{ board.likes_count}}</td>
+          <td class="d-none d-md-block">
+            {{ board.writeDate.split("T").join(" ") }}
+          </td>
+          <td>{{ board.likes_count }}</td>
         </tr>
       </tbody>
     </table>
@@ -70,7 +76,7 @@ export default {
     },
   },
   filters: {
-    truncate: function (text, length, suffix) {
+    truncate: function(text, length, suffix) {
       if (text.length > length) {
         return text.substring(0, length) + suffix;
       } else {
@@ -84,7 +90,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 tr {
