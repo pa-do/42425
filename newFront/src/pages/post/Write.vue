@@ -6,13 +6,9 @@
       <h6 id="emailHelp" class="form-text text-muted mb-5">45글자 이상은 안됩니다.</h6>
     </div>
     <div class="form-group">
-      <label for="exampleFormControlTextarea1" class="mb-0">글 내용</label>
-      <textarea
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        v-model="writeData.content"
-        rows="3"
-      ></textarea>
+      <label for="exampleFormControlTextarea1" class="mb-3">글 내용</label>
+      <Editor id="content" ref="content" mode="wysiwyg" height="500px" />
+      <!-- <textarea class="form-control" id="exampleFormControlTextarea1" v-model="writeData.content" rows="3"></textarea> -->
     </div>
     <br />
     <n-button @click="writeBoard" class="right btn btn-primary">확인</n-button>
@@ -20,7 +16,10 @@
 </template>
 
 <script>
-import { Button, FormGroupInput as FgInput } from "@/components";
+import { Button, FormGroupInput as FgInput } from "@/components"
+import "codemirror/lib/codemirror.css"
+import "@toast-ui/editor/dist/toastui-editor.css"
+import { Editor } from "@toast-ui/vue-editor"
 
 export default {
   name: "Write",
@@ -36,12 +35,14 @@ export default {
   components: {
     [Button.name]: Button,
     FgInput,
+    Editor,
   },
   methods: {
     writeBoard() {
-      this.writeData.uid = this.$cookie.get("auth-token");
-      this.writeData.title = this.writeData.title.trim();
-      this.writeData.content = this.writeData.content.trim();
+      this.writeData.content = this.$refs.content.invoke("getHtml")
+      this.writeData.uid = this.$cookie.get("auth-token")
+      this.writeData.title = this.writeData.title.trim()
+      console.log(this.writeData.content)
       if (!this.writeData.title || !this.writeData.content) {
         Swal.fire({
           icon: "warning",
