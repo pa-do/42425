@@ -1,55 +1,62 @@
 <template>
-  <div class="content">
-    <n-button class="btn-link social-description my-0" type="neutral" style="cursor: default">
-      <h1>{{post}}</h1>
-      <p>Post</p>
-    </n-button>
+  <div class="content container">
+    <div class="row">
+      <n-button
+        @click="scrollPost"
+        class="btn-link social-description mx-0 my-0 col-4"
+        type="neutral"
+        style="cursor: default"
+      >
+        <h1>{{post}}</h1>
+        <p>Post</p>
+      </n-button>
 
-    <n-button
-      class="btn-link social-description my-0"
-      type="neutral"
-      @click.native="modals.follower = true"
-    >
-      <h1>{{follower}}</h1>
-      <p>Follower</p>
-    </n-button>
-    <!-- Modal -->
-    <modal :show.sync="modals.follower" headerClasses="justify-content-center">
-      <h4 slot="header" class="text-dark">{{nick}}님을 팔로우하는 사람들</h4>
-      <div class="list-group" style="max-height: 40vh">
-        <div v-for="user in followers" :key="user.fid">
-          <div @click="goUser(user.follower.uid)" class="list-group-item list-group-item-action">
-            <h5 class="my-0">{{user.follower.nickname}}</h5>
+      <n-button
+        class="btn-link social-description mx-0 my-0 col-4"
+        type="neutral"
+        @click.native="modals.follower = true"
+      >
+        <h1>{{follower}}</h1>
+        <p>Follower</p>
+      </n-button>
+      <!-- Modal -->
+      <modal :show.sync="modals.follower" headerClasses="justify-content-center">
+        <h4 slot="header" class="text-dark">{{nick}}님을 팔로우하는 사람들</h4>
+        <div class="list-group" style="max-height: 40vh">
+          <div v-for="user in followers" :key="user.fid">
+            <div @click="goUser(user.follower.uid)" class="list-group-item list-group-item-action">
+              <h5 class="my-0">{{user.follower.nickname}}</h5>
+            </div>
           </div>
         </div>
-      </div>
-      <template slot="footer">
-        <n-button class="ml-auto" type="danger" @click.native="modals.follower = false">Close</n-button>
-      </template>
-    </modal>
-    <!-- modal end -->
+        <template slot="footer">
+          <n-button class="ml-auto" type="danger" @click.native="modals.follower = false">Close</n-button>
+        </template>
+      </modal>
+      <!-- modal end -->
 
-    <n-button
-      class="btn-link social-description my-0"
-      type="neutral"
-      @click.native="modals.followee = true"
-    >
-      <h1>{{followee}}</h1>
-      <p>Following</p>
-    </n-button>
-    <modal :show.sync="modals.followee" headerClasses="justify-content-center">
-      <h4 slot="header" class="text-dark">{{nick}}님이 팔로우하는 사람들</h4>
-      <div class="list-group">
-        <div v-for="user in followees" :key="user.fid">
-          <div @click="goUser(user.followee.uid)" class="list-group-item list-group-item-action">
-            <h5 class="my-0">{{user.followee.nickname}}</h5>
+      <n-button
+        class="btn-link social-description mx-0 my-0 col-4"
+        type="neutral"
+        @click.native="modals.followee = true"
+      >
+        <h1>{{followee}}</h1>
+        <p>Following</p>
+      </n-button>
+      <modal :show.sync="modals.followee" headerClasses="justify-content-center">
+        <h4 slot="header" class="text-dark">{{nick}}님이 팔로우하는 사람들</h4>
+        <div class="list-group">
+          <div v-for="user in followees" :key="user.fid">
+            <div @click="goUser(user.followee.uid)" class="list-group-item list-group-item-action">
+              <h5 class="my-0">{{user.followee.nickname}}</h5>
+            </div>
           </div>
         </div>
-      </div>
-      <template slot="footer">
-        <n-button class="ml-auto" type="danger" @click.native="modals.followee = false">Close</n-button>
-      </template>
-    </modal>
+        <template slot="footer">
+          <n-button class="ml-auto" type="danger" @click.native="modals.followee = false">Close</n-button>
+        </template>
+      </modal>
+    </div>
   </div>
 </template>
 
@@ -105,6 +112,9 @@ export default {
         path: `/profile/${item}`,
       });
       this.$router.go();
+    },
+    scrollPost() {
+      this.$emit("update");
     },
   },
   data: () => {

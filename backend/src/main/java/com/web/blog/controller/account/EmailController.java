@@ -58,23 +58,23 @@ public class EmailController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	@PostMapping("/sendme")
-	@ApiOperation(value = "나에게 메일 보내기", notes = "Contact me 컴포넌트에서 상대방이 나에게 메일을 보낼 수 있다.")
-	public Object sendme(@ApiParam(value = "상대방 이름 (your name)") @RequestParam String name, 
-						 @ApiParam(value = "상대방 이메일 (your email)") @RequestParam String email, 
-						 @ApiParam(value = "상대방 제목 (subject)") @RequestParam String subject, 
-						 @ApiParam(value = "상대방 메세지 (message)") @RequestParam String message, 
-						 @ApiParam(value = "내 이메일") @RequestParam String myEmail
-						 ) throws MessagingException{
-		
-			MimeMessage msg = sender.createMimeMessage();
-			MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
-			
-			messageHelper.setFrom(new InternetAddress(email));
-			messageHelper.setSubject(subject);
-			messageHelper.setTo(new InternetAddress(myEmail));
-			messageHelper.setText(message + "\n 상대방 이름 : " + name);
-			sender.send(msg);
-			return new ResponseEntity<>(null, HttpStatus.OK);
-	}
+  @PostMapping("/sendme")
+  @ApiOperation(value = "나에게 메일 보내기", notes = "Contact me 컴포넌트에서 상대방이 나에게 메일을 보낼 수 있다.")
+  public Object sendme(@ApiParam(value = "상대방 이름 (your name)") @RequestParam String name, 
+                  @ApiParam(value = "상대방 이메일 (your email)") @RequestParam String email, 
+                  @ApiParam(value = "상대방 제목 (subject)") @RequestParam String subject, 
+                  @ApiParam(value = "상대방 메세지 (message)") @RequestParam String message, 
+                  @ApiParam(value = "내 이메일") @RequestParam String myEmail
+                  ) throws MessagingException{
+     
+        MimeMessage msg = sender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
+        
+        messageHelper.setFrom(new InternetAddress(email));
+        messageHelper.setSubject(subject);
+        messageHelper.setTo(new InternetAddress(myEmail));
+        messageHelper.setText(name + "(" + email + ") \n" + message);
+        sender.send(msg);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+  }
 }

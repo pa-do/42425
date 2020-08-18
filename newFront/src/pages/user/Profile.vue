@@ -124,7 +124,12 @@
             </div>
           </div>
         </div>
-        <Counter :uid="this.pageuid" :nick="this.user.nickname" :followChk="followChk" />
+        <Counter
+          :uid="this.pageuid"
+          :nick="this.user.nickname"
+          :followChk="followChk"
+          @update="scrollPost"
+        />
         <div v-if="mine" class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary btn-round btn-md mr-1"
@@ -230,6 +235,7 @@
             </div>
           </div>
           <Contactme :user="user" :mine="mine" @update="getdata" />
+          <div id="blogPost"></div>
           <div class="container">
             <tabs
               pills
@@ -332,10 +338,6 @@ export default {
     this.pageuid = this.$route.params.uid;
   },
   mounted() {
-    this.getdata();
-    this.checkFollow();
-  },
-  computed() {
     this.getdata();
     this.checkFollow();
   },
@@ -795,6 +797,11 @@ export default {
         path: `/profile/${targetUid}`,
       });
       this.$router.go();
+    },
+    scrollPost() {
+      // 스크롤 로딩 오프셋값 거의 하드코딩 수준인데 어케 고치지;
+      let location = document.querySelector("#blogPost").offsetTop + 490;
+      window.scrollTo({ top: location, behavior: "smooth" });
     },
   },
   watch: {},

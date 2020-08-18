@@ -2,6 +2,8 @@
   <div class="container row">
     <div class="col-1"></div>
     <div class="col-10">
+      <!-- 일단 숨겨봄 -->
+
       <fg-input
         v-model="yourName"
         id="yourName"
@@ -18,6 +20,7 @@
         class="no-border form-control-md my-3"
         readonly
       ></fg-input>
+
       <fg-input
         v-model="subject"
         id="subject"
