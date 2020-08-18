@@ -8,7 +8,8 @@
               <h3 class="mb-0">
                 <i class="fas fa-quote-left mr-1"></i>
                 {{ this.keyword }}
-                <i class="fas fa-quote-right ml-1"></i> 의 검색 결과
+                <i class="fas fa-quote-right ml-1"></i>
+                의 검색 결과
               </h3>
             </div>
             <n-button type="danger" round @click="$emit('close')">닫기</n-button>
@@ -24,9 +25,18 @@
           >
             <tab-pane>
               <h4 slot="label" class="text-dark m-0">
-                <i class="now-ui-icons design_bullet-list-67"></i>제목
+                <i class="now-ui-icons design_bullet-list-67"></i>
+                제목
+                <badge class="align-middle" type="primary">
+                  <p>{{Tcount}}</p>
+                </badge>
               </h4>
               <div class="modal-body">
+                <h4 class="text-dark my-3">
+                  <i class="now-ui-icons design_bullet-list-67"></i>
+                  제목
+                  <badge class="align-middle" type="primary">{{Tcount}}</badge>
+                </h4>
                 <div v-for="board in boards" :key="`${board.bid}`">
                   <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
                     <div class="row">
@@ -43,6 +53,10 @@
                 <i class="now-ui-icons files_single-copy-04"></i>내용
               </h4>
               <div class="modal-body">
+                <h4 class="text-dark my-3">
+                  <i class="now-ui-icons files_single-copy-04"></i>내용
+                  <badge class="align-middle" type="primary">{{Ccount}}</badge>
+                </h4>
                 <div v-for="board in Cboards" :key="`${board.bid}`">
                   <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
                     <div class="row">
@@ -59,6 +73,10 @@
                 <i class="now-ui-icons users_single-02"></i>닉네임
               </h4>
               <div class="modal-body">
+                <h4 class="text-dark my-3">
+                  <i class="now-ui-icons users_single-02"></i>닉네임
+                  <badge class="align-middle" type="primary">{{Ncount}}</badge>
+                </h4>
                 <div v-for="board in Nboards" :key="`${board.uid}`">
                   <blockquote class="blockquote text-center card" @click="goNick(`${board.uid}`)">
                     <div class="row">
@@ -74,6 +92,10 @@
                 <i class="now-ui-icons ui-2_settings-90"></i>기술
               </h4>
               <div class="modal-body">
+                <h4 class="text-dark my-3">
+                  <i class="now-ui-icons ui-2_settings-90"></i>기술
+                  <badge class="align-middle" type="primary">{{Scount}}</badge>
+                </h4>
                 <div v-for="board in Sboards" :key="`${board.sid}`">
                   <blockquote
                     class="blockquote text-center card"
@@ -111,13 +133,14 @@
 </template>
 
 <script>
-import { Button, Tabs, TabPane } from "@/components";
+import { Button, Tabs, TabPane, Badge } from "@/components";
 export default {
   props: ["keyword"],
   components: {
     [Button.name]: Button,
     Tabs,
     TabPane,
+    [Badge.name]: Badge,
   },
   data: function () {
     return {
@@ -125,31 +148,52 @@ export default {
       Cboards: [],
       Nboards: [],
       Sboards: [],
+
+      Tcount: 0,
+      Ccount: 0,
+      Ncount: 0,
+      Scount: 0,
     };
   },
   methods: {
     searchTitle() {
       this.$axios
         .get("/board/searchTitle/" + this.keyword)
-        .then((res) => (this.boards = res.data))
+        .then((res) => {
+          this.boards = res.data;
+          this.Tcount = this.boards.length;
+          console.log(this.Tcount);
+        })
         .catch((err) => console.error(err));
     },
     searchContent() {
       this.$axios
         .get("/board/searchContent/" + this.keyword)
-        .then((res) => (this.Cboards = res.data))
+        .then((res) => {
+          this.Cboards = res.data;
+          this.Ccount = this.Cboards.length;
+          console.log(this.Ccount);
+        })
         .catch((err) => console.error(err));
     },
     searchNickname() {
       this.$axios
         .get("/account/searchNickname/" + this.keyword)
-        .then((res) => (this.Nboards = res.data))
+        .then((res) => {
+          this.Nboards = res.data;
+          this.Ncount = this.Nboards.length;
+          console.log(this.Ncount);
+        })
         .catch((err) => console.error(err));
     },
     searchSkill() {
       this.$axios
         .get(`/portfolio/skill/search/${this.keyword}`)
-        .then((res) => (this.Sboards = res.data.object))
+        .then((res) => {
+          this.Sboards = res.data.object;
+          this.Scount = this.Sboards.length;
+          console.log(this.Scount);
+        })
         .catch((err) => console.error(err));
     },
     goboard(item) {
