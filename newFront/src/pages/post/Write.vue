@@ -3,6 +3,7 @@
     <div class="form-group">
       <label for="exampleFormControlInput1" class="mb-3">글 제목</label>
       <fg-input type="text" v-model="writeData.title" id="exampleFormControlInput1"></fg-input>
+      <h6 id="emailHelp" class="form-text text-muted mb-5">45글자 이상은 안됩니다.</h6>
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1" class="mb-3">글 내용</label>
@@ -29,7 +30,7 @@ export default {
         title: "",
         uid: null,
       },
-    }
+    };
   },
   components: {
     [Button.name]: Button,
@@ -46,7 +47,14 @@ export default {
         Swal.fire({
           icon: "warning",
           title: "제목 또는 내용이 입력되지<br>않았습니다.",
-        })
+        });
+      } else if (this.writeData.title.length > 45) {
+        Swal.fire({
+          icon: "warning",
+          title: "글 제목이 너무 깁니다.",
+          text: "제목을 45자 미만으로 입력하세요.",
+        });
+        return;
       } else {
         this.$axios
           .post("/board/write", null, {
@@ -60,17 +68,17 @@ export default {
             Swal.fire({
               icon: "success",
               title: "글이 작성되었습니다.",
-            })
-            this.$emit("postWrite")
+            });
+            this.$emit("postWrite");
           })
           .catch((err) => {
-            console.log("!!!!!!")
-            console.log(err.response)
-          })
+            console.log("!!!!!!");
+            console.log(err.response);
+          });
       }
     },
   },
-}
+};
 </script>
 
 <style></style>

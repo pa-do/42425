@@ -47,8 +47,11 @@ export default {
     fetchBoards() {
       this.$axios
         .get("/board/byUser/" + this.uid)
-        .then((res) => (this.boards = res.data))
-        .catch((err) => console.error(err))
+        .then((res) => {
+          this.boards = res.data;
+          this.getboard();
+        })
+        .catch((err) => console.error(err));
     },
     goboard(item) {
       this.$router.push({

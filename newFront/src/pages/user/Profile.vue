@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax class="page-header-image" style="background-image:url('img/bg5.jpg')"></parallax>
+      <parallax class="page-header-image" style="background-image:url('img/Tent.jpg')"></parallax>
       <div class="container">
         <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
           <div id="pimg">
