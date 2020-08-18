@@ -5,7 +5,7 @@
       <fg-input type="text" v-model="writeData.title" id="exampleFormControlInput1"></fg-input>
     </div>
     <div class="form-group">
-      <label for="exampleFormControlTextarea1" class="mb-3">글? 내용</label>
+      <label for="exampleFormControlTextarea1" class="mb-3">글 내용</label>
       <Editor id="content" ref="content" mode="wysiwyg" height="500px" />
       <!-- <textarea class="form-control" id="exampleFormControlTextarea1" v-model="writeData.content" rows="3"></textarea> -->
     </div>
@@ -38,10 +38,10 @@ export default {
   },
   methods: {
     writeBoard() {
-      this.writeData.content = this.$refs.content.invoke("getHtml").trim()
+      this.writeData.content = this.$refs.content.invoke("getHtml")
       this.writeData.uid = this.$cookie.get("auth-token")
       this.writeData.title = this.writeData.title.trim()
-      // this.writeData.content = this.writeData.content.trim()
+      console.log(this.writeData.content)
       if (!this.writeData.title || !this.writeData.content) {
         Swal.fire({
           icon: "warning",

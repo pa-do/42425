@@ -5,13 +5,11 @@
       <h1 class="card-header text-center mt-3">{{ board.title }}</h1>
       <div class="card-body">
         <blockquote class="blockquote mb-0 text-right">
-          <!--  -->
           <!-- <p class="text-left">{{ board.content }}</p> -->
-          <viewer height="500px" v-if="content != null" :initialValue="testText" />
-          <!--  -->
+          <viewer height="500px" v-if="board.content != null" :initialValue="board.content" />
           <footer class="blockquote-footer">
             <router-link :to="`/profile/${this.board.uid}`">{{ board.nickname }}</router-link>
-            <p>{{ board.writeDatesplit("T").join(" ") }}</p>
+            <p>{{ board.writeDate.split("T").join(" ") }}</p>
             <h3 class="mb-0">
               <i v-if="!likechk" class="far fa-heart" @click="likes"></i>
               <i v-else class="far fa-heart text-danger" @click="likes"></i>
@@ -48,7 +46,6 @@ export default {
       bid: "",
       isAuthorized: false,
       likechk: false,
-      testText: "testText입니다",
     }
   },
   methods: {
