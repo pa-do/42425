@@ -5,7 +5,6 @@
         @click="scrollPost"
         class="btn-link social-description mx-0 my-0 col-4"
         type="neutral"
-        style="cursor: default"
       >
         <h1>{{post}}</h1>
         <p>Post</p>

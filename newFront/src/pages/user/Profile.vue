@@ -1,29 +1,31 @@
 <template>
   <div>
-    <div class="fixed-bottom my-3 mx-3 text-right">
-      <el-popover
-        ref="popovertrigger"
-        trigger="click"
-        popper-class="popover popover-default"
-        placement="top"
-      >
-        <!-- <h3 class="popover-header">Popover</h3> -->
-        <div class="popover-body text-center">
-          <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
-          <n-button @click="doCopy" class="btn btn-primary btn-round" size="sm">클립보드로 URL 복사</n-button>
+    <div class="fixed-bottom my-3 mx-3 row">
+      <div class="text-left col-6" style="width: 50vw">
+        <div v-if="isEditMode != null">
+          <n-button
+            type="primary"
+            round
+            v-if="isEditMode == 'enable'"
+            @click="toggleEditView"
+          >뷰어 모드로 보기</n-button>
+          <n-button type="primary" round v-else @click="toggleEditView">편집 모드로 보기</n-button>
         </div>
-      </el-popover>
-      <n-button v-popover:popovertrigger type="primary" round>외부로 공유</n-button>
-    </div>
-    <div class="fixed-bottom my-3 mx-3 text-left">
-      <div v-if="isEditMode != null">
-        <n-button
-          type="primary"
-          round
-          v-if="isEditMode == 'enable'"
-          @click="toggleEditView"
-        >뷰어 모드로 보기</n-button>
-        <n-button type="primary" round v-else @click="toggleEditView">편집 모드로 보기</n-button>
+      </div>
+      <div class="text-right col-6" style="width: 50vw">
+        <el-popover
+          ref="popovertrigger"
+          trigger="click"
+          popper-class="popover popover-default"
+          placement="top"
+        >
+          <!-- <h3 class="popover-header">Popover</h3> -->
+          <div class="popover-body text-center">
+            <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+            <n-button @click="doCopy" class="btn btn-primary btn-round" size="sm">클립보드로 URL 복사</n-button>
+          </div>
+        </el-popover>
+        <n-button v-popover:popovertrigger type="primary" round>외부로 공유</n-button>
       </div>
     </div>
     <div class="page-header clear-filter" filter-color="orange-">
@@ -265,13 +267,13 @@
                 <h3 class="title pt-0">Blog</h3>
                 <div class="col-md-11 d-flex justify-content-end">
                   <div class="btn-group" role="group" aria-label="Basic example">
-                    <n-button type="info" round class @click="cardMode">
+                    <n-button type="primary" round class @click="cardMode">
                       <i class="fas fa-th-large fa-2x"></i>
                     </n-button>
-                    <n-button type="info" round class="mx-1" @click="postMode">
+                    <n-button type="primary" round class="mx-1" @click="postMode">
                       <i class="fas fa-list-ul fa-2x"></i>
                     </n-button>
-                    <n-button v-if="mine" type="info" round class @click="writeMode">
+                    <n-button v-if="mine" type="primary" round class @click="writeMode">
                       <i class="far fa-edit fa-2x"></i>
                     </n-button>
                   </div>
