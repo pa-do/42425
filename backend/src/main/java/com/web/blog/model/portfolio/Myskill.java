@@ -1,17 +1,20 @@
 package com.web.blog.model.portfolio;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.web.blog.model.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
@@ -19,12 +22,16 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Builder
-@IdClass(MySkillKey.class)
-public class Myskill implements Serializable{
+@ToString
+public class Myskill{
 	@Id
-	@JoinColumn(name = "user_uid")
-	private int uid;
-	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int sid;
+
+	@ManyToOne
+	@JoinColumn(name = "uid")
+	private User user;
+	
 	private String skill;
 	private int value;
 }

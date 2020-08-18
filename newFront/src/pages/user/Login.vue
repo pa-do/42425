@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header clear-filter" filter-color="orange">
+  <div class="page-header clear-filter" filter-color="orange-">
     <div class="page-header-image" style="background-image: url('img/login.jpg')"></div>
     <div class="content">
       <div class="container">
@@ -59,7 +59,6 @@
 <script>
 import { Card, Button, FormGroupInput } from "@/components";
 import MainFooter from "@/layout/MainFooter";
-import axios from "axios";
 
 export default {
   name: "login-page",
@@ -95,9 +94,8 @@ export default {
         return;
       }
 
-      axios({
-        method: "POST",
-        url: `http://localhost:8080/account/login`,
+      this.$axios
+      .post("/account/login", null, {
         params: {
           email: this.email,
           password: this.password,

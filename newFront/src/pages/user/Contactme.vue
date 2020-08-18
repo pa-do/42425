@@ -47,16 +47,7 @@
                 </span>
                 <span v-else>
                   <td>
-                    <fg-input>
-                      <el-date-picker
-                        v-model="newBD"
-                        popper-class="date-picker"
-                        type="date"
-                        placeholder="Select date"
-                      ></el-date-picker>
-                    </fg-input>
-                    <!-- <input type="date" v-model="newDB" /> -->
-
+                    <input type="date" v-model="newBD" id="newBD" placeholder="생년월일을 입력하세요." />
                     <n-button
                       @click="modifybirthDate"
                       class="btn btn-primary btn-round btn-md mr-1"
@@ -102,7 +93,9 @@
                   </span>
                 </th>
                 <span v-if="!update_phone">
-                  <td>{{user.phone}}</td>
+                  <span v-if="user.phone">
+                    <td>{{user.phone.substring(0,3)}} - {{user.phone.substring(3,7)}} - {{user.phone.substring(7,11)}}</td>
+                  </span>
                 </span>
                 <span v-else>
                   <fg-input
@@ -124,7 +117,9 @@
                   </span>
                 </th>
                 <span v-if="!update_website">
-                  <td>{{user.website}}</td>
+                  <td>
+                    <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
+                  </td>
                 </span>
                 <span v-else>
                   <fg-input
@@ -168,16 +163,19 @@
                   <td>{{user.email}}</td>
                 </tr>
               </span>
+
               <span v-if="user.phone">
                 <tr>
                   <th scope="row">Phone</th>
-                  <td>{{user.phone}}</td>
+                  <td>{{user.phone.substring(0,3)}} - {{user.phone.substring(3,7)}} - {{user.phone.substring(7,11)}}</td>
                 </tr>
               </span>
               <span v-if="user.website">
                 <tr>
                   <th scope="row">Github</th>
-                  <td>{{user.website}}</td>
+                  <td>
+                    <a :href="`${user.website}`" target="_blank">{{user.website}}</a>
+                  </td>
                 </tr>
               </span>
             </tbody>
@@ -189,7 +187,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { FormGroupInput as FgInput, Button } from "@/components";
 import { DatePicker } from "element-ui";
 
@@ -229,8 +226,16 @@ export default {
       this.newName = null;
     },
     modifyName() {
-      axios
-        .put("http://localhost:8080/account/modify/name", {
+      if (this.newName.length > 10) {
+        Swal.fire({
+          icon: "warning",
+          title: "이름이 너무 깁니다.",
+          text: "이름을 10자 이하로 입력하세요.",
+        });
+        return;
+      }
+      this.$axios
+        .put("/account/modify/name", {
           uid: this.user.uid,
           name: this.newName,
         })
@@ -242,7 +247,6 @@ export default {
             title: "회원정보 수정 성공",
             text: "이름을 성공적으로 수정하였습니다.",
           });
-          // this.$router.go();
           this.updateName_off();
           this.$emit("update");
         })
@@ -260,8 +264,8 @@ export default {
       this.newBD = null;
     },
     modifybirthDate() {
-      axios
-        .put("http://localhost:8080/account/modify/birthdate", {
+      this.$axios
+        .put("/account/modify/birthdate", {
           uid: this.user.uid,
           birthDate: this.newBD,
         })
@@ -273,7 +277,6 @@ export default {
             title: "회원정보 수정 성공",
             text: "생일을 성공적으로 수정하였습니다.",
           });
-          // this.$router.go();
           this.updatebirthDate_off();
           this.$emit("update");
         })
@@ -291,8 +294,16 @@ export default {
       this.newAddress = null;
     },
     modifyAddress() {
-      axios
-        .put("http://localhost:8080/account/modify/address", {
+      if (this.newAddress.length > 100) {
+        Swal.fire({
+          icon: "warning",
+          title: "주소가 너무 깁니다.",
+          text: "주소를 100자 미만으로 입력하세요.",
+        });
+        return;
+      }
+      this.$axios
+        .put("/account/modify/address", {
           uid: this.user.uid,
           address: this.newAddress,
         })
@@ -304,7 +315,6 @@ export default {
             title: "회원정보 수정 성공",
             text: "주소를 성공적으로 수정하였습니다.",
           });
-          // this.$router.go();
           this.updateAddress_off();
           this.$emit("update");
         })
@@ -332,13 +342,21 @@ export default {
           title: "숫자만 입력해 주세요.",
           text: "한글, 영문, 특수문자 등은 입력하실 수 없습니다.",
         });
-        document.getElementById("newPhone").focus();
         return;
       }
-      axios
-        .put("http://localhost:8080/account/modify/phone", {
+      this.newPhone = this.newPhone.replace(/[^0-9]/g, "");
+      if (this.newPhone.length !== 11) {
+        Swal.fire({
+          icon: "error",
+          title: "11자리의 숫자를 입력해 주세요.",
+          text: "010을 포함해 11자리의 숫자를 입력하세요.",
+        });
+        return;
+      }
+      this.$axios
+        .put("/account/modify/phone", {
           uid: this.user.uid,
-          phone: this.newPhone.replace(/[^0-9]/g, ""),
+          phone: this.newPhone,
         })
         .then((response) => {
           this.result = response.data;
@@ -348,7 +366,6 @@ export default {
             title: "회원정보 수정 성공",
             text: "휴대폰 번호를 성공적으로 수정하였습니다.",
           });
-          // this.$router.go();
           this.updatePhone_off();
           this.$emit("update");
         })
@@ -366,8 +383,16 @@ export default {
       this.newWeb = null;
     },
     modifyWebsite() {
-      axios
-        .put("http://localhost:8080/account/modify/website", {
+      if (this.newWeb.length > 200) {
+        Swal.fire({
+          icon: "warning",
+          title: "깃허브 주소가 너무 깁니다.",
+          text: "깃허브 주소를 200자 미만으로 입력하세요.",
+        });
+        return;
+      }
+      this.$axios
+        .put("/account/modify/website", {
           uid: this.user.uid,
           website: this.newWeb,
         })
@@ -379,7 +404,6 @@ export default {
             title: "회원정보 수정 성공",
             text: "깃허브 주소를 성공적으로 수정하였습니다.",
           });
-          // this.$router.go();
           this.updateWebsite_off();
           this.$emit("update");
         })

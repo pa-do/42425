@@ -2,12 +2,12 @@
   <div class="container">
     <div class="mt-5"></div>
     <div class="card mt-5">
-      <h1 class="card-header text-center">{{ board.title }}</h1>
+      <h1 class="card-header text-center mt-3">{{ board.title }}</h1>
       <div class="card-body">
         <blockquote class="blockquote mb-0 text-right">
           <p class="text-left">{{ board.content }}</p>
           <footer class="blockquote-footer">
-            {{ board.nickname }}
+            <router-link :to="`/profile/${this.board.uid}`">{{ board.nickname }}</router-link>
             <p>{{ board.writeDate.split("T").join(" ") }}</p>
             <h3 class="mb-0">
               <i v-if="!likechk" class="far fa-heart" @click="likes"></i>
@@ -27,18 +27,15 @@
 </template>
 
 <script>
-import axios from "axios";
 import Comment from "./Comment";
 import { Button } from "@/components";
-
-const BASE_URL = "http://localhost:8080";
 
 export default {
   components: {
     [Button.name]: Button,
     Comment,
   },
-  data: function() {
+  data: function () {
     return {
       board: Object,
       bid: "",
@@ -49,8 +46,8 @@ export default {
   methods: {
     fetchBoard() {
       // console.log(this.$route.params.bid);
-      axios
-        .get(BASE_URL + `/board/${this.$route.params.bid}`)
+      this.$axios
+        .get(`/board/${this.$route.params.bid}`)
         .then((res) => {
           this.board = res.data;
           this.bid = this.board.bid;
@@ -66,8 +63,8 @@ export default {
       this.$router.push(`/boardmodify/${item}`);
     },
     deleteBoard() {
-      axios
-        .delete(`http://localhost:8080/board/delete/${this.board.bid}`)
+      this.$axios
+        .delete(`/board/delete/${this.board.bid}`)
         .then((res) => {
           // console.log(res);
           this.$router.push(`/profile/${this.board.uid}`);
@@ -92,8 +89,8 @@ export default {
       });
     },
     likes() {
-      axios
-        .post("http://localhost:8080/likes/checkLikes", null, {
+      this.$axios
+        .post("/likes/checkLikes", null, {
           params: {
             bid: this.board.bid,
             uid: this.$cookie.get("auth-token"),
@@ -108,8 +105,8 @@ export default {
         .catch((err) => console.error(err));
     },
     likechking() {
-      axios
-        .post("http://localhost:8080/likes/likesCheck", null, {
+      this.$axios
+        .post("/likes/likesCheck", null, {
           params: {
             bid: this.board.bid,
             uid: this.$cookie.get("auth-token"),

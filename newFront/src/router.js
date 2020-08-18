@@ -11,12 +11,9 @@ import Logout from "./pages/user/Logout.vue";
 import Join from "./pages/user/Join.vue";
 import Modifypw from "./pages/user/Modifypw.vue";
 import Profile from "./pages/user/Profile.vue";
-import Contactme from "./pages/user/Contactme.vue";
-import MySkill from "./pages/user/MySkill.vue";
 
 // 포스트
 import BoardDetail from "./pages/post/BoardDetail.vue";
-import Write from "./pages/post/Write.vue";
 import BoardModify from "./pages/post/BoardModify.vue";
 
 // 에러페이지
@@ -90,26 +87,7 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
-    {
-      path: "/myskill",
-      name: "myskill",
-      components: { default: MySkill, header: MainNavbar },
-      props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
-      },
-    },
-    {
-      path: "/contactme",
-      name: "contactme",
-      components: { default: Contactme },
-    },
     // post 관련
-    {
-      path: "/board/write",
-      name: "write",
-      component: Write,
-    },
     {
       path: "/boardmodify/:mid",
       name: "BoardModify",

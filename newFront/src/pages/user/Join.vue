@@ -96,7 +96,6 @@
 <script>
 import { Card, Button, FormGroupInput } from "@/components";
 import MainFooter from "@/layout/MainFooter";
-import axios from "axios";
 export default {
   name: "join-page",
   bodyClass: "login-page",
@@ -108,9 +107,16 @@ export default {
   },
   methods: {
     checkNickname() {
-      console.log(this.nickname);
-      axios
-        .get(`http://localhost:8080/account/nicknameChk/${this.nickname}`)
+      if (this.nickname.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "닉네임이 너무 깁니다.",
+          text: "닉네임을 128자 미만으로 입력하세요.",
+        });
+        return;
+      }
+      this.$axios
+        .get(`/account/nicknameChk/${this.nickname}`)
         .then((response) => {
           this.result = response.data;
           if (this.result.data == "fail" && this.result.object == "nickname") {
@@ -119,7 +125,6 @@ export default {
               title: "이미 가입된 닉네임입니다.",
               text: "새로운 닉네임을 입력하세요.",
             });
-            document.getElementById("nickname").focus();
           } else {
             Swal.fire({
               icon: "success",
@@ -134,21 +139,27 @@ export default {
         });
     },
     checkEmail() {
+      if (this.email.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "이메일 주소가 너무 깁니다.",
+          text: "이메일 주소를 128자 미만으로 입력하세요.",
+        });
+        return;
+      }
       if (!this.validEmail(this.email)) {
         Swal.fire({
           icon: "warning",
           title: "메일 형식을 확인하세요.",
         });
-        document.getElementById("Jemail").focus();
         return;
       }
-      axios
-        .get(`http://localhost:8080/account/emailChk/${this.email}`)
+      this.$axios
+        .get(`/account/emailChk/${this.email}`)
         .then((response) => {
           this.result = response.data;
           console.log(this.result);
           if (this.result.data == "fail" && this.result.object == "email") {
-            document.getElementById("Jemail").focus();
             Swal.fire({
               icon: "warning",
               title: "이미 가입된 이메일입니다.",
@@ -173,7 +184,6 @@ export default {
           icon: "info",
           title: "닉네임을 입력하세요.",
         });
-        document.getElementById("nickname").focus();
         return;
       } else if (!this.nicknameChk) {
         Swal.fire({
@@ -186,14 +196,12 @@ export default {
           icon: "info",
           title: "메일 주소를 입력하세요.",
         });
-        document.getElementById("Jemail").focus();
         return;
       } else if (!this.validEmail(this.email)) {
         Swal.fire({
           icon: "error",
           title: "메일 형식을 확인하세요.",
         });
-        document.getElementById("Jemail").focus();
         return;
       } else if (!this.emailChk) {
         Swal.fire({
@@ -206,47 +214,46 @@ export default {
           icon: "warning",
           title: "이메일 인증을 진행하세요.",
         });
-        document.getElementById("input_authnum").focus();
         return;
       } else if (this.password == "") {
         Swal.fire({
           icon: "info",
           title: "비밀번호를 입력하세요.",
         });
-        document.getElementById("password").focus();
         return;
       } else if (this.passwordConfirm == "") {
         Swal.fire({
           icon: "info",
           title: "비밀번호를 한번 더 입력하세요.",
         });
-        document.getElementById("password-confirm").focus();
         return;
       } else if (this.password != this.passwordConfirm) {
         Swal.fire({
           icon: "warning",
           title: "비밀번호가 일치하지 않습니다.",
         });
-        document.getElementById("password-confirm").focus();
         return;
       } else if (!this.validPW(this.password)) {
         Swal.fire({
           icon: "warning",
           title: "비밀번호는 영문과 숫자를 합쳐 8자 이상이어야 합니다.",
         });
-        document.getElementById("password").focus();
         return;
+      } else if (this.password.length > 128) {
+        Swal.fire({
+          icon: "warning",
+          title: "비밀번호가 너무 깁니다.",
+          text: "비밀번호를 128자 미만으로 입력하세요.",
+        });
       } else {
-        console.log(this.nickname, this.email, this.password);
-        axios
-          .post("http://localhost:8080/account/signup", {
+        this.$axios
+          .post("/account/signup", {
             nickname: this.nickname,
             email: this.email,
             password: this.password,
           })
           .then((response) => {
             this.result = response.data;
-            console.log(this.result);
             if (this.result.data != "fail") {
               this.user = response.data.object;
               this.$session.set("user", this.user);
@@ -273,8 +280,8 @@ export default {
       return re.test(email);
     },
     sendEmail() {
-      axios
-        .get(`http://localhost:8080/email/send/${this.email}`)
+      this.$axios
+        .get(`/email/send/${this.email}`)
         .then((response) => {
           Swal.fire({
             icon: "info",
