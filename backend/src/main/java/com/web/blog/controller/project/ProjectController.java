@@ -83,9 +83,10 @@ public class ProjectController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public ResponseEntity<Project> save(HttpServletRequest req, Project project, MultipartFile file,
 			HttpServletRequest request) {
-		String retPath;
+		String retPath = null;
 		try {
-			retPath = save(file, request.getServletContext().getRealPath("/img/projectImg/"));
+			if (file != null)
+				retPath = save(file, request.getServletContext().getRealPath("/img/projectImg/"));
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
