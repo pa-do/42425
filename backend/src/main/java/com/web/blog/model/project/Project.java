@@ -32,13 +32,21 @@ public class Project {
 	private int uid;
 	
 	private String title;
+	
+	@Column(name="start_date")
+	private String startdate;
+	
+	@Column(name="end_date")
+	private String enddate;
+	
 	private String content;
 	private String summary;
 	
 	@Column(insertable = false, updatable = true, nullable=true)
 	private String nickname;
+
+	@Column(insertable = false, updatable = true, nullable=true)
+	private String devdate;
 	
 
-	@Column(name="write_date", insertable = false, updatable = false)
-	private LocalDateTime writeDate;
 }

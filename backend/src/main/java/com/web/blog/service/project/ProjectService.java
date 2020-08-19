@@ -37,7 +37,7 @@ public class ProjectService {
 	}
 	
 	public void modify(Project project) {
-		projectDao.updateProject(project.getPid(), project.getTitle(), project.getContent(), project.getSummary());
+		projectDao.updateProject(project.getPid(), project.getTitle(), project.getStartdate(), project.getEnddate(), project.getContent(), project.getSummary());
 	}
 	
 	public Project save(Project project) {

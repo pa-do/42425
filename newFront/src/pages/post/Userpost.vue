@@ -8,7 +8,6 @@
             <div class="container">
               <h4 class="card-title">{{ board.title | truncate(20, "...") }}</h4>
               <p class="card-text">{{ board.content | truncate(20, "...") }}</p>
-              <div v-html="`${board.content}`"></div>
               <span class="date">{{ board.writeDate.split("T").join(" ") }}ㆍ</span>
               <span class="text-danger">❤ {{ board.likes_count }}</span>
             </div>
@@ -48,10 +47,10 @@ export default {
       this.$axios
         .get("/board/byUser/" + this.uid)
         .then((res) => {
-          this.boards = res.data;
-          this.getboard();
+          this.boards = res.data
+          this.getboard()
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     goboard(item) {
       this.$router.push({

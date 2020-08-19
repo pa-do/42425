@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.web.blog.model.board.Board;
 import com.web.blog.model.project.Project;
 
 @Transactional
@@ -17,19 +16,19 @@ import com.web.blog.model.project.Project;
 public interface ProjectDao extends JpaRepository<Project, Integer>{
 
 	//전체 조회
-	@Query(value = "SELECT user.nickname, project.* FROM project, user WHERE project.uid=user.uid", nativeQuery = true)
+	@Query(value = "SELECT user.nickname, project.*, TIMESTAMPDIFF(week, start_date,end_date) as devdate FROM project, user WHERE project.uid=user.uid", nativeQuery = true)
 	public List<Project> selectAllProject();
 	
 	//uid로 조회
-	@Query(value = "SELECT user.nickname, project.* FROM project, user WHERE project.uid=user.uid AND project.uid=?1", nativeQuery = true)
+	@Query(value = "SELECT user.nickname, project.*,TIMESTAMPDIFF(week, start_date,end_date) as devdate FROM project, user WHERE project.uid=user.uid AND project.uid=?1", nativeQuery = true)
 	public List<Project> selectAllProjectByUid(@Param("uid") int uid);
 	
 	//수정
 	@Modifying
-	@Query(value = "UPDATE project SET title=?2,content=?3,summary=?4 WHERE pid=?1", nativeQuery = true)
-	Integer updateProject(@Param("pid") int pid, @Param("title") String title, @Param("content") String content, @Param("summary") String summary);
+	@Query(value = "UPDATE project SET title=?2,start_date=?3,end_date=?4,content=?5,summary=?6 WHERE pid=?1", nativeQuery = true)
+	Integer updateProject(@Param("pid") int pid, @Param("title") String title, @Param("start_date") String startdate, @Param("end_date") String enddate,  @Param("content") String content, @Param("summary") String summary);
 	
 	//삭제
-	@Query(value = "SELECT user.nickname, project.* FROM project, user WHERE project.uid=user.uid and project.pid=?1", nativeQuery = true)
+	@Query(value = "SELECT user.nickname, project.*,TIMESTAMPDIFF(week, start_date,end_date) as devdate FROM project, user WHERE project.uid=user.uid and project.pid=?1", nativeQuery = true)
 	public Project selectProjectByPid(@Param("pid") int pid);
 }
