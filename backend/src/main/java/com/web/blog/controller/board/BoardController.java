@@ -1,5 +1,10 @@
 package com.web.blog.controller.board;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,14 +22,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.web.blog.model.board.Board;
 import com.web.blog.service.board.BoardService;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.Model;
 
 @RestController
 @RequestMapping("/board")
@@ -59,7 +63,21 @@ public class BoardController {
 
 	// 게시글 번호로 게시글 수정
 	@PutMapping(value = "/modify", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Board> updateBoard(Board board) {
+	public ResponseEntity<Board> updateBoard(Board board, MultipartFile file, Boolean isRemoveImg,
+			HttpServletRequest request) {
+		String retPath;
+		if (isRemoveImg) {// 등록된 이미지를 제거하고 default로 변경하는 경우
+			retPath = "default.png";
+			board.setBoardImg(retPath);
+		} else if (file != null) {
+			try {
+				retPath = save(file, request.getServletContext().getRealPath("/img/boardImg/"));
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+				return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			board.setBoardImg(retPath);
+		}
 		boardService.modify(board);
 		return new ResponseEntity<Board>(board, HttpStatus.OK);
 
@@ -67,7 +85,16 @@ public class BoardController {
 
 	// 게시글 등록
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public ResponseEntity<Board> save(HttpServletRequest req, Board board) {
+	public ResponseEntity<Board> save(HttpServletRequest req, Board board, MultipartFile file,
+			HttpServletRequest request) {
+		String retPath;
+		try {
+			retPath = save(file, request.getServletContext().getRealPath("/img/boardImg/"));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		board.setBoardImg(retPath);
 		return new ResponseEntity<Board>(boardService.save(board), HttpStatus.OK);
 	}
 
@@ -100,5 +127,21 @@ public class BoardController {
 	public ResponseEntity<List<Board>> getBoardByUid(@PathVariable("uid") int uid) {
 		List<Board> board = boardService.findByUid(uid);
 		return new ResponseEntity<List<Board>>(board, HttpStatus.OK);
+	}
+
+	private String save(MultipartFile file, String contextPath) {
+		try {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+			String newFileName = simpleDateFormat.format(new Date()) + "_" + file.getOriginalFilename();
+			byte[] bytes = file.getBytes();
+			System.out.println(contextPath);
+			Path path = Paths.get(contextPath + newFileName);
+			// .get(contextPath + newFileName);
+			Files.write(path, bytes);
+			return newFileName;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

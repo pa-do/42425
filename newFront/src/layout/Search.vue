@@ -12,7 +12,9 @@
                 의 검색 결과
               </h3>
             </div>
-            <n-button type="danger" round @click="$emit('close')">닫기</n-button>
+            <n-button type="danger" round @click="$emit('close')"
+              >닫기</n-button
+            >
           </div>
 
           <tabs
@@ -32,13 +34,22 @@
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons design_bullet-list-67"></i>
                   제목
-                  <badge class="align-middle" type="primary">{{Tcount}}</badge>
+                  <badge class="align-middle" type="primary">{{
+                    Tcount
+                  }}</badge>
                 </h4>
                 <div v-for="board in boards" :key="`${board.bid}`">
-                  <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
+                  <blockquote
+                    class="blockquote text-center card"
+                    @click="goboard(`${board.bid}`)"
+                  >
                     <div class="row">
-                      <p class="mb-0">{{ board.title | truncate(20, "...") }}</p>
-                      <footer class="blockquote-footer">{{ board.nickname | truncate(10, "...") }}</footer>
+                      <p class="mb-0">
+                        {{ board.title | truncate(20, "...") }}
+                      </p>
+                      <footer class="blockquote-footer">
+                        {{ board.nickname | truncate(10, "...") }}
+                      </footer>
                     </div>
                   </blockquote>
                 </div>
@@ -52,13 +63,22 @@
               <div class="modal-body">
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons files_single-copy-04"></i>내용
-                  <badge class="align-middle" type="primary">{{Ccount}}</badge>
+                  <badge class="align-middle" type="primary">{{
+                    Ccount
+                  }}</badge>
                 </h4>
                 <div v-for="board in Cboards" :key="`${board.bid}`">
-                  <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
+                  <blockquote
+                    class="blockquote text-center card"
+                    @click="goboard(`${board.bid}`)"
+                  >
                     <div class="row">
-                      <p class="mb-0">{{ board.content | truncate(20, "...") }}</p>
-                      <footer class="blockquote-footer">{{ board.nickname | truncate(10, "...") }}</footer>
+                      <p class="mb-0">
+                        {{ board.content | truncate(20, "...") }}
+                      </p>
+                      <footer class="blockquote-footer">
+                        {{ board.nickname | truncate(10, "...") }}
+                      </footer>
                     </div>
                   </blockquote>
                 </div>
@@ -72,12 +92,19 @@
               <div class="modal-body">
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons users_single-02"></i>닉네임
-                  <badge class="align-middle" type="primary">{{Ncount}}</badge>
+                  <badge class="align-middle" type="primary">{{
+                    Ncount
+                  }}</badge>
                 </h4>
                 <div v-for="board in Nboards" :key="`${board.uid}`">
-                  <blockquote class="blockquote text-center card" @click="goNick(`${board.uid}`)">
+                  <blockquote
+                    class="blockquote text-center card"
+                    @click="goNick(`${board.uid}`)"
+                  >
                     <div class="row">
-                      <p class="mb-0">{{ board.nickname | truncate(20, "...") }}</p>
+                      <p class="mb-0">
+                        {{ board.nickname | truncate(20, "...") }}
+                      </p>
                     </div>
                   </blockquote>
                 </div>
@@ -91,7 +118,9 @@
               <div class="modal-body">
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons ui-2_settings-90"></i>기술
-                  <badge class="align-middle" type="primary">{{Scount}}</badge>
+                  <badge class="align-middle" type="primary">{{
+                    Scount
+                  }}</badge>
                 </h4>
                 <div v-for="board in Sboards" :key="`${board.sid}`">
                   <blockquote
@@ -99,9 +128,9 @@
                     @click="goNick(`${board.user.uid}`)"
                   >
                     <div class="row ml-3">
-                      <p
-                        class="mb-0 font-weight-bold"
-                      >{{ board.user.nickname | truncate(20, "...") }}</p>
+                      <p class="mb-0 font-weight-bold">
+                        {{ board.user.nickname | truncate(20, "...") }}
+                      </p>
                     </div>
                     <div class="row ml-3">
                       <p class="mb-0">{{ board.skill }}</p>
@@ -139,7 +168,7 @@ export default {
     TabPane,
     [Badge.name]: Badge,
   },
-  data: function () {
+  data: function() {
     return {
       boards: [],
       Cboards: [],
@@ -215,7 +244,7 @@ export default {
     this.searchSkill();
   },
   filters: {
-    truncate: function (text, length, suffix) {
+    truncate: function(text, length, suffix) {
       if (text.length > length) {
         return text.substring(0, length) + suffix;
       } else {

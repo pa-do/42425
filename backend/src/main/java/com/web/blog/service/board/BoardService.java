@@ -38,7 +38,7 @@ public class BoardService {
 	}
 
 	public void modify(Board board) {
-		boardDao.updateBoard(board.getBid(), board.getTitle(), board.getContent());
+		boardDao.updateBoard(board.getBid(), board.getTitle(), board.getContent(), board.getBoardImg());
 	}
 
 	public List<Board> searchBoardTitle(String keyword) {
