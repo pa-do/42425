@@ -32,43 +32,30 @@
         />
         <Search v-if="show" @close="show = false" :keyword="search" />
       </div>
-      <!-- <li class="nav-item">
-        <a
-          class="nav-link"
-          href="https://www.creative-tim.com/product/vue-now-ui-kit"
-        >
-          <i class="now-ui-icons arrows-1_cloud-download-93"></i>
-          <p>Download</p>
-        </a>
-      </li>-->
-      <div v-if="!isLogin" class="row">
-        <li class="nav-item">
-          <nav-link to="/login" class="nav-link">
-            <i class="now-ui-icons users_circle-08 text-white"></i>
-            <p class="text-white">Login</p>
-          </nav-link>
-        </li>
-        <li class="nav-item">
-          <nav-link to="/join" class="nav-link">
-            <i class="now-ui-icons users_single-02 text-white"></i>
-            <p class="text-white">Join Us</p>
-          </nav-link>
-        </li>
-      </div>
-      <div v-else class="row">
-        <li class="nav-item">
-          <nav-link to="/logout" class="nav-link">
-            <i class="now-ui-icons users_circle-08 text-white"></i>
-            <p class="text-white">Logout</p>
-          </nav-link>
-        </li>
-        <li class="nav-item" @click="go">
-          <div class="nav-link">
-            <i class="now-ui-icons users_single-02 text-white"></i>
-            <p class="text-white">Profile</p>
-          </div>
-        </li>
-      </div>
+      <li v-if="!isLogin" class="nav-item">
+        <nav-link to="/login" class="nav-link">
+          <i class="now-ui-icons users_circle-08 text-white"></i>
+          <p class="text-white">Login</p>
+        </nav-link>
+      </li>
+      <li v-if="!isLogin" class="nav-item">
+        <nav-link to="/join" class="nav-link">
+          <i class="now-ui-icons users_single-02 text-white"></i>
+          <p class="text-white">Join Us</p>
+        </nav-link>
+      </li>
+      <li v-if="isLogin" class="nav-item">
+        <nav-link to="/logout" class="nav-link">
+          <i class="now-ui-icons users_circle-08 text-white"></i>
+          <p class="text-white">Logout</p>
+        </nav-link>
+      </li>
+      <li v-if="isLogin" class="nav-item" @click="go">
+        <div class="nav-link">
+          <i class="now-ui-icons users_single-02 text-white"></i>
+          <p class="text-white">Profile</p>
+        </div>
+      </li>
 
       <!-- <drop-down tag="li" title="Components" icon="now-ui-icons design_app" class="nav-item">
         <nav-link to="/">
@@ -191,7 +178,7 @@ export default {
       this.$router.go();
     },
   },
-  data: function () {
+  data: function() {
     return {
       isLogin: false,
       keyword: null,

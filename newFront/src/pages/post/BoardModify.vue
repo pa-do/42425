@@ -1,14 +1,14 @@
 <template>
   <div class="container text-left">
     <h1 class="text-center">글 수정</h1>
-    <div class="form-group">
-      <label for="exampleFormControlInput2" class="mb-3">글 제목</label>
-      <input type="text" class="form-control" v-model="title" id="exampleFormControlInput2" />
-    </div>
-    <div class="form-group">
-      <label for="exampleFormControlTextarea2" class="mb-3">글 내용</label>
-      <textarea class="form-control" id="exampleFormControlTextarea2" v-model="content" rows="3"></textarea>
-    </div>
+    <!-- <div class="form-group"> -->
+    <label for="exampleFormControlInput2" class="mb-3">글 제목</label>
+    <input type="text" class="form-control mb-4" v-model="title" id="exampleFormControlInput2" />
+    <!-- </div> -->
+    <!-- <div class="form-group"> -->
+    <label for="exampleFormControlTextarea2" class="mb-3">글 내용</label>
+    <editor id="content" ref="content" mode="wysiwyg" height="500px" />
+    <!-- </div> -->
     <br />
     <n-button @click="writeBoard" class="right btn btn-primary">확인</n-button>
   </div>
@@ -16,16 +16,21 @@
 
 <script>
 import { Button } from "@/components"
+import "codemirror/lib/codemirror.css"
+import "@toast-ui/editor/dist/toastui-editor.css"
+import { Editor } from "@toast-ui/vue-editor"
 
 export default {
   components: {
     [Button.name]: Button,
+    editor: Editor,
   },
   data: function() {
     return {
       title: "",
       content: "",
       board: Object,
+      editorText: "# 테스트",
     }
   },
   methods: {
@@ -36,14 +41,14 @@ export default {
           this.board = res.data
           this.title = this.board.title
           this.content = this.board.content
-          console.log(this.board)
+          this.$refs.content.invoke("setHtml", this.content)
         })
 
         .catch((err) => console.error(err))
     },
     writeBoard() {
       this.title = this.title.trim()
-      this.content = this.content.trim()
+      this.content = this.$refs.content.invoke("getHtml")
       if (!this.title || !this.content) {
         Swal.fire({
           icon: "warning",

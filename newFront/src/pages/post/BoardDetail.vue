@@ -5,7 +5,8 @@
       <h1 class="card-header text-center mt-3">{{ board.title }}</h1>
       <div class="card-body">
         <blockquote class="blockquote mb-0 text-right">
-          <p class="text-left">{{ board.content }}</p>
+          <!-- <p class="text-left">{{ board.content }}</p> -->
+          <viewer height="500px" v-if="board.content != null" :initialValue="board.content" />
           <footer class="blockquote-footer">
             <router-link :to="`/profile/${this.board.uid}`">{{ board.nickname }}</router-link>
             <p>{{ board.writeDate.split("T").join(" ") }}</p>
@@ -27,21 +28,25 @@
 </template>
 
 <script>
-import Comment from "./Comment";
-import { Button } from "@/components";
+import Comment from "./Comment"
+import { Button } from "@/components"
+import "codemirror/lib/codemirror.css"
+import "@toast-ui/editor/dist/toastui-editor.css"
+import { Viewer } from "@toast-ui/vue-editor"
 
 export default {
   components: {
     [Button.name]: Button,
     Comment,
+    viewer: Viewer,
   },
-  data: function () {
+  data: function() {
     return {
       board: Object,
       bid: "",
       isAuthorized: false,
       likechk: false,
-    };
+    }
   },
   methods: {
     fetchBoard() {
@@ -49,27 +54,27 @@ export default {
       this.$axios
         .get(`/board/${this.$route.params.bid}`)
         .then((res) => {
-          this.board = res.data;
-          this.bid = this.board.bid;
-          this.likechking();
+          this.board = res.data
+          this.bid = this.board.bid
+          this.likechking()
           if (this.board.uid == this.$cookie.get("auth-token")) {
-            this.isAuthorized = true;
+            this.isAuthorized = true
           }
         })
         // .then((res) => console.log(res))
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     updateBoard(item) {
-      this.$router.push(`/boardmodify/${item}`);
+      this.$router.push(`/boardmodify/${item}`)
     },
     deleteBoard() {
       this.$axios
         .delete(`/board/delete/${this.board.bid}`)
         .then((res) => {
           // console.log(res);
-          this.$router.push(`/profile/${this.board.uid}`);
+          this.$router.push(`/profile/${this.board.uid}`)
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     deleteAlert() {
       Swal.fire({
@@ -83,10 +88,10 @@ export default {
         cancelButtonText: "안할래요😊",
       }).then((result) => {
         if (result.value) {
-          Swal.fire("글이 삭제되었습니다.");
-          this.deleteBoard();
+          Swal.fire("글이 삭제되었습니다.")
+          this.deleteBoard()
         }
-      });
+      })
     },
     likes() {
       this.$axios
@@ -97,12 +102,12 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
-          this.likechk = res.data;
-          this.fetchBoard();
+          console.log(res.data)
+          this.likechk = res.data
+          this.fetchBoard()
         })
         // .then((res) => console.log(res))
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     likechking() {
       this.$axios
@@ -113,17 +118,17 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
-          this.likechk = res.data;
+          console.log(res.data)
+          this.likechk = res.data
         })
         // .then((res) => console.log(res))
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
   },
   created() {
-    this.fetchBoard();
+    this.fetchBoard()
   },
-};
+}
 </script>
 
 <style></style>

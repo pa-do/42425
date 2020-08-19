@@ -3,6 +3,8 @@ package com.web.blog.service.board;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.border.Border;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,10 +58,10 @@ public class BoardService {
 		}
 		return board;
 	}
-	
+
 	public List<Board> searchBoardNickname(String keyword) {
 		List<Board> board = boardDao.searchNickname(keyword);
-		
+
 		if (board.isEmpty()) {
 			return null;
 		}
@@ -69,6 +71,10 @@ public class BoardService {
 	public List<Board> findByUid(int uid) {
 		List<Board> boards = new ArrayList<>();
 		boardDao.selectAllBoardByUid(uid).forEach(e -> boards.add(e));
+		for (int i = 0; i < boards.size(); i++) {
+			boards.get(i).setContent(boards.get(i).getContent()
+					.replaceAll("<(/)?([a-zA-Z0-9]*)(\\s[a-zA-Z0-9]*=[^>]*)?(\\s)*(/)?>", ""));
+		}
 		return boards;
 	}
 }
