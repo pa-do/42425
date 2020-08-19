@@ -33,13 +33,21 @@
       <parallax class="page-header-image" style="background-image:url('img/Tent.jpg')"></parallax>
       <div class="container">
         <div class="row">
-          <div class="col-4">
-            <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
-              <div id="pimg">
-                <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+          <div class="col-6">
+            <div v-if="mine" id="myphoto" @click="modifyPimg">
+              <div id="pimg" style="width: 200px; height: 300px; overflow: hidden" class="mx-auto">
+                <img
+                  v-if="!user.profileImg"
+                  src="img/julie.jpg"
+                  style="width: auto; height: 300px;"
+                  class="rounded mx-auto d-block"
+                  alt
+                />
                 <img
                   v-else
-                  :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`"
+                  :src="`http://localhost:8080/img/userProfileImg/${user.profileImg}`"
+                  style="width: auto; height: 300px;"
+                  class="rounded mx-auto d-block"
                   alt
                 />
               </div>
@@ -136,8 +144,11 @@
               @update="scrollPost"
             />
           </div>
-          <div class="col-8">
-            <div class="my-5" style="background-color: rgba( 255, 255, 255, 0.5 );">
+          <div class="col-6">
+            <div
+              class="my-5"
+              style="background-color: rgba( 255, 255, 255, 1 ); border-radius:80px"
+            >
               <Contactme :user="user" :mine="mine" @update="getdata" />
             </div>
             <div v-if="mine" class="d-flex justify-content-end">
