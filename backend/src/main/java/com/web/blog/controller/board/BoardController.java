@@ -80,7 +80,6 @@ public class BoardController {
 		}
 		boardService.modify(board);
 		return new ResponseEntity<Board>(board, HttpStatus.OK);
-
 	}
 
 	// 게시글 등록
