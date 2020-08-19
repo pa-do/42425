@@ -131,4 +131,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.tui-editor-contents {
+  text-align: left;
+}
+</style>

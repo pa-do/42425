@@ -41,7 +41,7 @@ public interface BoardDao extends JpaRepository<Board, Integer> {
 
 	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid and board.content like %?1% ORDER BY bid DESC", nativeQuery = true)
 	public List<Board> searchContent(@Param("keyword") String keyword);
-	
+
 	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid and user.nickname like %?1% ORDER BY bid DESC", nativeQuery = true)
 	public List<Board> searchNickname(@Param("keyword") String keyword);
 	// @Query(value = "select uid,bid,title,content from board where uid=?1",
@@ -49,8 +49,9 @@ public interface BoardDao extends JpaRepository<Board, Integer> {
 	// public Board detail(@Param("bid") int bid);
 
 	@Modifying
-	@Query(value = "UPDATE board SET title=?2,content=?3 WHERE bid=?1", nativeQuery = true)
-	Integer updateBoard(@Param("bid") int bid, @Param("title") String title, @Param("content") String content);
+	@Query(value = "UPDATE board SET title=?2,content=?3,content=?4 WHERE bid=?1", nativeQuery = true)
+	Integer updateBoard(@Param("bid") int bid, @Param("title") String title, @Param("content") String content,
+			@Param("boardImg") String boardImg);
 
 	@Query(value = "SELECT user.nickname, (SELECT COUNT(*) from likes where likes.bid = board.bid) as likes_count, board.* FROM board, user WHERE board.uid=user.uid AND board.uid=?1 order by bid desc", nativeQuery = true)
 	public List<Board> selectAllBoardByUid(@Param("uid") int uid);
