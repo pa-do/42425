@@ -86,9 +86,10 @@ public class BoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public ResponseEntity<Board> save(HttpServletRequest req, Board board, MultipartFile file,
 			HttpServletRequest request) {
-		String retPath;
+		String retPath = null;
 		try {
-			retPath = save(file, request.getServletContext().getRealPath("/img/boardImg/"));
+			if (file != null)
+				retPath = save(file, request.getServletContext().getRealPath("/img/boardImg/"));
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
