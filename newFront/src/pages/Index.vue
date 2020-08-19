@@ -1,28 +1,10 @@
 <template>
   <div>
-<<<<<<< HEAD
     <div class="page-header clear-filter" filter-color="black">
-=======
-    <div class="page-header clear-filter" filter-color="orange">
->>>>>>> e3e61d06a750c628896b6af2867354344dd86808
       <parallax class="page-header-image" style="background-image:url('img/header.jpg')"></parallax>
       <div class="container">
         <div class="content-center brand">
           <img class="n-logo" src="img/now-logo.png" alt />
-<<<<<<< HEAD
-          <h1 class="h1-seo">포투포이오</h1>
-          <h1>포투포이오</h1>
-          <h3>A beautiful Bootstrap 4 UI kit. Yours free.</h3>
-        </div>
-        <h6 class="category category-absolute">
-          Designed by
-          <a href="http://invisionapp.com/" target="_blank">
-            <img src="img/invision-white-slim.png" class="invision-logo" />
-          </a>. Coded by
-          <a href="https://www.creative-tim.com" target="_blank">
-            <img src="img/creative-tim-white-slim2.png" class="creative-tim-logo" />
-          </a>.
-=======
           <h1
             class="animate__animated animate__heartBeat mt-5 animate__infinite infinite animate__slow"
           >포 투 포 이 오</h1>
@@ -32,7 +14,6 @@
           Project by
           <i class="now-ui-icons sport_user-run"></i>
           Team 지 렸 조
->>>>>>> e3e61d06a750c628896b6af2867354344dd86808
         </h6>
       </div>
     </div>
@@ -74,45 +55,10 @@
   </div>
 </template>
 <script>
-<<<<<<< HEAD
-import { Parallax } from "@/components";
-import BasicElements from "./components/BasicElementsSection";
-import Navigation from "./components/Navigation";
-import TabsSection from "./components/Tabs";
-import ProgressPagination from "./components/ProgressPagination";
-import Notifications from "./components/Notifications";
-import Typography from "./components/Typography";
-import JavascriptComponents from "./components/JavascriptComponents";
-import CarouselSection from "./components/CarouselSection";
-import NucleoIconsSection from "./components/NucleoIconsSection";
-import SignupForm from "./components/SignupForm";
-import ExamplesSection from "./components/ExamplesSection";
-import DownloadSection from "./components/DownloadSection";
-
-export default {
-  name: "index",
-  bodyClass: "index-page",
-  components: {
-    Parallax,
-    BasicElements,
-    Navigation,
-    TabsSection,
-    ProgressPagination,
-    Notifications,
-    Typography,
-    JavascriptComponents,
-    CarouselSection,
-    NucleoIconsSection,
-    SignupForm,
-    ExamplesSection,
-    DownloadSection,
-  },
-=======
 export default {
   name: "index",
   bodyClass: "index-page",
   components: {},
->>>>>>> e3e61d06a750c628896b6af2867354344dd86808
 };
 </script>
 <style scoped>
