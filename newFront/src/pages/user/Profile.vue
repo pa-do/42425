@@ -28,7 +28,124 @@
         <n-button v-popover:popovertrigger type="primary" round>외부로 공유</n-button>
       </div>
     </div>
-    <div class="page-header clear-filter" filter-color="orange-">
+
+    <div class="page-header clear-filter d-none d-md-none d-lg-block">
+      <parallax class="page-header-image" style="background-image:url('img/Tent.jpg')"></parallax>
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+            <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
+              <div id="pimg">
+                <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+                <img
+                  v-else
+                  :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`"
+                  alt
+                />
+              </div>
+            </div>
+            <div v-else class="photo-container" @click="modifyPimg">
+              <div id="pimg">
+                <img v-if="!user.profileImg" src="img/julie.jpg" alt />
+                <img
+                  v-else
+                  :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`"
+                  alt
+                />
+              </div>
+            </div>
+
+            <div class="mx-auto">
+              <div v-if="!update_nickname">
+                <div>
+                  <h3 class="title">
+                    {{ nickname }}
+                    <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
+                  </h3>
+                </div>
+              </div>
+              <div v-else>
+                <p>새로운 닉네임을 입력하고 중복 체크해주세요.</p>
+                <fg-input
+                  v-model="newNick"
+                  id="newNick"
+                  placeholder="닉네임을 입력해주세요"
+                  type="text"
+                  class="no-border form-control-md my-3"
+                  addon-left-icon="now-ui-icons users_circle-08"
+                  autofocus
+                ></fg-input>
+                <div class="d-flex">
+                  <n-button
+                    id="nickDuplChkBtn"
+                    class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
+                    @click="checkNickname"
+                  >중복 체크</n-button>
+                  <n-button
+                    id="nickModBtn"
+                    class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
+                    @click="modifyNickname"
+                    disabled
+                  >수정</n-button>
+                  <n-button
+                    class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
+                    @click="updateNickname_off"
+                  >취소</n-button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-5 mx-auto">
+              <p v-if="!user.position">직무를 입력하지 않았습니다.</p>
+              <div v-if="!update_position">
+                <p class="category">
+                  {{ user.position }}
+                  <i v-if="mine" class="far fa-edit" @click="updatePosition_on"></i>
+                </p>
+              </div>
+              <div v-else>
+                <fg-input
+                  v-model="newPos"
+                  id="newPos"
+                  placeholder="직무를 입력해주세요"
+                  type="text"
+                  class="no-border form-control-md my-3"
+                  autofocus
+                ></fg-input>
+                <div class="d-flex">
+                  <n-button
+                    id="posModBtn"
+                    type="primary"
+                    round
+                    class="m-0 btn-md btn-block mr-1"
+                    @click="updatePosition"
+                  >수정</n-button>
+                  <n-button
+                    type="danger"
+                    round
+                    class="m-0 btn-md btn-block mr-1 btn-danger"
+                    @click="updatePosition_off"
+                  >취소</n-button>
+                </div>
+              </div>
+            </div>
+            <Counter
+              :uid="this.pageuid"
+              :nick="this.user.nickname"
+              :followChk="followChk"
+              @update="scrollPost"
+            />
+          </div>
+          <div class="col-8">
+            <div class="my-5" style="background-color: rgba( 255, 255, 255, 0.5 );">
+              <Contactme :user="user" :mine="mine" @update="getdata" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-header clear-filter d-block d-md-block d-lg-none" filter-color="orange-">
       <parallax class="page-header-image" style="background-image:url('img/Tent.jpg')"></parallax>
       <div class="container">
         <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
@@ -51,6 +168,7 @@
             />
           </div>
         </div>
+
         <div class="container">
           <div class="col-md-5 mx-auto">
             <div v-if="!update_nickname">
@@ -236,7 +354,9 @@
               >취소</n-button>
             </div>
           </div>
-          <Contactme :user="user" :mine="mine" @update="getdata" />
+          <div class="d-block d-md-block d-lg-none">
+            <Contactme :user="user" :mine="mine" @update="getdata" />
+          </div>
           <div id="blogPost"></div>
           <div class="container">
             <tabs
