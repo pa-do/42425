@@ -49,7 +49,7 @@ public interface BoardDao extends JpaRepository<Board, Integer> {
 	// public Board detail(@Param("bid") int bid);
 
 	@Modifying
-	@Query(value = "UPDATE board SET title=?2,content=?3,content=?4 WHERE bid=?1", nativeQuery = true)
+	@Query(value = "UPDATE board SET title=?2,content=?3,board_img=?4 WHERE bid=?1", nativeQuery = true)
 	Integer updateBoard(@Param("bid") int bid, @Param("title") String title, @Param("content") String content,
 			@Param("boardImg") String boardImg);
 

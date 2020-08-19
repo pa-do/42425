@@ -89,4 +89,60 @@ public class FileController {
             return null;
         }
     }
+
+    @ApiOperation(value = "포스트 이미지 업로드")
+    @PostMapping("/uploadBoardImg")
+    public Object uploadProfileImg(@RequestParam("boardImg") MultipartFile file, HttpServletRequest request) {
+        ResponseEntity response = null;
+        String baseURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + "/img/boardImg/";
+        String retPath;
+        try {
+            retPath = save(file, request.getServletContext().getRealPath("/img/boardImg/"));
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return response;
+        }
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = baseURL + retPath;
+        response = new ResponseEntity<>(result, HttpStatus.OK);
+        return response;
+
+    }
+
+    @ApiOperation(value = "프로젝트 이미지 업로드")
+    @PostMapping("/uploadProjectImg")
+    public Object uploadProjectImg(@RequestParam("projectImg") MultipartFile file, HttpServletRequest request) {
+        ResponseEntity response = null;
+        String baseURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + "/img/projectImg/";
+        String retPath;
+        try {
+            retPath = save(file, request.getServletContext().getRealPath("/img/projectImg/"));
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return response;
+        }
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = baseURL + retPath;
+        response = new ResponseEntity<>(result, HttpStatus.OK);
+        return response;
+
+    }
+
+    @ApiOperation(value = "test")
+    @PostMapping("/test")
+    public Object test(HttpServletRequest request) {
+        String baseURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + "/img/boardImg/";
+        System.out.println(baseURL);
+        return null;
+
+    }
 }
