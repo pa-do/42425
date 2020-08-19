@@ -1,28 +1,14 @@
 <template>
   <div class="container text-left">
-    <transition
-      name="alert-in"
-      enter-active-class="animated flipInX"
-      leave-active-class="animated flipOutX"
-    >
-      <h1 class="text-center">글 쓰기</h1>
-    </transition>
     <div class="form-group">
       <label for="exampleFormControlInput1" class="mb-3">글 제목</label>
-      <fg-input
-        type="text"
-        v-model="writeData.title"
-        id="exampleFormControlInput1"
-      ></fg-input>
+      <fg-input type="text" v-model="writeData.title" id="exampleFormControlInput1"></fg-input>
+      <h6 id="emailHelp" class="form-text text-muted mb-5">45글자 이상은 안됩니다.</h6>
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1" class="mb-3">글 내용</label>
-      <textarea
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        v-model="writeData.content"
-        rows="3"
-      ></textarea>
+      <Editor id="content" ref="content" mode="wysiwyg" height="500px" />
+      <!-- <textarea class="form-control" id="exampleFormControlTextarea1" v-model="writeData.content" rows="3"></textarea> -->
     </div>
     <br />
     <n-button @click="writeBoard" class="right btn btn-primary">확인</n-button>
@@ -30,15 +16,18 @@
 </template>
 
 <script>
-import { Button, FormGroupInput as FgInput } from "@/components";
+import { Button, FormGroupInput as FgInput } from "@/components"
+import "codemirror/lib/codemirror.css"
+import "@toast-ui/editor/dist/toastui-editor.css"
+import { Editor } from "@toast-ui/vue-editor"
 
 export default {
   name: "Write",
   data() {
     return {
       writeData: {
-        content: null,
-        title: null,
+        content: "",
+        title: "",
         uid: null,
       },
     };
@@ -46,30 +35,50 @@ export default {
   components: {
     [Button.name]: Button,
     FgInput,
+    Editor,
   },
   methods: {
     writeBoard() {
-      this.writeData.uid = this.$cookie.get("auth-token");
-      this.$axios
-        .post("/board/write", null, {
-          params: {
-            content: this.writeData.content,
-            title: this.writeData.title,
-            uid: this.writeData.uid,
-          },
-        })
-        .then(() => {
-          this.$router.push(`/profile/${this.writeData.uid}`);
-        })
-        .catch((err) => {
-          console.log("!!!!!!");
-          console.log(err.response);
+      this.writeData.content = this.$refs.content.invoke("getHtml")
+      this.writeData.uid = this.$cookie.get("auth-token")
+      this.writeData.title = this.writeData.title.trim()
+      console.log(this.writeData.content)
+      if (!this.writeData.title || !this.writeData.content) {
+        Swal.fire({
+          icon: "warning",
+          title: "제목 또는 내용이 입력되지<br>않았습니다.",
         });
+      } else if (this.writeData.title.length > 45) {
+        Swal.fire({
+          icon: "warning",
+          title: "글 제목이 너무 깁니다.",
+          text: "제목을 45자 미만으로 입력하세요.",
+        });
+        return;
+      } else {
+        this.$axios
+          .post("/board/write", null, {
+            params: {
+              content: this.writeData.content,
+              title: this.writeData.title,
+              uid: this.writeData.uid,
+            },
+          })
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "글이 작성되었습니다.",
+            });
+            this.$emit("postWrite");
+          })
+          .catch((err) => {
+            console.log("!!!!!!");
+            console.log(err.response);
+          });
+      }
     },
   },
 };
 </script>
 
-<style scoped>
-@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
-</style>
+<style></style>

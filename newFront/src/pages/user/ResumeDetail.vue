@@ -2,9 +2,9 @@
   <div class="shadow p-3 mb-5 bg-white rounded">
     <span v-if="!modifyResume">
       <span class="text-primary">{{resume.startYear}}-{{resume.endYear}}</span>
-      <h2>{{resume.title}}</h2>
+      <h3 class="mb-1">{{resume.title}}</h3>
       <span>{{resume.place}}</span>
-      <p class="mt-4">{{resume.content}}</p>
+      <p class="my-2">{{resume.content}}</p>
       <div v-if="mine" class="d-flex justify-content-end">
         <n-button @click="modifyResume_on" class="btn btn-primary btn-round mr-1" size="sm">수정</n-button>
         <n-button @click="deleteResume" class="btn btn-danger btn-round" size="sm">삭제</n-button>

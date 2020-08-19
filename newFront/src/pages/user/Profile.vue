@@ -1,39 +1,42 @@
 <template>
   <div>
-    <div class="fixed-bottom my-3 mx-3 text-right">
-      <el-popover
-        ref="popovertrigger"
-        trigger="click"
-        popper-class="popover popover-primary"
-        placement="top"
-      >
-        <!-- <h3 class="popover-header">Popover</h3> -->
-        <div class="popover-body">
-          <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+    <div class="fixed-bottom my-3 mx-3 row">
+      <div class="text-left col-6" style="width: 50vw">
+        <div v-if="isEditMode != null">
+          <n-button
+            type="primary"
+            round
+            v-if="isEditMode == 'enable'"
+            @click="toggleEditView"
+          >뷰어 모드로 보기</n-button>
+          <n-button type="primary" round v-else @click="toggleEditView">편집 모드로 보기</n-button>
         </div>
-      </el-popover>
-      <n-button v-popover:popovertrigger type="primary" round>공유</n-button>
-    </div>
-
-    <div class="page-header clear-filter" filter-color="orange-">
-      <parallax
-        class="page-header-image"
-        style="background-image:url('img/bg5.jpg')"
-      ></parallax>
-      <div class="container">
-        <div
-          v-if="mine"
-          class="photo-container"
-          id="myphoto"
-          @click="modifyPimg"
+      </div>
+      <div class="text-right col-6" style="width: 50vw">
+        <el-popover
+          ref="popovertrigger"
+          trigger="click"
+          popper-class="popover popover-default"
+          placement="top"
         >
+          <!-- <h3 class="popover-header">Popover</h3> -->
+          <div class="popover-body text-center">
+            <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
+            <n-button @click="doCopy" class="btn btn-primary btn-round" size="sm">클립보드로 URL 복사</n-button>
+          </div>
+        </el-popover>
+        <n-button v-popover:popovertrigger type="primary" round>외부로 공유</n-button>
+      </div>
+    </div>
+    <div class="page-header clear-filter" filter-color="orange-">
+      <parallax class="page-header-image" style="background-image:url('img/Tent.jpg')"></parallax>
+      <div class="container">
+        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
             <img
               v-else
-              :src="
-                `http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`
-              "
+              :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`"
               alt
             />
           </div>
@@ -43,9 +46,7 @@
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
             <img
               v-else
-              :src="
-                `http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`
-              "
+              :src="`http://i3d205.p.ssafy.io:8080/img/userProfileImg/${user.profileImg}`"
               alt
             />
           </div>
@@ -56,11 +57,7 @@
               <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i
-                    v-if="mine"
-                    class="far fa-edit"
-                    @click="updateNickname_on"
-                  ></i>
+                  <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
                 </h3>
               </div>
             </div>
@@ -80,54 +77,70 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                  >중복 체크</n-button
-                >
+                >중복 체크</n-button>
                 <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                  >수정</n-button
-                >
+                >수정</n-button>
                 <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                  >취소</n-button
-                >
+                >취소</n-button>
               </div>
             </div>
           </div>
         </div>
-        <p class="category">Programmer</p>
-        <div class="content">
-          <div class="social-description">
-            <h2>26</h2>
-            <p>Project</p>
+        <div class="col-md-5 mx-auto">
+          <p v-if="!user.position">직무를 입력하지 않았습니다.</p>
+          <div v-if="!update_position">
+            <p class="category">
+              {{ user.position }}
+              <i v-if="mine" class="far fa-edit" @click="updatePosition_on"></i>
+            </p>
           </div>
-          <div class="social-description">
-            <h2>26</h2>
-            <p>Post</p>
-          </div>
-          <div class="social-description">
-            <h2>48</h2>
-            <p>Follower</p>
+          <div v-else>
+            <fg-input
+              v-model="newPos"
+              id="newPos"
+              placeholder="직무를 입력해주세요"
+              type="text"
+              class="no-border form-control-md my-3"
+              autofocus
+            ></fg-input>
+            <div class="d-flex">
+              <n-button
+                id="posModBtn"
+                type="primary"
+                round
+                class="m-0 btn-md btn-block mr-1"
+                @click="updatePosition"
+              >수정</n-button>
+              <n-button
+                type="danger"
+                round
+                class="m-0 btn-md btn-block mr-1 btn-danger"
+                @click="updatePosition_off"
+              >취소</n-button>
+            </div>
           </div>
         </div>
+        <Counter
+          :uid="this.pageuid"
+          :nick="this.user.nickname"
+          :followChk="followChk"
+          @update="scrollPost"
+        />
         <div v-if="mine" class="d-flex justify-content-end">
           <n-button
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-            >비밀번호 변경</n-button
-          >
+          >비밀번호 변경</n-button>
           <!--  -->
-          <modal
-            :show.sync="modals.classic"
-            headerClasses="justify-content-center"
-          >
-            <h4 slot="header" class="title title-up text-dark">
-              비밀번호 변경
-            </h4>
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -137,12 +150,7 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div
-              class="btn btn-primary btn-round btn-md btn-block"
-              @click="checkNowPW"
-            >
-              확인
-            </div>
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -164,21 +172,16 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
-                >수정</n-button
-              >
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert"
-            >탈퇴 하기</n-button
-          >
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
         </div>
       </div>
     </div>
@@ -186,8 +189,11 @@
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <a href="#button" class="btn btn-primary btn-round btn-lg">Follow</a>
-          <a
+          <div v-if="!mine && !isEditMode" @click="toggleFollow">
+            <a v-if="!followChk" class="btn btn-primary btn-round btn-lg">Follow</a>
+            <a v-else class="btn btn-default btn-round btn-lg">UnFollow</a>
+          </div>
+          <!-- <a
             href="#button"
             class="btn btn-default btn-round btn-lg btn-icon"
             rel="tooltip"
@@ -203,87 +209,104 @@
             target="_blank"
           >
             <i class="fab fa-github"></i>
-          </a>
+          </a>-->
         </div>
-        <h3 class="title">
-          About me
-          <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
-        </h3>
-        <div v-if="!update_bio">
-          <h5 v-if="bio" class="description">{{ bio }}</h5>
-          <h5 v-else class="description">
-            아직 자기소개를 입력하지 않았습니다.
-          </h5>
-        </div>
-        <div v-else>
-          <textarea
-            class="form-control"
-            v-model="newBio"
-            id="newBio"
-            placeholder="나를 소개하는 글을 입력해주세요"
-            type="text"
-          />
-          <n-button
-            class="m-0 btn btn-primary btn-round btn-md mr-1"
-            @click="modifyBio"
-            >수정</n-button
-          >
-          <n-button
-            class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
-            @click="updateBio_off"
-            >취소</n-button
-          >
-        </div>
-        <Contactme :user="user" :mine="mine" @update="getdata" />
-        <div class="row">
-          <tabs
-            pills
-            class="nav-align-center mx-auto"
-            tab-content-classes="gallery"
-            tab-nav-classes="nav-pills-just-icons"
-            type="primary"
-          >
-            <tab-pane title="Profile" v-popover:popover2>
-              <i slot="label" class="far fa-address-card"></i>
-              <h3 class="title pt-0">Resume</h3>
-              <div class="col-md-10 mx-auto">
-                <Resume :uid="this.pageuid" :mine="mine" />
-              </div>
-            </tab-pane>
-            <el-popover
-              ref="popover2"
-              popper-class="popover"
-              placement="bottom"
-              width="200"
-              trigger="hover"
+        <div>
+          <h3 class="title">
+            About me
+            <i v-if="mine" class="far fa-edit" @click="updateBio_on"></i>
+          </h3>
+          <div v-if="!update_bio">
+            <h5 v-if="bio" class="description">{{ bio }}</h5>
+            <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
+          </div>
+          <div v-else>
+            <textarea
+              class="form-control"
+              v-model="newBio"
+              id="newBio"
+              placeholder="나를 소개하는 글을 입력해주세요"
+              type="text"
+            />
+            <div class="text-center pt-3 pb-5">
+              <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
+              <n-button
+                class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
+                @click="updateBio_off"
+              >취소</n-button>
+            </div>
+          </div>
+          <Contactme :user="user" :mine="mine" @update="getdata" />
+          <div id="blogPost"></div>
+          <div class="container">
+            <tabs
+              pills
+              class="nav-align-center mx-auto"
+              tab-content-classes="gallery"
+              tab-nav-classes="nav-pills-just-icons"
+              type="primary"
             >
-              <div class="popover-body">이력서</div>
-            </el-popover>
+              <tab-pane title="Profile">
+                <i slot="label" class="far fa-address-card"></i>
+                <h3 class="title pt-0">Resume</h3>
+                <div class="col-md-10 mx-auto">
+                  <Resume :uid="this.pageuid" :mine="mine" />
+                </div>
+              </tab-pane>
 
-            <tab-pane title="Home">
-              <i slot="label" class="fas fa-sliders-h"></i>
-              <h3 class="title pt-0">My Skill</h3>
-              <div class="col-md-10 mx-auto">
-                <MySkill :uid="this.pageuid" :mine="mine" />
-              </div>
-            </tab-pane>
+              <tab-pane title="Skill">
+                <i slot="label" class="fas fa-sliders-h"></i>
+                <h3 class="title pt-0">My Skill</h3>
+                <div class="col-md-10 mx-auto">
+                  <MySkill :uid="this.pageuid" :mine="mine" />
+                </div>
+              </tab-pane>
 
-            <tab-pane title="Messages">
-              <i slot="label" class="far fa-folder-open"></i>
-              <h3 class="title pt-0">Blog</h3>
-              <div class="col-md-10 ml-auto mr-auto">
-                <Userpost :uid="this.pageuid" :mine="mine" />
-              </div>
-            </tab-pane>
-          </tabs>
+              <tab-pane title="portfolio">
+                <i slot="label" class="far fa-folder-open"></i>
+                <h3 class="title pt-0">Portfolio</h3>
+                <div class="col-md-10 mx-auto">
+                  <p>portfolio here!!</p>
+                </div>
+              </tab-pane>
+
+              <tab-pane>
+                <i slot="label" class="far fa-clipboard"></i>
+                <h3 class="title pt-0">Blog</h3>
+                <div class="col-md-11 d-flex justify-content-end">
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <n-button type="primary" round class @click="cardMode">
+                      <i class="fas fa-th-large fa-2x"></i>
+                    </n-button>
+                    <n-button type="primary" round class="mx-1" @click="postMode">
+                      <i class="fas fa-list-ul fa-2x"></i>
+                    </n-button>
+                    <n-button v-if="mine" type="primary" round class @click="writeMode">
+                      <i class="far fa-edit fa-2x"></i>
+                    </n-button>
+                  </div>
+                </div>
+                <div class="col-md-10 ml-auto mr-auto">
+                  <transition enter-active-class="animated fadeInLeft">
+                    <Userpost v-if="show1" :uid="this.pageuid" />
+                  </transition>
+                  <transition enter-active-class="animated fadeInRight">
+                    <Listview v-if="show2" :uid="this.pageuid" />
+                  </transition>
+                  <transition enter-active-class="animated fadeIn">
+                    <Write v-if="show3" @postWrite="cardMode" />
+                  </transition>
+                </div>
+              </tab-pane>
+
+              <tab-pane title>
+                <i slot="label" class="far fa-envelope"></i>
+                <h3 class="title pt-0">Send Email</h3>
+                <SendEmail :email="user.email" />
+              </tab-pane>
+            </tabs>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="container">
-        <h3 class="title pt-0">Send Email</h3>
-        <SendEmail :email="user.email" />
       </div>
     </div>
   </div>
@@ -297,6 +320,9 @@ import Userpost from "../post/Userpost";
 import Resume from "../user/Resume";
 import MySkill from "../user/MySkill";
 import SendEmail from "../user/SendEmail";
+import Write from "../post/Write";
+import Listview from "../post/Listview";
+import Counter from "../user/Counter";
 
 export default {
   name: "profile",
@@ -314,14 +340,38 @@ export default {
     Resume,
     MySkill,
     SendEmail,
+    Write,
+    Listview,
+    Counter,
   },
   created() {
     this.pageuid = this.$route.params.uid;
   },
   mounted() {
     this.getdata();
+    this.checkFollow();
   },
   methods: {
+    doCopy: function () {
+      this.$copyText(this.link).then(
+        function (e) {
+          Swal.fire({
+            icon: "success",
+            title: "링크가 복사되었습니다!",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+        function (e) {
+          Swal.fire({
+            icon: "error",
+            title: "링크 복사에 실패했습니다.",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
+      );
+    },
     getdata() {
       this.link = document.location.href;
       const params = new URL(document.location).searchParams;
@@ -338,21 +388,65 @@ export default {
           // } else {
           //   this.profile_img = data.object.profile_img;
           // }
-          if (data.object.bio) {
-            //+ null, undefined, "" 모두 처리할 수 있게 변경
-            this.bio = data.object.bio;
-          }
+          // if (data.object.bio) {
+          //+ null, undefined, "" 모두 처리할 수 있게 변경
+          this.bio = data.object.bio;
+          // }
           this.user = data.object;
 
           if (this.$session.get("user").uid === this.user.uid) {
             this.mine = true;
+            this.isEditMode = "enable";
           } else {
             this.mine = false;
           }
         })
         .catch((err) => {
-          console.log("Err!!! :", err.response);
+          console.err("Err!!! :", err.response);
         });
+    },
+    // follow
+    checkFollow() {
+      this.$axios
+        .post("/follow/checkFollow", null, {
+          params: {
+            followeeUid: this.pageuid,
+            followerUid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          this.followChk = res.data;
+        })
+        .catch((err) => console.error(err));
+    },
+    toggleFollow() {
+      this.$axios
+        .post("/follow/toggleFollow", null, {
+          params: {
+            followeeUid: this.pageuid,
+            followerUid: this.$cookie.get("auth-token"),
+          },
+        })
+        .then((res) => {
+          // this.getdata();
+          this.checkFollow();
+          if (res.data) {
+            Swal.fire({
+              icon: "success",
+              title: this.user.nickname + "님을 팔로우합니다.",
+            }).then(() => {
+              // this.$router.go();
+            });
+          } else {
+            Swal.fire({
+              icon: "success",
+              title: this.user.nickname + "님의 팔로우를 취소합니다.",
+            }).then(() => {
+              // this.$router.go();
+            });
+          }
+        })
+        .catch((err) => console.error(err));
     },
     //닉네임변경관련메서드
     updateNickname_on() {
@@ -398,11 +492,10 @@ export default {
                 .getElementById("nickDuplChkBtn")
                 .setAttribute("disabled", true);
               document.getElementById("nickModBtn").removeAttribute("disabled");
-              // console.log(this.nickname);
             }
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
     },
@@ -430,7 +523,7 @@ export default {
             });
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
     },
@@ -448,7 +541,6 @@ export default {
         });
         return;
       }
-      // console.log(this.email, this.nowPW);
       this.$axios
         .post("/account/login", null, {
           params: {
@@ -467,7 +559,7 @@ export default {
           document.getElementById("pwModBtn").removeAttribute("disabled"); //+
         })
         .catch((err) => {
-          console.log("ERROR :", err);
+          console.err("ERROR :", err);
           Swal.fire({
             icon: "error",
             title: "비밀번호를 확인해주세요.",
@@ -503,7 +595,6 @@ export default {
         });
         return;
       } else {
-        console.log(this.newPW1);
         this.$axios
           .put("/account/modify/password", {
             uid: this.uid,
@@ -521,7 +612,7 @@ export default {
             });
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
     },
@@ -533,6 +624,46 @@ export default {
       this.nowPWChk = false;
       document.getElementById("nowPW").removeAttribute("readonly");
       document.getElementById("pwModBtn").setAttribute("disabled", true);
+    },
+    // 직무 변경 관련 메서드
+    updatePosition_on() {
+      if (this.user.position) {
+        this.newPos = this.user.position;
+      }
+      this.update_position = true;
+    },
+    updatePosition() {
+      if (this.newPos.length > 100) {
+        Swal.fire({
+          icon: "warning",
+          title: "직무가 너무 깁니다.",
+          text: "직무를 100자 이하로 입력하세요.",
+        });
+        return;
+      }
+      this.$axios
+        .put("/account/modify/position", {
+          uid: this.uid,
+          position: this.newPos,
+        })
+        .then((response) => {
+          this.result = response.data;
+          this.$session.set("user", response.data.object);
+          Swal.fire({
+            icon: "success",
+            title: "회원정보수정 성공",
+          }).then(() => {
+            this.getdata();
+            this.updatePosition_off();
+          });
+        })
+        .catch((err) => {
+          console.err("Err!!! :", err.response);
+        });
+    },
+    updatePosition_off() {
+      this.update_position = false;
+      this.newPos = "";
     },
     //자기소개변경관련메서드
     updateBio_on() {
@@ -555,7 +686,6 @@ export default {
         })
         .then((response) => {
           this.result = response.data;
-          console.log(this.result);
           Swal.fire({
             icon: "success",
             title: "나를 소개하는 글이 변경되었습니다.",
@@ -565,7 +695,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log("Err!!! :", err.response);
+          console.err("Err!!! :", err.response);
         });
     },
     updateBio_off() {
@@ -608,7 +738,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log("Err!!!: ", err.response);
+          console.err("Err!!!: ", err.response);
         });
     },
 
@@ -634,7 +764,6 @@ export default {
           });
         };
         reader.readAsDataURL(file);
-        console.log(file);
 
         const formData = new FormData();
         formData.append("profileImg", file);
@@ -649,9 +778,40 @@ export default {
             this.getdata();
           })
           .catch((err) => {
-            console.log("Err!!! :", err.response);
+            console.err("Err!!! :", err.response);
           });
       }
+    },
+    writeMode() {
+      this.show1 = false;
+      this.show2 = false;
+      this.show3 = true;
+    },
+    cardMode() {
+      this.show1 = true;
+      this.show2 = false;
+      this.show3 = false;
+    },
+    postMode() {
+      this.show1 = false;
+      this.show2 = true;
+      this.show3 = false;
+    },
+    toggleEditView() {
+      this.mine = !this.mine;
+      if (this.isEditMode == "enable") this.isEditMode = "disable";
+      else this.isEditMode = "enable";
+    },
+    goOtherProfile(targetUid) {
+      this.$router.push({
+        path: `/profile/${targetUid}`,
+      });
+      this.$router.go();
+    },
+    scrollPost() {
+      // 스크롤 로딩 오프셋값 거의 하드코딩 수준인데 어케 고치지;
+      let location = document.querySelector("#blogPost").offsetTop + 490;
+      window.scrollTo({ top: location, behavior: "smooth" });
     },
   },
   watch: {},
@@ -673,16 +833,20 @@ export default {
 
       update_nickname: false,
       update_profileimg: false,
+      update_position: false,
       update_bio: false,
+      update_follow: false,
 
       nicknameChk: false,
       nowPWChk: false,
+      followChk: null,
 
       nowPW: "",
       newPW1: "",
       newPW2: "",
 
       newNick: "",
+      newPos: "",
       newBio: "",
 
       pageuid: "",
@@ -692,11 +856,18 @@ export default {
       birthDate: "",
 
       mine: false,
+      isEditMode: null,
+
+      show1: true,
+      show2: false,
+      show3: false,
     };
   },
 };
 </script>
 <style scoped>
+@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
+
 #myphoto :hover {
   filter: grayscale(80%);
 }

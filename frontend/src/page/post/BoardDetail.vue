@@ -3,7 +3,7 @@
     <div class="card-header">{{ board.title }}</div>
     <div class="card-body">
       <blockquote class="blockquote mb-0">
-        <p>{{ board.content }}</p>
+        <p v-html="board.content"></p>
         <footer class="blockquote-footer">{{ board.nickname }}</footer>
         <p>{{ board.writeDate.split("T").join(" ") }}</p>
       </blockquote>
@@ -17,6 +17,10 @@
 
 <script>
 import axios from "axios";
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "highlight.js/styles/github.css";
+import { Viewer } from "@toast-ui/vue-editor";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -30,7 +34,7 @@ export default {
   },
   methods: {
     fetchBoard() {
-      console.log(this.$route.params.bid);
+      // console.log(this.$route.params.bid);
       axios
         .get(BASE_URL + `/board/${this.$route.params.bid}`)
         .then((res) => {

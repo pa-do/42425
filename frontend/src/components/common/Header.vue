@@ -6,7 +6,7 @@
     <button v-if="isLogin" class="btn btn-danger" @click="gowrite">글쓰기</button>
     <div class="right">
       <div class="search-input">
-        <i class="fas fa-search"></i>
+        <i class="fas fa-search"></i>  
         <input v-model="keyword" type="text" />
       </div>
       <span v-if="!isLogin">
