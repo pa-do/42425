@@ -16,8 +16,18 @@
       </div>
 
       <div v-if="mine" class="d-flex justify-content-end">
-        <n-button @click="modifySkill_on" class="btn btn-primary btn-round mr-1 mt-0" size="sm">수정</n-button>
-        <n-button @click="deleteSkill" class="btn btn-danger btn-round mt-0" size="sm">삭제</n-button>
+        <n-button
+          @click="modifySkill_on"
+          class="btn btn-primary btn-round mr-1 mt-0"
+          size="sm"
+          >수정</n-button
+        >
+        <n-button
+          @click="deleteSkill"
+          class="btn btn-danger btn-round mt-0"
+          size="sm"
+          >삭제</n-button
+        >
       </div>
     </span>
     <span v-else>
@@ -31,11 +41,22 @@
           <fg-input :placeholder="newValue" v-model="newValue"></fg-input>
         </div>
         <div class="d-flex justify-content-end">
-          <n-button @click="modifySkill_" class="btn btn-primary btn-round mr-1">수정</n-button>
-          <n-button @click="modifySkill_off" class="btn btn-danger btn-round">취소</n-button>
+          <n-button @click="modifySkill_" class="btn btn-primary btn-round mr-1"
+            >수정</n-button
+          >
+          <n-button @click="modifySkill_off" class="btn btn-danger btn-round"
+            >취소</n-button
+          >
         </div>
       </div>
     </span>
+    <div
+      class="semi-donut-model-2 margin"
+      data-name="Angular"
+      style="--percentage : 90; --fill: #039BE5 ;"
+    >
+      CSS3
+    </div>
   </div>
 </template>
 
@@ -158,5 +179,175 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.semi-donut {
+  --percentage: 0;
+  --fill: #ff0;
+  width: 300px;
+  height: 150px;
+  position: relative;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  overflow: hidden;
+  color: var(--fill);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  box-sizing: border-box;
+  &:after {
+    content: "";
+    width: 300px;
+    height: 300px;
+    border: 50px solid;
+    border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) var(--fill)
+      var(--fill);
+    position: absolute;
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    transform: rotate(calc(1deg * (-45 + var(--percentage) * 1.8)));
+    animation: fillAnimation 1s ease-in;
+  }
+}
+
+// ===================Semi Donut Chart model-2========================
+
+.semi-donut-model-2 {
+  width: 300px;
+  height: 150px;
+  position: relative;
+  text-align: center;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  border-radius: 150px 150px 0 0;
+  overflow: hidden;
+  color: var(--fill);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  box-sizing: border-box;
+  &:before,
+  &:after {
+    content: "";
+    width: 300px;
+    height: 150px;
+    border: 50px solid var(--fill);
+    border-top: none;
+    position: absolute;
+    transform-origin: 50% 0% 0;
+    border-radius: 0 0 300px 300px;
+    box-sizing: border-box;
+    left: 0;
+    top: 100%;
+  }
+  &:before {
+    border-color: rgba(0, 0, 0, 0.15);
+    transform: rotate(180deg);
+  }
+  &:after {
+    z-index: 3;
+    animation: 1s fillGraphAnimation ease-in;
+    transform: rotate(calc(1deg * (var(--percentage) * 1.8)));
+  }
+  &:hover {
+    &:after {
+      opacity: 0.8;
+      cursor: pointer;
+    }
+  }
+}
+
+// ===================Multi Semi Donut Chart ========================
+
+.multi-graph {
+  width: 300px;
+  height: 150px;
+  position: relative;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  &:before {
+    content: "";
+    width: 300px;
+    height: 150px;
+    border: 50px solid rgba(0, 0, 0, 0.15);
+    border-bottom: none;
+    position: absolute;
+    box-sizing: border-box;
+    transform-origin: 50% 0%;
+    border-radius: 300px 300px 0 0;
+    left: 0;
+    top: 0;
+  }
+  .graph {
+    width: 300px;
+    height: 150px;
+    border: 50px solid var(--fill);
+    border-top: none;
+    position: absolute;
+    transform-origin: 50% 0% 0;
+    border-radius: 0 0 300px 300px;
+    left: 0;
+    top: 100%;
+    z-index: 5;
+    animation: 1s fillGraphAnimation ease-in;
+    transform: rotate(calc(1deg * (var(--percentage) * 1.8)));
+    box-sizing: border-box;
+    cursor: pointer;
+    &:after {
+      // content: attr(data-name) ;
+      content: attr(data-name) " " counter(varible) "%";
+      counter-reset: varible var(--percentage);
+      background: var(--fill);
+      box-sizing: border-box;
+      border-radius: 2px;
+      color: #fff;
+      font-weight: 200;
+      font-size: 12px;
+      height: 20px;
+      padding: 3px 5px;
+      top: 0px;
+      position: absolute;
+      left: 0;
+      transform: rotate(calc(-1deg * var(--percentage) * 1.8))
+        translate(-30px, 0px);
+      transition: 0.2s ease-in;
+      transform-origin: 0 50% 0;
+      opacity: 0;
+    }
+    &:hover {
+      opacity: 0.8;
+      &:after {
+        opacity: 1;
+        left: 30px;
+      }
+    }
+  }
+}
+
+@keyframes fillAnimation {
+  0% {
+    transform: rotate(-45deg);
+  }
+  50% {
+    transform: rotate(135deg);
+  }
+}
+
+@keyframes fillGraphAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+}
 </style>

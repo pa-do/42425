@@ -335,22 +335,28 @@
                     role="group"
                     aria-label="Basic example"
                   >
-                    <n-button type="primary" round class @click="cardMode">
+                    <n-button
+                      type="default"
+                      round
+                      class="btn"
+                      @click="cardMode"
+                    >
                       <i class="fas fa-th-large fa-2x"></i>
                     </n-button>
                     <n-button
-                      type="primary"
+                      id="button1"
+                      type="default"
                       round
-                      class="mx-1"
+                      class="btn mx-1"
                       @click="postMode"
                     >
                       <i class="fas fa-list-ul fa-2x"></i>
                     </n-button>
                     <n-button
                       v-if="mine"
-                      type="primary"
+                      type="default"
                       round
-                      class
+                      class="btn"
                       @click="writeMode"
                     >
                       <i class="far fa-edit fa-2x"></i>
@@ -941,5 +947,8 @@ export default {
 
 #myphoto :hover {
   filter: grayscale(80%);
+}
+.btn:focus {
+  background: coral;
 }
 </style>

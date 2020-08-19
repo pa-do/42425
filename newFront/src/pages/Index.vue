@@ -1,13 +1,18 @@
 <template>
   <div>
     <div class="page-header clear-filter" filter-color="black">
-      <parallax class="page-header-image" style="background-image:url('img/header.jpg')"></parallax>
+      <parallax
+        class="page-header-image"
+        style="background-image:url('img/header.jpg')"
+      ></parallax>
       <div class="container">
         <div class="content-center brand">
           <img class="n-logo" src="img/now-logo.png" alt />
           <h1
             class="animate__animated animate__heartBeat mt-5 animate__infinite infinite animate__slow"
-          >포 투 포 이 오</h1>
+          >
+            포 투 포 이 오
+          </h1>
           <h3></h3>
         </div>
         <h6 class="category category-absolute">
@@ -43,7 +48,10 @@
           <div class="col-md-12 col-lg-8">
             <h2 class="title mb-2">포트폴리오의 모든 것</h2>
             <h2 class="title">포투포이오에서 간편하게</h2>
-            <h5 class="description my-3">취업을 위한 이력 관리, 기술 관리, 블로그 관리, 포트폴리오까지 한 번에!</h5>
+            <h5 class="description my-3">
+              취업을 위한 이력 관리, 기술 관리, 블로그 관리, 포트폴리오까지 한
+              번에!
+            </h5>
             <button class="btn btn-primary btn-round btn-lg btn-icon mt-5 mb-3">
               <i class="far fa-address-card"></i>
             </button>
@@ -55,11 +63,15 @@
               <i class="fas fa-sliders-h"></i>
             </button>
 
-            <h3 class="my-1">My skill에서 당신이 사용가능한 기술을 등록하세요!</h3>
+            <h3 class="my-1">
+              My skill에서 당신이 사용가능한 기술을 등록하세요!
+            </h3>
             <div class="col-md-10 mx-auto mb-5">
               <MySkill :uid="this.testId" :mine="mine" />
             </div>
-            <h3 class="my-1">Portfolio에 당신이 진행한 프로젝트를 기록하세요!</h3>
+            <h3 class="my-1">
+              Portfolio에 당신이 진행한 프로젝트를 기록하세요!
+            </h3>
             <button class="btn btn-primary btn-round btn-lg btn-icon mt-5 mb-3">
               <i class="far fa-clipboard"></i>
             </button>
@@ -73,7 +85,9 @@
             <button class="btn btn-primary btn-round btn-lg btn-icon">
               <i class="far fa-envelope"></i>
             </button>
-            <h3 class="my-1">send Email에서 마음에 드는 유저에게 메일로 연락하세요!</h3>
+            <h3 class="my-1">
+              send Email에서 마음에 드는 유저에게 메일로 연락하세요!
+            </h3>
             <SendEmail :email="testId.email" />
           </div>
         </div>
