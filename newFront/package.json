@@ -38,8 +38,10 @@
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-service": "^4.4.6",
     "babel-plugin-component": "^1.1.1",
+    "css-loader": "^4.2.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
     "vue-template-compiler": "^2.6.11"
   }
 }

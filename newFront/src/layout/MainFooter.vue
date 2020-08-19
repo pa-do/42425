@@ -23,8 +23,7 @@
         <a href target="_blank" rel="noopener">한정훈</a>. 팀원
         <a href target="_blank" rel="noopener">박도희</a>.
         <a href target="_blank" rel="noopener">허성수</a>.
-        <a href target="_blank" rel="noopener">정성훈</a>.
-        and
+        <a href target="_blank" rel="noopener">정성훈</a>. and
         <a href target="_blank" rel="noopener">김소희</a>.
       </div>
     </div>
