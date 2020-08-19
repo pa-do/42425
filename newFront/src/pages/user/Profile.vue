@@ -95,7 +95,7 @@
               </div>
             </div>
 
-            <div class="col-md-5 mx-auto">
+            <div class="mx-auto">
               <p v-if="!user.position">직무를 입력하지 않았습니다.</p>
               <div v-if="!update_position">
                 <p class="category">
@@ -139,6 +139,57 @@
           <div class="col-8">
             <div class="my-5" style="background-color: rgba( 255, 255, 255, 0.5 );">
               <Contactme :user="user" :mine="mine" @update="getdata" />
+            </div>
+            <div v-if="mine" class="d-flex justify-content-end">
+              <n-button
+                class="btn btn-primary btn-round btn-md mr-1"
+                type="primary"
+                @click.native="modals.classic = true"
+              >비밀번호 변경</n-button>
+              <!--  -->
+              <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+                <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
+                <fg-input
+                  v-model="nowPW"
+                  id="nowPW"
+                  placeholder="현재 비밀번호를 입력하세요."
+                  type="password"
+                  class="no-border form-control-md my-3"
+                  addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+                ></fg-input>
+
+                <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
+                <div v-if="nowPWChk">
+                  <fg-input
+                    v-model="newPW1"
+                    id="newPW1"
+                    placeholder="새로운 비밀번호를 입력하세요."
+                    type="password"
+                    class="no-border form-control-md my-3"
+                    @keyup.enter="modifyPW"
+                    addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+                  ></fg-input>
+                  <fg-input
+                    v-model="newPW2"
+                    id="newPW2"
+                    placeholder="새로운 비밀번호를 입력하세요."
+                    type="password"
+                    @keyup.enter="modifyPW"
+                    class="no-border form-control-md my-3"
+                    addon-left-icon="now-ui-icons ui-1_lock-circle-open"
+                  ></fg-input>
+                </div>
+                <template slot="footer">
+                  <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
+                  <n-button
+                    type="danger"
+                    @click.native="modals.classic = false"
+                    @click="updatePW_off"
+                  >취소</n-button>
+                </template>
+              </modal>
+              <!--  -->
+              <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
             </div>
           </div>
         </div>

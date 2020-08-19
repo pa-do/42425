@@ -19,7 +19,7 @@
         <p>Follower</p>
       </n-button>
       <!-- Modal -->
-      <modal :show.sync="modals.follower" headerClasses="justify-content-center" class="priority0">
+      <modal :show.sync="modals.follower" headerClasses="justify-content-center">
         <h4 slot="header" class="text-dark">{{nick}}님을 팔로우하는 사람들</h4>
         <div class="list-group" style="max-height: 40vh">
           <div v-for="user in followers" :key="user.fid">
@@ -42,7 +42,7 @@
         <h1>{{followee}}</h1>
         <p>Following</p>
       </n-button>
-      <modal :show.sync="modals.followee" headerClasses="justify-content-center" class="priority0">
+      <modal :show.sync="modals.followee" headerClasses="justify-content-center">
         <h4 slot="header" class="text-dark">{{nick}}님이 팔로우하는 사람들</h4>
         <div class="list-group">
           <div v-for="user in followees" :key="user.fid">
@@ -134,7 +134,7 @@ export default {
 </script>
 
 <style>
-.priority0 {
-  z-index: 987654321 !important;
+.content {
+  z-index: 2 !important;
 }
 </style>
