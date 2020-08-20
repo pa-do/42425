@@ -37,19 +37,19 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 
-//	// 전체 조회
-//	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-//	public ResponseEntity<List<Project>> getAllprojects() {
-//		List<Project> project = projectService.findAll();
-//		return new ResponseEntity<List<Project>>(project, HttpStatus.OK);
-//	}
+	// // 전체 조회
+	// @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	// public ResponseEntity<List<Project>> getAllprojects() {
+	// List<Project> project = projectService.findAll();
+	// return new ResponseEntity<List<Project>>(project, HttpStatus.OK);
+	// }
 
 	// user id로 조회
 	@GetMapping("/byuser/{uid}")
 	public ResponseEntity<List<Project>> getAllprojectsByUid(@PathVariable int uid) {
 		List<Project> project = projectService.findAllProjectByUid(uid);
 		return new ResponseEntity<List<Project>>(project, HttpStatus.OK);
-	}  
+	}
 
 	// 프로젝트 번호로 삭제
 	@DeleteMapping(value = "/delete/{pid}", produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -63,7 +63,7 @@ public class ProjectController {
 	public ResponseEntity<Project> updateProject(Project project, MultipartFile file, Boolean isRemoveImg,
 			HttpServletRequest request) {
 		String retPath = "default.png";
-		if (isRemoveImg && file == null) {// 등록된 이미지를 제거하고 default로 변경하는 경우
+		if (isRemoveImg) {// 등록된 이미지를 제거하고 default로 변경하는 경우
 			retPath = "default.png";
 			project.setProjectImg(retPath);
 		} else if (file != null) {

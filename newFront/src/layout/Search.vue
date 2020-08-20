@@ -12,19 +12,10 @@
                 의 검색 결과
               </h3>
             </div>
-            <n-button type="danger" round @click="$emit('close')"
-              >닫기</n-button
-            >
+            <n-button type="danger" round @click="$emit('close')">닫기</n-button>
           </div>
 
-          <tabs
-            type="success"
-            tabNavWrapperClasses="col-md-4"
-            tabContentClasses="col-md-8"
-            vertical
-            square
-            class="row"
-          >
+          <tabs type="primary" tabNavWrapperClasses="col-md-4" tabContentClasses="col-md-8" vertical square class="row">
             <tab-pane>
               <h4 slot="label" class="text-dark m-0">
                 <i class="now-ui-icons design_bullet-list-67"></i>
@@ -34,15 +25,10 @@
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons design_bullet-list-67"></i>
                   제목
-                  <badge class="align-middle" type="primary">{{
-                    Tcount
-                  }}</badge>
+                  <badge class="align-middle" type="primary">{{ Tcount }}</badge>
                 </h4>
                 <div v-for="board in boards" :key="`${board.bid}`">
-                  <blockquote
-                    class="blockquote text-center card"
-                    @click="goboard(`${board.bid}`)"
-                  >
+                  <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
                     <div class="row">
                       <p class="mb-0">
                         {{ board.title | truncate(20, "...") }}
@@ -57,21 +43,14 @@
             </tab-pane>
 
             <tab-pane>
-              <h4 slot="label" class="text-dark m-0">
-                <i class="now-ui-icons files_single-copy-04"></i>내용
-              </h4>
+              <h4 slot="label" class="text-dark m-0"><i class="now-ui-icons files_single-copy-04"></i>내용</h4>
               <div class="modal-body">
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons files_single-copy-04"></i>내용
-                  <badge class="align-middle" type="primary">{{
-                    Ccount
-                  }}</badge>
+                  <badge class="align-middle" type="primary">{{ Ccount }}</badge>
                 </h4>
                 <div v-for="board in Cboards" :key="`${board.bid}`">
-                  <blockquote
-                    class="blockquote text-center card"
-                    @click="goboard(`${board.bid}`)"
-                  >
+                  <blockquote class="blockquote text-center card" @click="goboard(`${board.bid}`)">
                     <div class="row">
                       <p class="mb-0">
                         {{ board.content | truncate(20, "...") }}
@@ -86,21 +65,14 @@
             </tab-pane>
 
             <tab-pane>
-              <h4 slot="label" class="text-dark m-0">
-                <i class="now-ui-icons users_single-02"></i>닉네임
-              </h4>
+              <h4 slot="label" class="text-dark m-0"><i class="now-ui-icons users_single-02"></i>닉네임</h4>
               <div class="modal-body">
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons users_single-02"></i>닉네임
-                  <badge class="align-middle" type="primary">{{
-                    Ncount
-                  }}</badge>
+                  <badge class="align-middle" type="primary">{{ Ncount }}</badge>
                 </h4>
                 <div v-for="board in Nboards" :key="`${board.uid}`">
-                  <blockquote
-                    class="blockquote text-center card"
-                    @click="goNick(`${board.uid}`)"
-                  >
+                  <blockquote class="blockquote text-center card" @click="goNick(`${board.uid}`)">
                     <div class="row">
                       <p class="mb-0">
                         {{ board.nickname | truncate(20, "...") }}
@@ -112,21 +84,14 @@
             </tab-pane>
 
             <tab-pane>
-              <h4 slot="label" class="text-dark m-0">
-                <i class="now-ui-icons ui-2_settings-90"></i>기술
-              </h4>
+              <h4 slot="label" class="text-dark m-0"><i class="now-ui-icons ui-2_settings-90"></i>기술</h4>
               <div class="modal-body">
                 <h4 class="text-dark my-3">
                   <i class="now-ui-icons ui-2_settings-90"></i>기술
-                  <badge class="align-middle" type="primary">{{
-                    Scount
-                  }}</badge>
+                  <badge class="align-middle" type="primary">{{ Scount }}</badge>
                 </h4>
                 <div v-for="board in Sboards" :key="`${board.sid}`">
-                  <blockquote
-                    class="blockquote text-center card"
-                    @click="goNick(`${board.user.uid}`)"
-                  >
+                  <blockquote class="blockquote text-center card" @click="goNick(`${board.user.uid}`)">
                     <div class="row ml-3">
                       <p class="mb-0 font-weight-bold">
                         {{ board.user.nickname | truncate(20, "...") }}
@@ -159,7 +124,7 @@
 </template>
 
 <script>
-import { Button, Tabs, TabPane, Badge } from "@/components";
+import { Button, Tabs, TabPane, Badge } from "@/components"
 export default {
   props: ["keyword"],
   components: {
@@ -179,80 +144,80 @@ export default {
       Ccount: 0,
       Ncount: 0,
       Scount: 0,
-    };
+    }
   },
   methods: {
     searchTitle() {
       this.$axios
         .get("/board/searchTitle/" + this.keyword)
         .then((res) => {
-          this.boards = res.data;
-          this.Tcount = this.boards.length;
-          console.log(this.Tcount);
+          this.boards = res.data
+          this.Tcount = this.boards.length
+          console.log(this.Tcount)
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     searchContent() {
       this.$axios
         .get("/board/searchContent/" + this.keyword)
         .then((res) => {
-          this.Cboards = res.data;
-          this.Ccount = this.Cboards.length;
-          console.log(this.Ccount);
+          this.Cboards = res.data
+          this.Ccount = this.Cboards.length
+          console.log(this.Ccount)
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     searchNickname() {
       this.$axios
         .get("/account/searchNickname/" + this.keyword)
         .then((res) => {
-          this.Nboards = res.data;
-          this.Ncount = this.Nboards.length;
-          console.log(this.Ncount);
+          this.Nboards = res.data
+          this.Ncount = this.Nboards.length
+          console.log(this.Ncount)
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     searchSkill() {
       this.$axios
         .get(`/portfolio/skill/search/${this.keyword}`)
         .then((res) => {
-          this.Sboards = res.data.object;
-          this.Scount = this.Sboards.length;
-          console.log(this.Scount);
+          this.Sboards = res.data.object
+          this.Scount = this.Sboards.length
+          console.log(this.Scount)
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     },
     goboard(item) {
-      this.$emit("close");
+      this.$emit("close")
       this.$router.push({
         path: `/board/${item}`,
-      });
-      this.$router.go();
+      })
+      this.$router.go()
     },
     goNick(item) {
-      this.$emit("close");
+      this.$emit("close")
       this.$router.push({
         path: `/profile/${item}`,
-      });
-      this.$router.go();
+      })
+      this.$router.go()
     },
   },
   created() {
-    this.searchTitle();
-    this.searchContent();
-    this.searchNickname();
-    this.searchSkill();
+    this.searchTitle()
+    this.searchContent()
+    this.searchNickname()
+    this.searchSkill()
   },
   filters: {
     truncate: function(text, length, suffix) {
       if (text.length > length) {
-        return text.substring(0, length) + suffix;
+        return text.substring(0, length) + suffix
       } else {
-        return text;
+        return text
       }
     },
   },
-};
+}
 </script>
 
 <style>
