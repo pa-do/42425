@@ -87,7 +87,7 @@ export default {
     },
     expand: {
       type: [String, Boolean],
-      default: "lg",
+      default: "sm",
     },
   },
   provide() {
@@ -127,7 +127,7 @@ export default {
       return [
         { "navbar-transparent": this.transparent || colorOnScrollTransparent },
         { [color]: !this.transparent && this.colorOnScroll === 0 },
-        this.expand ? `navbar-expand-${this.expand}` : "",
+        this.expand ? `navbar-expand` : "",
         navPosition,
         this.extraNavClasses,
       ];
