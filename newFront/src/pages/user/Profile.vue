@@ -8,11 +8,8 @@
             round
             v-if="isEditMode == 'enable'"
             @click="toggleEditView"
-            >뷰어 모드로 보기</n-button
-          >
-          <n-button type="primary" round v-else @click="toggleEditView"
-            >편집 모드로 보기</n-button
-          >
+          >뷰어 모드로 보기</n-button>
+          <n-button type="primary" round v-else @click="toggleEditView">편집 모드로 보기</n-button>
         </div>
       </div>
       <div class="text-right col-6" style="width: 50vw">
@@ -25,31 +22,16 @@
           <!-- <h3 class="popover-header">Popover</h3> -->
           <div class="popover-body text-center">
             <qr-code :text="link" style="width: 100%; height: 100%"></qr-code>
-            <n-button
-              @click="doCopy"
-              class="btn btn-primary btn-round"
-              size="sm"
-              >클립보드로 URL 복사</n-button
-            >
+            <n-button @click="doCopy" class="btn btn-primary btn-round" size="sm">클립보드로 URL 복사</n-button>
           </div>
         </el-popover>
-        <n-button v-popover:popovertrigger type="primary" round
-          >외부로 공유</n-button
-        >
+        <n-button v-popover:popovertrigger type="primary" round>외부로 공유</n-button>
       </div>
     </div>
     <div class="page-header clear-filter" filter-color="orange-">
-      <parallax
-        class="page-header-image"
-        style="background-image:url('img/Tent.jpg')"
-      ></parallax>
+      <parallax class="page-header-image" style="background-image:url('img/Tent.jpg')"></parallax>
       <div class="container">
-        <div
-          v-if="mine"
-          class="photo-container"
-          id="myphoto"
-          @click="modifyPimg"
-        >
+        <div v-if="mine" class="photo-container" id="myphoto" @click="modifyPimg">
           <div id="pimg">
             <img v-if="!user.profileImg" src="img/julie.jpg" alt />
             <img
@@ -79,11 +61,7 @@
               <div>
                 <h3 class="title">
                   {{ nickname }}
-                  <i
-                    v-if="mine"
-                    class="far fa-edit"
-                    @click="updateNickname_on"
-                  ></i>
+                  <i v-if="mine" class="far fa-edit" @click="updateNickname_on"></i>
                 </h3>
               </div>
             </div>
@@ -103,20 +81,17 @@
                   id="nickDuplChkBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="checkNickname"
-                  >중복 체크</n-button
-                >
+                >중복 체크</n-button>
                 <n-button
                   id="nickModBtn"
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1"
                   @click="modifyNickname"
                   disabled
-                  >수정</n-button
-                >
+                >수정</n-button>
                 <n-button
                   class="m-0 btn btn-primary btn-round btn-md btn-block mr-1 btn-danger"
                   @click="updateNickname_off"
-                  >취소</n-button
-                >
+                >취소</n-button>
               </div>
             </div>
           </div>
@@ -145,15 +120,13 @@
                 round
                 class="m-0 btn-md btn-block mr-1"
                 @click="updatePosition"
-                >수정</n-button
-              >
+              >수정</n-button>
               <n-button
                 type="danger"
                 round
                 class="m-0 btn-md btn-block mr-1 btn-danger"
                 @click="updatePosition_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </div>
           </div>
         </div>
@@ -168,16 +141,10 @@
             class="btn btn-primary btn-round btn-md mr-1"
             type="primary"
             @click.native="modals.classic = true"
-            >비밀번호 변경</n-button
-          >
+          >비밀번호 변경</n-button>
           <!--  -->
-          <modal
-            :show.sync="modals.classic"
-            headerClasses="justify-content-center"
-          >
-            <h4 slot="header" class="title title-up text-dark">
-              비밀번호 변경
-            </h4>
+          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
+            <h4 slot="header" class="title title-up text-dark">비밀번호 변경</h4>
             <fg-input
               v-model="nowPW"
               id="nowPW"
@@ -187,12 +154,7 @@
               addon-left-icon="now-ui-icons ui-1_lock-circle-open"
             ></fg-input>
 
-            <div
-              class="btn btn-primary btn-round btn-md btn-block"
-              @click="checkNowPW"
-            >
-              확인
-            </div>
+            <div class="btn btn-primary btn-round btn-md btn-block" @click="checkNowPW">확인</div>
             <div v-if="nowPWChk">
               <fg-input
                 v-model="newPW1"
@@ -214,21 +176,16 @@
               ></fg-input>
             </div>
             <template slot="footer">
-              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled
-                >수정</n-button
-              >
+              <n-button type="primary" @click="modifyPW" id="pwModBtn" disabled>수정</n-button>
               <n-button
                 type="danger"
                 @click.native="modals.classic = false"
                 @click="updatePW_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </template>
           </modal>
           <!--  -->
-          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert"
-            >탈퇴 하기</n-button
-          >
+          <n-button class="btn btn-danger btn-round btn-md" @click="deleteAlert">탈퇴 하기</n-button>
         </div>
       </div>
     </div>
@@ -237,9 +194,7 @@
       <div class="container">
         <div class="button-container">
           <div v-if="!mine && !isEditMode" @click="toggleFollow">
-            <a v-if="!followChk" class="btn btn-primary btn-round btn-lg"
-              >Follow</a
-            >
+            <a v-if="!followChk" class="btn btn-primary btn-round btn-lg">Follow</a>
             <a v-else class="btn btn-default btn-round btn-lg">UnFollow</a>
           </div>
           <!-- <a
@@ -267,9 +222,7 @@
           </h3>
           <div v-if="!update_bio">
             <h5 v-if="bio" class="description">{{ bio }}</h5>
-            <h5 v-else class="description">
-              아직 자기소개를 입력하지 않았습니다.
-            </h5>
+            <h5 v-else class="description">아직 자기소개를 입력하지 않았습니다.</h5>
           </div>
           <div v-else>
             <textarea
@@ -280,16 +233,11 @@
               type="text"
             />
             <div class="text-center pt-3 pb-5">
-              <n-button
-                class="m-0 btn btn-primary btn-round btn-md mr-1"
-                @click="modifyBio"
-                >수정</n-button
-              >
+              <n-button class="m-0 btn btn-primary btn-round btn-md mr-1" @click="modifyBio">수정</n-button>
               <n-button
                 class="m-0 btn btn-primary btn-round btn-md mr-1 btn-danger"
                 @click="updateBio_off"
-                >취소</n-button
-              >
+              >취소</n-button>
             </div>
           </div>
           <Contactme :user="user" :mine="mine" @update="getdata" />
@@ -326,39 +274,18 @@
                 </div>
               </tab-pane>
 
-              <tab-pane>
+              <tab-pane title="blog">
                 <i slot="label" class="far fa-clipboard"></i>
                 <h3 class="title pt-0">Blog</h3>
                 <div class="col-md-11 d-flex justify-content-end">
-                  <div
-                    class="btn-group"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <n-button
-                      type="default"
-                      round
-                      class="btn"
-                      @click="cardMode"
-                    >
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <n-button type="default" round class="btn" @click="cardMode">
                       <i class="fas fa-th-large fa-2x"></i>
                     </n-button>
-                    <n-button
-                      id="button1"
-                      type="default"
-                      round
-                      class="btn mx-1"
-                      @click="postMode"
-                    >
+                    <n-button id="button1" type="default" round class="btn mx-1" @click="postMode">
                       <i class="fas fa-list-ul fa-2x"></i>
                     </n-button>
-                    <n-button
-                      v-if="mine"
-                      type="default"
-                      round
-                      class="btn"
-                      @click="writeMode"
-                    >
+                    <n-button v-if="mine" type="default" round class="btn" @click="writeMode">
                       <i class="far fa-edit fa-2x"></i>
                     </n-button>
                   </div>
@@ -376,7 +303,7 @@
                 </div>
               </tab-pane>
 
-              <tab-pane title>
+              <tab-pane title="email" v-if="!mine">
                 <i slot="label" class="far fa-envelope"></i>
                 <h3 class="title pt-0">Send Email</h3>
                 <SendEmail :email="user.email" />
@@ -429,9 +356,9 @@ export default {
     this.checkFollow();
   },
   methods: {
-    doCopy: function() {
+    doCopy: function () {
       this.$copyText(this.link).then(
-        function(e) {
+        function (e) {
           Swal.fire({
             icon: "success",
             title: "링크가 복사되었습니다!",
@@ -439,7 +366,7 @@ export default {
             timer: 1000,
           });
         },
-        function(e) {
+        function (e) {
           Swal.fire({
             icon: "error",
             title: "링크 복사에 실패했습니다.",
