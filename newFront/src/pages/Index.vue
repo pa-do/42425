@@ -1,28 +1,25 @@
 <template>
   <div>
     <div class="page-header clear-filter" filter-color="black">
-      <parallax class="page-header-image" style="background:#000;"></parallax>
+      <parallax class="page-header-image" src="img/header.jpg"></parallax>
       <div class="container">
         <div class="content-center brand">
           <img class="n-logo mb-5" src="img/now-logo.png" alt />
-          <div class="d-block d-sm-none">
-            <h1
-              class="animate__animated animate__heartBeat mt-5 animate__infinite infinite animate__slow"
-            >
-              포 투 포 이 오
-            </h1>
-          </div>
+          <h1
+            class="animate__animated animate__heartBeat mt-5 animate__infinite infinite animate__slow"
+          >
+            포 투 포 이 오
+          </h1>
           <h3 class="mb-5"></h3>
           <h1></h1>
         </div>
         <h6 class="category category-absolute">
           Project by
           <i class="now-ui-icons sport_user-run"></i>
-          Team 지 렸 조
+          Team OJO
         </h6>
       </div>
     </div>
-    <Intro class="d-none d-sm-block" />
     <div class="d-block my-5 py-5"></div>
     <div class="main mb-0">
       <div class="section section-images">
@@ -101,7 +98,6 @@ import Userpost from "./post/Userpost";
 import Resume from "./user/Resume";
 import MySkill from "./user/MySkill";
 import SendEmail from "./user/SendEmail";
-import Intro from "./Intro";
 
 export default {
   name: "index",
@@ -111,7 +107,6 @@ export default {
     Resume,
     MySkill,
     SendEmail,
-    Intro,
   },
   data: () => {
     return {
