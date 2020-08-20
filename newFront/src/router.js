@@ -19,6 +19,8 @@ import BoardModify from "./pages/post/BoardModify.vue";
 // 에러페이지
 import NotFound from "./pages/404.vue";
 
+import Intro from "./pages/Intro.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -106,7 +108,11 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
-
+    {
+      path: "/intro",
+      name: "Intro",
+      component: Intro,
+    },
     // 404 에러 페이지
     {
       path: "*",

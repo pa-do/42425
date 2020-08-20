@@ -55,3 +55,7 @@ Vue.component("qr-code", VueQRCodeComponent);
 import VueClipboard from "vue-clipboard2";
 VueClipboard.config.autoSetContainer = true; // add this line
 Vue.use(VueClipboard);
+
+import LoadScript from "vue-plugin-load-script";
+Vue.use(LoadScript);
+Vue.LoadScript("./assets/js/introscript.js");
