@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="page-header clear-filter" filter-color="black">
-      <parallax class="page-header-image" src="img/header.jpg"></parallax>
+      <parallax
+        class="page-header-image"
+        style="background-image:url('img/header.jpg')"
+      ></parallax>
       <div class="container">
         <div class="content-center brand">
           <img class="n-logo mb-5" src="img/now-logo.png" alt />
