@@ -48,7 +48,8 @@
         <div class="row justify-content-md-center">
           <div class="col-md-12 col-lg-8">
             <PortList :uid="this.testId" />
-            <h2 class="title mb-2">포트폴리오의 모든 것</h2>
+            <div class="my-5"></div>
+            <h2 class="title mb-2 mt-5">포트폴리오의 모든 것</h2>
             <h2 class="title">포투포이오에서 간편하게</h2>
             <h5 class="description my-3">
               취업을 위한 이력 관리, 기술 관리, 블로그 관리, 포트폴리오까지 한
