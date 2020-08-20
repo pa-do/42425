@@ -260,7 +260,7 @@
             <i class="fab fa-github"></i>
           </a>-->
         </div>
-        <portList />
+        <portList :uid="this.pageuid" :mine="mine" />
         <div>
           <h3 class="title">
             About me
@@ -947,5 +947,8 @@ export default {
 }
 .btn:focus {
   background: coral;
+}
+i {
+  cursor: pointer;
 }
 </style>

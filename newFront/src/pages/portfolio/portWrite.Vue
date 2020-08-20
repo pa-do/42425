@@ -10,7 +10,17 @@
       id="exampleFormControlInput2"
     ></fg-input>
     <h6 class="form-text text-muted mb-5">45글자 이상은 안됩니다.</h6>
-    <label for="mainImg" class="mb-3"
+    <div class="row d-flex justify-content-between">
+      <div class="col-5 mr-1">
+        <p class="mb-0">프로젝트 시작날짜</p>
+        <input type="date" v-model="writeData.startdate" />
+      </div>
+      <div class="col-5">
+        <p class="mb-0">끝낸날짜</p>
+        <input type="date" v-model="writeData.enddate" />
+      </div>
+    </div>
+    <label for="mainImg" class="mb-5"
       >메인 이미지 업로드(목록 화면에 노출됩니다)</label
     ><br />
     <input type="file" ref="mainImg" id="mainImg" accept /><br />
@@ -33,7 +43,7 @@
     >
     <n-button
       v-on:change="selectMainImg()"
-      @click="writeBoard"
+      @click="writeProject"
       class="right btn btn-primary"
       >확인</n-button
     >
@@ -53,6 +63,8 @@ export default {
       writeData: {
         content: "",
         title: "",
+        startdate: null,
+        enddate: null,
         summary: "",
         uid: null,
         mainImg: null,
@@ -107,6 +119,8 @@ export default {
               content: this.writeData.content,
               title: this.writeData.title,
               summary: this.writeData.summary,
+              startdate: this.writeData.startdate,
+              enddate: this.writeData.enddate,
               uid: this.writeData.uid,
             },
           })

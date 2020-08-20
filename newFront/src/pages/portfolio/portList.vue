@@ -1,5 +1,9 @@
 <template>
   <div class="mt-5">
+    <h3 class="title">
+      PortFolio
+      <i v-if="mine" class="far fa-edit" @click="projectWrite"></i>
+    </h3>
     <b-carousel
       id="carousel-1"
       v-model="slide"
@@ -48,13 +52,13 @@ export default {
     BCarousel,
     BCarouselSlide,
   },
-  // props: ["uid"],
+  props: ["uid", "mine"],
 
   watch: {},
   methods: {
     fetchBoards() {
       this.$axios
-        .get("/project/byuser/" + 4)
+        .get("/project/byuser/" + this.uid)
         .then((res) => (this.boards = res.data))
         .catch((err) => console.error(err));
     },
@@ -64,17 +68,11 @@ export default {
     onSlideEnd(slide) {
       this.sliding = false;
     },
-    // goboard(item) {
-    //   this.$router.push({
-    //     path: `/board/${item}`,
-    //   });
-    // },
-    // getboard() {
-    //   this.iboards = this.iboards.concat(
-    //     this.boards.slice(this.limit, this.limit + 6)
-    //   );
-    //   this.limit = this.limit + 6;
-    // },
+    projectWrite() {
+      this.$router.push({
+        path: `/portWrite`,
+      });
+    },
   },
   filters: {
     truncate: function(text, length, suffix) {
@@ -95,5 +93,8 @@ export default {
 .class-name {
   height: 70vh;
   object-fit: contain;
+}
+i {
+  cursor: pointer;
 }
 </style>
