@@ -89,8 +89,13 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .card {
   cursor: pointer;
+}
+img {
+  width: 100%;
+  height: 15vw;
+  object-fit: contain;
 }
 </style>

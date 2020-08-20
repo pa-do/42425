@@ -37,6 +37,7 @@ export default {
     return {
       title: "",
       content: "",
+      boardImg: "",
       board: Object,
       isRemoveImg: false,
     }
@@ -49,6 +50,7 @@ export default {
           this.board = res.data
           this.title = this.board.title
           this.content = this.board.content
+          this.boardImg = this.board.boardImg
           this.$refs.content.invoke("setHtml", this.content)
         })
 
@@ -75,6 +77,7 @@ export default {
             params: {
               bid: this.board.bid,
               content: this.content,
+              boardImg: this.boardImg,
               title: this.title,
               uid: this.board.uid,
               isRemoveImg: this.isRemoveImg,

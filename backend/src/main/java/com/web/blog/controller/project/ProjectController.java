@@ -62,7 +62,7 @@ public class ProjectController {
 	@PutMapping(value = "/modify", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Project> updateProject(Project project, MultipartFile file, Boolean isRemoveImg,
 			HttpServletRequest request) {
-		String retPath;
+		String retPath = "default.png";
 		if (isRemoveImg && file == null) {// 등록된 이미지를 제거하고 default로 변경하는 경우
 			retPath = "default.png";
 			project.setProjectImg(retPath);
@@ -83,7 +83,7 @@ public class ProjectController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public ResponseEntity<Project> save(HttpServletRequest req, Project project, MultipartFile file,
 			HttpServletRequest request) {
-		String retPath = null;
+		String retPath = "default.png";
 		try {
 			if (file != null)
 				retPath = save(file, request.getServletContext().getRealPath("/img/projectImg/"));

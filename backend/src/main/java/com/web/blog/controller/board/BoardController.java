@@ -65,7 +65,7 @@ public class BoardController {
 	@PutMapping(value = "/modify", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Board> updateBoard(Board board, MultipartFile file, Boolean isRemoveImg,
 			HttpServletRequest request) {
-		String retPath;
+		String retPath = "default.png";
 		if (isRemoveImg) {// 등록된 이미지를 제거하고 default로 변경하는 경우
 			retPath = "default.png";
 			board.setBoardImg(retPath);
@@ -86,7 +86,7 @@ public class BoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public ResponseEntity<Board> save(HttpServletRequest req, Board board, MultipartFile file,
 			HttpServletRequest request) {
-		String retPath = null;
+		String retPath = "default.png";
 		try {
 			if (file != null)
 				retPath = save(file, request.getServletContext().getRealPath("/img/boardImg/"));
