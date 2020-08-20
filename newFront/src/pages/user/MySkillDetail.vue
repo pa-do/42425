@@ -2,32 +2,20 @@
   <div class="my-4">
     <span v-if="!modifySkill">
       <h3 class="my-0">{{ skill.skill }}</h3>
-      <div class="progress mt-0 mb-3">
+      <div class="progress my-3">
         <div
-          class="progress-bar btn-primary"
+          class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+          :style="'width:' + skill.value + '%' "
           role="progressbar"
           :aria-valuenow="skill.value"
           aria-valuemin="0"
           aria-valuemax="100"
-          :style="'width:' + skill.value + '%'"
-        >
-          <span>{{ skill.value }}%</span>
-        </div>
+        >{{skill.value}} %</div>
       </div>
 
       <div v-if="mine" class="d-flex justify-content-end">
-        <n-button
-          @click="modifySkill_on"
-          class="btn btn-primary btn-round mr-1 mt-0"
-          size="sm"
-          >수정</n-button
-        >
-        <n-button
-          @click="deleteSkill"
-          class="btn btn-danger btn-round mt-0"
-          size="sm"
-          >삭제</n-button
-        >
+        <n-button @click="modifySkill_on" class="btn btn-primary btn-round mr-1 mt-0" size="sm">수정</n-button>
+        <n-button @click="deleteSkill" class="btn btn-danger btn-round mt-0" size="sm">삭제</n-button>
       </div>
     </span>
     <span v-else>
@@ -41,22 +29,11 @@
           <fg-input :placeholder="newValue" v-model="newValue"></fg-input>
         </div>
         <div class="d-flex justify-content-end">
-          <n-button @click="modifySkill_" class="btn btn-primary btn-round mr-1"
-            >수정</n-button
-          >
-          <n-button @click="modifySkill_off" class="btn btn-danger btn-round"
-            >취소</n-button
-          >
+          <n-button @click="modifySkill_" class="btn btn-primary btn-round mr-1">수정</n-button>
+          <n-button @click="modifySkill_off" class="btn btn-danger btn-round">취소</n-button>
         </div>
       </div>
     </span>
-    <div
-      class="semi-donut-model-2 margin"
-      data-name="Angular"
-      style="--percentage : 90; --fill: #039BE5 ;"
-    >
-      CSS3
-    </div>
   </div>
 </template>
 

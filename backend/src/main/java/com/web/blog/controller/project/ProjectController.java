@@ -37,19 +37,19 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 
-	// 전체 조회
-	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<Project>> getAllprojects() {
-		List<Project> project = projectService.findAll();
-		return new ResponseEntity<List<Project>>(project, HttpStatus.OK);
-	}
+//	// 전체 조회
+//	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+//	public ResponseEntity<List<Project>> getAllprojects() {
+//		List<Project> project = projectService.findAll();
+//		return new ResponseEntity<List<Project>>(project, HttpStatus.OK);
+//	}
 
 	// user id로 조회
-	@GetMapping(value = "/{uid}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<Project>> getAllprojectsByUid(int uid) {
+	@GetMapping("/byuser/{uid}")
+	public ResponseEntity<List<Project>> getAllprojectsByUid(@PathVariable int uid) {
 		List<Project> project = projectService.findAllProjectByUid(uid);
 		return new ResponseEntity<List<Project>>(project, HttpStatus.OK);
-	}
+	}  
 
 	// 프로젝트 번호로 삭제
 	@DeleteMapping(value = "/delete/{pid}", produces = { MediaType.APPLICATION_JSON_VALUE })
