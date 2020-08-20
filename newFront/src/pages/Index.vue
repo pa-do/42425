@@ -47,6 +47,7 @@
       <div class="container text-center">
         <div class="row justify-content-md-center">
           <div class="col-md-12 col-lg-8">
+            <PortList :uid="this.testId" />
             <h2 class="title mb-2">포트폴리오의 모든 것</h2>
             <h2 class="title">포투포이오에서 간편하게</h2>
             <h5 class="description my-3">
@@ -101,6 +102,7 @@ import Userpost from "./post/Userpost";
 import Resume from "./user/Resume";
 import MySkill from "./user/MySkill";
 import SendEmail from "./user/SendEmail";
+import PortList from "./portfolio/portList";
 
 export default {
   name: "index",
@@ -110,6 +112,7 @@ export default {
     Resume,
     MySkill,
     SendEmail,
+    PortList,
   },
   data: () => {
     return {
