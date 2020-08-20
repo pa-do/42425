@@ -16,6 +16,12 @@ import Profile from "./pages/user/Profile.vue";
 import BoardDetail from "./pages/post/BoardDetail.vue";
 import BoardModify from "./pages/post/BoardModify.vue";
 
+//포트폴리오
+import PortList from "./pages/portfolio/portList.vue";
+// import PortDetail from "./pages/portfolio/portDetail.vue";
+// import PortModify from "./pages/portfolio/portModify.vue";
+// import PortWrite from "./pages/portfolio/portWrite.vue";
+
 // 에러페이지
 import NotFound from "./pages/404.vue";
 
@@ -112,6 +118,16 @@ export default new Router({
       path: "/intro",
       name: "Intro",
       component: Intro,
+    },
+    // portfolio 관련
+    {
+      path: "/portList",
+      name: "portList",
+      components: { default: PortList, header: MainNavbar },
+      props: {
+        header: { colorOnScroll: 0 },
+        footer: { backgroundColor: "black" },
+      },
     },
     // 404 에러 페이지
     {
