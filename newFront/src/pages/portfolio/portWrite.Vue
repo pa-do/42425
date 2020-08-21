@@ -1,14 +1,8 @@
 <template>
   <div class="container text-left mt-5">
     <!-- <div class="form-group"> -->
-    <label for="exampleFormControlInput2" class="mb-3 mt-5"
-      >프로젝트 제목</label
-    >
-    <fg-input
-      type="text"
-      v-model="writeData.title"
-      id="exampleFormControlInput2"
-    ></fg-input>
+    <label for="exampleFormControlInput2" class="mb-3 mt-5">프로젝트 제목</label>
+    <fg-input type="text" v-model="writeData.title" id="exampleFormControlInput2"></fg-input>
     <h6 class="form-text text-muted mb-5">45글자 이상은 안됩니다.</h6>
     <div class="row d-flex justify-content-between">
       <div class="col-5 mr-1">
@@ -20,17 +14,15 @@
         <input type="date" v-model="writeData.enddate" />
       </div>
     </div>
-    <label for="mainImg" class="mb-5"
-      >메인 이미지 업로드(목록 화면에 노출됩니다)</label
-    ><br />
-    <input type="file" ref="mainImg" id="mainImg" accept /><br />
-    <label for="exampleFormControlTextarea1" class="mb-3"
-      >프로젝트 요약(목록 화면에 노출됩니다)</label
-    >
+    <label for="mainImg" class="mb-5">메인 이미지 업로드(목록 화면에 노출됩니다)</label>
+    <br />
+    <input type="file" ref="mainImg" id="mainImg" accept />
+    <br />
+    <label for="exampleFormControlTextarea1" class="mb-3">프로젝트 요약(목록 화면에 노출됩니다)</label>
     <textarea
       class="form-control"
       id="exampleFormControlTextarea1"
-      v-model="writeData.content"
+      v-model="writeData.summary"
       rows="3"
     ></textarea>
     <label for="exampleFormControlTextarea1" class="mb-3">프로젝트 내용</label>
@@ -38,15 +30,8 @@
     <!-- <textarea class="form-control" id="exampleFormControlTextarea1" v-model="writeData.content" rows="3"></textarea> -->
     <!-- </div> -->
     <br />
-    <n-button @click="imgUpload" class="right btn btn-primary"
-      >본문 이미지 첨부</n-button
-    >
-    <n-button
-      v-on:change="selectMainImg()"
-      @click="writeProject"
-      class="right btn btn-primary"
-      >확인</n-button
-    >
+    <n-button @click="imgUpload" class="right btn btn-primary">본문 이미지 첨부</n-button>
+    <n-button v-on:change="selectMainImg()" @click="writeProject" class="right btn btn-primary">확인</n-button>
   </div>
 </template>
 
@@ -84,7 +69,7 @@ export default {
       this.writeData.content = this.$refs.content.invoke("getHtml");
       this.writeData.uid = this.$cookie.get("auth-token");
       this.writeData.title = this.writeData.title.trim();
-      this.writeData.summary = this.writeData.title.trim();
+      this.writeData.summary = this.writeData.summary.trim();
       if (
         !this.writeData.title ||
         !this.writeData.content ||
@@ -129,7 +114,7 @@ export default {
               icon: "success",
               title: "프로젝트가 등록되었습니다.",
             });
-            this.$emit("postWrite");
+            this.$router.push(`/profile/${this.writeData.uid}`);
           })
           .catch((err) => {
             console.log("!!!!!!");

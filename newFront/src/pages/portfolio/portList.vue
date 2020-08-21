@@ -24,14 +24,16 @@
         :text="`${board.summary}`"
       >
         <template v-slot:img>
-          <img
-            class="d-block mx-auto class-name"
-            width="1024"
-            :src="
+          <a @click="goProject(`${board.pid}`)">
+            <img
+              class="d-block mx-auto class-name"
+              width="1024"
+              :src="
               `http://i3d205.p.ssafy.io:8080/img/projectImg/${board.projectImg}`
             "
-            alt="image slot"
-          />
+              alt="image slot"
+            />
+          </a>
         </template>
       </b-carousel-slide>
     </b-carousel>
@@ -56,6 +58,11 @@ export default {
 
   watch: {},
   methods: {
+    goProject(item) {
+      this.$router.push({
+        path: `/portDetail/${item}`,
+      });
+    },
     fetchBoards() {
       this.$axios
         .get("/project/byuser/" + this.uid)
@@ -75,7 +82,7 @@ export default {
     },
   },
   filters: {
-    truncate: function(text, length, suffix) {
+    truncate: function (text, length, suffix) {
       if (text.length > length) {
         return text.substring(0, length) + suffix;
       } else {
