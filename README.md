@@ -71,7 +71,7 @@ etc. *[AWS](https://aws.amazon.com/ko/) *[Nginx](https://www.nginx.com/)
 
 - Frontend Developer (gitlab and email)
     - 박도희- [@dohee.pa]([https://lab.ssafy.com/dohee.pa](https://lab.ssafy.com/dohee.pa)) - [dohee.pa@gmail.com](mailto:dohee.pa@gmail.com)
-    - 허성수 - [@gjtjdtn201]([https://lab.ssafy.com/gjtjdtn201](https://lab.ssafy.com/gjtjdtn201)) - hongzzi.dev@gmail.com
+    - 허성수 - [@gjtjdtn201]([https://lab.ssafy.com/gjtjdtn201](https://lab.ssafy.com/gjtjdtn201)) - gjtjdtn201@gmail.com
 - Backend Developer (gitlab and email)
     - 한정훈 - [@onooff]([https://lab.ssafy.com/onooff](https://lab.ssafy.com/onooff)) - [onooff77@gmail.com](mailto:onooff77@gmail.com)
     - 정성훈 - [@wtg1021]([https://lab.ssafy.com/wtg1021](https://lab.ssafy.com/wtg1021)) - wdtg10211@gmail.com
