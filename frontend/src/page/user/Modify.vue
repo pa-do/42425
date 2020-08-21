@@ -79,6 +79,13 @@
                                 placeholder="현재 비밀번호를 입력하세요."
                                 type="password"
                               />
+                              <span v-if="nowPWChk" style="color: rgb(0, 191, 0)">
+                                <i class="fas fa-check-circle"></i>
+                              </span>
+                              <span v-else>
+                                <i class="fas fa-check-circle"></i>
+                              </span>
+                              <button @click="checkNowPW" class="mt-2 mx-3">인증</button>
                             </div>
                             <div class="input-wrap">
                               <input
@@ -146,6 +153,7 @@
 <script>
 import "../../assets/css/user.scss";
 import axios from "axios";
+import router from '../../router';
 
 export default {
   components: {},
@@ -250,10 +258,34 @@ export default {
         });
     },
 
-    modifyPW() {
+    // authcheck w/ login
+    checkNowPW() {
       if (this.nowPW == "") {
-        alert("현재 비밀번호를 입력하세요.");
-      } else if (this.newPW1 == "") {
+        alert("비밀번호를 입력하세요.");
+        return;
+      }
+      console.log(this.email, this.nowPW);
+      axios({
+        method: "POST",
+        url: `http://localhost:8080/account/login`,
+        params: {
+          email: this.email,
+          password: this.nowPW,
+        },
+      })
+        .then((response) => {
+          this.nowPWChk = true;
+        })
+        .catch((err) => {
+          console.log("ERROR :", err);
+          alert(
+            "비밀번호를 확인해주세요. \n비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다."
+          );
+        });
+    },
+
+    modifyPW() {
+      if (this.newPW1 == "") {
         alert("새로운 비밀번호를 입력하세요.");
         document.getElementById("newPW1").focus();
         return;
@@ -266,7 +298,7 @@ export default {
         document.getElementById("newPW2").focus();
         return;
       } else {
-        // NEED TO FIX! 현재 비밀번호도 받을 수 있게!
+        console.log(this.newPW1);
         axios
           .put("http://localhost:8080/account/modify/password", {
             uid: this.uid,
@@ -280,6 +312,7 @@ export default {
             this.nowPW = "";
             this.newPW1 = "";
             this.newPW2 = "";
+            this.nowPWChk = false;
 
             alert("회원정보수정 성공!");
           })
@@ -316,24 +349,28 @@ export default {
         cancelButtonText: "안할래요😊",
       }).then((result) => {
         if (result.value) {
-          this.deleteUser();
-          Swal.fire(
-            "탈퇴 완료!",
-            "데이터가 영구적으로 삭제되었습니다.",
-            "success"
-          );
+          this.deleteUser();  
+          Swal.fire({
+            title: "탈퇴 완료!",
+            text : "데이터가 영구적으로 삭제되었습니다.",
+            icon :"success",
+            showConfirmButton : true,
+            confirmButtonText : "확인",
+          }).then(() => {
+            router.go();
+          });
         }
       });
     },
 
-    successAlert(msg){
+    successAlert(msg) {
       Swal.fire({
-        icon: 'success',
-        title: msg + ' 수정 완료!',
+        icon: "success",
+        title: msg + " 수정 완료!",
         showConfirmButton: false,
-        timer: 1500
-      })
-    }
+        timer: 1500,
+      });
+    },
   },
   watch: {},
   data: () => {
@@ -348,6 +385,7 @@ export default {
       uid: null,
 
       nicknameChk: false,
+      nowPWChk: false,
 
       update_nickname: false,
       update_profileimg: false,
