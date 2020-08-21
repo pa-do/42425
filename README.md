@@ -41,17 +41,23 @@
 
 
 
-## 사용한 프레임워크
-
- *[Spring Boot](https://spring.io/projects/spring-boot)
-
- *[Vue](https://vuejs.org/)
-
-*[VSCODE](https://code.visualstudio.com/)
 
 
 
-## 개발스택
+
+## 개발스택 및 프레임 워크
+
+![stack](./READMEIMG/stack.jpg)
+
+
+
+Spring  *[Spring Boot](https://spring.io/projects/spring-boot)
+
+ Vue.js *[Vue](https://vuejs.org/)
+
+Visual Studio Code *[VSCODE](https://code.visualstudio.com/)
+
+
 
 협업Tool *[swagger](https://swagger.io/tools/swagger-ui/) * [Jira](https://www.atlassian.com/software/jira/) * [Mattermost](https://mattermost.com/) * [GitLab](https://about.gitlab.com/)
 
